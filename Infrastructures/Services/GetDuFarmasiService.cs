@@ -3,22 +3,22 @@ using AptOnline.Helpers;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
-namespace AptOnline.Api.Services;
+namespace AptOnline.Api.Infrastructures.Services;
 
-public interface IGetResepFarmasiService
+public interface IGetDuFarmasiService
 {
-    ResepDto Execute(string resepId);
+    PenjualanDto? Execute(string duId);
 }
-public class GetResepFarmasiService : IGetResepFarmasiService
+public class GetDuFarmasiService : IGetDuFarmasiService
 {
     private readonly FarmasiOptions _opt;
 
-    public GetResepFarmasiService(IOptions<FarmasiOptions> opt)
+    public GetDuFarmasiService(IOptions<FarmasiOptions> opt)
     {
         _opt = opt.Value;
     }
 
-    public ResepDto? Execute(string id)
+    public PenjualanDto? Execute(string id)
     {
 
         var du = Task.Run(() => ExecuteAsync(id)).GetAwaiter().GetResult();
@@ -26,18 +26,18 @@ public class GetResepFarmasiService : IGetResepFarmasiService
         return du;
     }
 
-    private async Task<ResepDto> ExecuteAsync(string id)
+    private async Task<PenjualanDto?> ExecuteAsync(string id)
     {
         if (id.Trim().Length == 0)
             return null;
         // BUILD
-        var endpoint = $"{_opt.BaseApiUrl}/api/Resep";
+        var endpoint = $"{_opt.BaseApiUrl}/api/Penjualan";
         var client = new RestClient(endpoint);
-        var req = new RestRequest("{resepId}")
-            .AddUrlSegment("resepId", id);
+        var req = new RestRequest("{penjualanId}")
+            .AddUrlSegment("penjualanId", id);
 
         //  EXECUTE
-        var response = await client.ExecuteGetAsync<ResepDto>(req);
+        var response = await client.ExecuteGetAsync<PenjualanDto>(req);
         if (response.StatusCode != System.Net.HttpStatusCode.OK)
             return null;
         //  RETURN

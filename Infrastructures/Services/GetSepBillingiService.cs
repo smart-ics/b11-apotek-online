@@ -3,7 +3,7 @@ using AptOnline.Helpers;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
-namespace AptOnline.Api.Services;
+namespace AptOnline.Api.Infrastructures.Services;
 
 public interface IGetSepBillingService
 {

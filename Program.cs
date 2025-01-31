@@ -1,5 +1,5 @@
 using AptOnline.Api;
-using AptOnline.Api.Services;
+using AptOnline.Api.Infrastructures.Services;
 using AptOnline.Api.Usecases;
 using AptOnline.Helpers;
 using MassTransit;

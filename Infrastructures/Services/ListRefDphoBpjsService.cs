@@ -7,7 +7,7 @@ using RestSharp;
 using JknBridgerService.Helpers;
 using Newtonsoft.Json.Linq;
 
-namespace AptOnline.Api.Services
+namespace AptOnline.Api.Infrastructures.Services
 {
     public interface IListRefDphoBpjsService
     {
@@ -28,7 +28,7 @@ namespace AptOnline.Api.Services
         }
         public ListRefDphoBpjsRespDto Execute()
         {
-            var endpoint = $"{ _opt.BaseApiUrl}/referensi/dpho";
+            var endpoint = $"{_opt.BaseApiUrl}/referensi/dpho";
             var client = new RestClient(endpoint)
             {
                 ClientCertificates = new X509CertificateCollection()

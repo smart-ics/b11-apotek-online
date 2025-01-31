@@ -3,7 +3,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
-namespace AptOnline.Api.Services;
+namespace AptOnline.Api.Infrastructures.Services;
 
 public interface ITokenService
 {

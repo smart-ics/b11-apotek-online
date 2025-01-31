@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using RestSharp;
 using RestSharp.Authenticators;
 
-namespace AptOnline.Api.Services;
+namespace AptOnline.Api.Infrastructures.Services;
 
 public interface IGetDokterBillingService
 {
@@ -33,7 +33,7 @@ public class GetDokterBillingService : IGetDokterBillingService
         if (id.Trim().Length == 0)
             return null;
         // BUILD
-        var token = await _token.Get("Aptol_Billing") ?? 
+        var token = await _token.Get("Aptol_Billing") ??
             throw new ArgumentException($"Get Token {_opt.BaseApiUrl} failed");
         var endpoint = $"{_opt.BaseApiUrl}/api/Dokter";
         var client = new RestClient(endpoint)

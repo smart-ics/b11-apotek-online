@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using Nuna.Lib.ActionResultHelper;
 using RestSharp;
 
-namespace AptOnline.Api.Services;
+namespace AptOnline.Api.Infrastructures.Services;
 
 public interface IGetMapDpho
 {

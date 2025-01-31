@@ -9,7 +9,7 @@ using JknBridgerService.Helpers;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
-namespace AptOnline.Api.Services
+namespace AptOnline.Api.Infrastructures.Services
 {
     public interface IInsertObatBpjsService
     {
@@ -32,7 +32,7 @@ namespace AptOnline.Api.Services
 
         public InsertObatRespDto ExecuteNonRacik(InsertObatNonRacikReqDto req)
         {
-            var reqBody = JsonConvert.SerializeObject(req); 
+            var reqBody = JsonConvert.SerializeObject(req);
             var endpoint = $"{_opt.BaseApiUrl}/obatnonracikan/v3/insert";
             var client = new RestClient(endpoint)
             {
@@ -48,7 +48,7 @@ namespace AptOnline.Api.Services
             request.AddParameter("application/x-www-form-urlencoded", reqBody, ParameterType.RequestBody);
 
             var response = client.Execute(request);
-            if(response.StatusCode== System.Net.HttpStatusCode.OK)
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
                 try
                 {
@@ -62,7 +62,7 @@ namespace AptOnline.Api.Services
                 }
             }
             else
-            throw new Exception(response.ErrorMessage);
+                throw new Exception(response.ErrorMessage);
         }
 
         public InsertObatRespDto ExecuteRacik(InsertObatRacikReqDto req)
@@ -84,7 +84,7 @@ namespace AptOnline.Api.Services
             //request.AddJsonBody(req);
             var response = client.Execute(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            
+
             {
                 try
                 {

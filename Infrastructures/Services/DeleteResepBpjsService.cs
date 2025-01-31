@@ -8,7 +8,7 @@ using RestSharp;
 using JknBridgerService.Helpers;
 using Newtonsoft.Json.Linq;
 
-namespace AptOnline.Api.Services
+namespace AptOnline.Api.Infrastructures.Services
 {
     public interface IDeleteResepBpjsService
     {

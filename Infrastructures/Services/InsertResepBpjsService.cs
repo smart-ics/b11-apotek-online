@@ -7,7 +7,7 @@ using JknBridgerService.Helpers;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
-namespace AptOnline.Api.Services
+namespace AptOnline.Api.Infrastructures.Services
 {
     public interface IInsertResepBpjsService
     {

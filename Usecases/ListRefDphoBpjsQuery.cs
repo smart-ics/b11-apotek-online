@@ -1,5 +1,5 @@
-﻿using AptOnline.Api.Models;
-using AptOnline.Api.Services;
+﻿using AptOnline.Api.Infrastructures.Services;
+using AptOnline.Api.Models;
 using MediatR;
 
 namespace AptOnline.Api.Usecases
