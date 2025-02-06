@@ -1,6 +1,7 @@
 using AptOnline.Api;
 using AptOnline.Api.Infrastructures.Services;
 using AptOnline.Api.Usecases;
+using AptOnline.Api.Workers;
 using AptOnline.Helpers;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +37,9 @@ builder.Services.AddScoped<IGetMapDpho, GetMapDpho>();
 builder.Services.AddScoped<IGetLayananBillingService, GetLayananBillingService>();
 builder.Services.AddScoped<IGetDokterBillingService, GetDokterBillingService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IResepRequestBuilder, ResepRequestBuilder>();
+builder.Services.AddScoped<IItemNonRacikBuilder, ItemNonRacikBuilder>();
+builder.Services.AddScoped<IItemRacikBuilder, ItemRacikBuilder>();
 
 //Masstransit
 var configuration = builder.Configuration;
