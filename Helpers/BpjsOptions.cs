@@ -1,4 +1,4 @@
-﻿namespace AptOnline.Helpers
+﻿namespace AptOnline.Api.Helpers
 {
     public class BpjsOptions
     {

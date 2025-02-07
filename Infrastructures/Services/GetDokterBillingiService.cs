@@ -1,5 +1,5 @@
 ﻿using AptOnline.Api.Models;
-using AptOnline.Helpers;
+using AptOnline.Api.Helpers;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using RestSharp.Authenticators;

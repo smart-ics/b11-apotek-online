@@ -1,12 +1,12 @@
 using AptOnline.Api;
 using AptOnline.Api.Infrastructures.Services;
-using AptOnline.Api.Usecases;
 using AptOnline.Api.Workers;
-using AptOnline.Helpers;
+using AptOnline.Api.Helpers;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Mime;
 using System.Reflection;
+using AptOnline.Api.Infrastructures.Repos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +41,8 @@ builder.Services.AddScoped<IResepRequestBuilder, ResepRequestBuilder>();
 builder.Services.AddScoped<IItemNonRacikBuilder, ItemNonRacikBuilder>();
 builder.Services.AddScoped<IItemRacikBuilder, ItemRacikBuilder>();
 
+builder.Services.AddTransient<ILogDal, LogDal>();
+
 //Masstransit
 var configuration = builder.Configuration;
 var rabbitMqOption = configuration.GetSection("RabbitMqOption");
@@ -66,6 +68,7 @@ if (enableRabbitMq)
     });
 
 var app = builder.Build();
+LogHelper.Initialize(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

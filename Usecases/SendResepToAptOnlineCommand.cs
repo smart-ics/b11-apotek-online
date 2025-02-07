@@ -1,4 +1,5 @@
-﻿using AptOnline.Api.Infrastructures.Services;
+﻿using AptOnline.Api.Helpers;
+using AptOnline.Api.Infrastructures.Services;
 using AptOnline.Api.Models;
 using AptOnline.Api.Workers;
 using Mapster;
@@ -74,6 +75,7 @@ namespace AptOnline.Api.Usecases
             var lyn = _getLayananService.Execute(resep.data.layananId);
             var dokter = _getDokterService.Execute(resep.data.dokterId);
             var resepBpjsReq = _resepRequestBuilder.Build(duPenjualan, resep, sep, lyn, dokter);
+            LogHelper.Log(new LogModel(DateTime.Now, request.PenjualanId, "", "", 0, 0, "Tes"));
             if (resepBpjsReq is null)
                 return Task.FromResult(new SendResepToAptolCommandResponse
                 {
@@ -85,7 +87,7 @@ namespace AptOnline.Api.Usecases
             //
             var listBarangResep = resep.data.listBarang;
             var listBarangJual = duPenjualan.listBarang;
-
+                
             var listDpho = new List<RespMapDpho>(); 
             foreach (var barang in listBarangJual)
             {
