@@ -1,4 +1,5 @@
-﻿using AptOnline.Api.Infrastructures.Services;
+﻿using AptOnline.Api.Helpers;
+using AptOnline.Api.Infrastructures.Services;
 using AptOnline.Api.Models;
 
 namespace AptOnline.Api.Workers
@@ -36,6 +37,12 @@ namespace AptOnline.Api.Workers
                     var resep = listBrgResep.Where(x => x.brgId == obat.brgId).FirstOrDefault();
                     int signa1 = racik.etiketQty;
                     int signa2 = racik.etiketHari;
+                    if (signa1 < 1 && signa2 < 1)
+                    {
+                        var (Signa1, Signa2) = FarmasiHelper.GenSigna(resep.etiketDescription);
+                        signa1 = Convert.ToInt16(Signa1);
+                        signa2 = Convert.ToInt16(Signa2);
+                    }
                     int jho = (int)Math.Ceiling((double)(obat.qty / (signa1 * signa2)));
                     listDto.Add(new InsertObatRacikReqDto
                     {
