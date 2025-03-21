@@ -20,7 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domains\" />
+    <ProjectReference Include="..\AptOnline.Application\AptOnline.Application.csproj" />
+    <ProjectReference Include="..\AptOnline.Domain\AptOnline.Domain.csproj" />
+    <ProjectReference Include="..\AptOnline.Infrastructure\AptOnline.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

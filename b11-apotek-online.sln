@@ -7,6 +7,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AptOnline.Api", "AptOnline.
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "AptOnline.Db", "db\AptOnline.Db\AptOnline.Db.sqlproj", "{301358D0-0F59-4DE8-853B-72F47D2843BD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AptOnline.Domain", "..\AptOnline.Domain\AptOnline.Domain.csproj", "{3DA2E7EF-F809-44C1-9302-012292BCC468}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AptOnline.Application", "..\AptOnline.Application\AptOnline.Application.csproj", "{24ED907B-62F8-4B0F-A8DB-E382D4816233}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AptOnline.Infrastructure", "..\AptOnline.Infrastructure\AptOnline.Infrastructure.csproj", "{2D820E66-1537-44A8-A415-AAEAD775C432}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{5EEF1D46-E780-4CA9-90ED-62C55F94DE55}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{BF4633C0-78D2-424E-A0A3-ADC6758CEFFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,9 +35,28 @@ Global
 		{301358D0-0F59-4DE8-853B-72F47D2843BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{301358D0-0F59-4DE8-853B-72F47D2843BD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{301358D0-0F59-4DE8-853B-72F47D2843BD}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{3DA2E7EF-F809-44C1-9302-012292BCC468}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA2E7EF-F809-44C1-9302-012292BCC468}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DA2E7EF-F809-44C1-9302-012292BCC468}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DA2E7EF-F809-44C1-9302-012292BCC468}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24ED907B-62F8-4B0F-A8DB-E382D4816233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24ED907B-62F8-4B0F-A8DB-E382D4816233}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24ED907B-62F8-4B0F-A8DB-E382D4816233}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24ED907B-62F8-4B0F-A8DB-E382D4816233}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D820E66-1537-44A8-A415-AAEAD775C432}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D820E66-1537-44A8-A415-AAEAD775C432}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D820E66-1537-44A8-A415-AAEAD775C432}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D820E66-1537-44A8-A415-AAEAD775C432}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4E1A00C6-8BDA-4CD4-8F96-9703288E3336} = {5EEF1D46-E780-4CA9-90ED-62C55F94DE55}
+		{301358D0-0F59-4DE8-853B-72F47D2843BD} = {BF4633C0-78D2-424E-A0A3-ADC6758CEFFD}
+		{3DA2E7EF-F809-44C1-9302-012292BCC468} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{24ED907B-62F8-4B0F-A8DB-E382D4816233} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{2D820E66-1537-44A8-A415-AAEAD775C432} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8265A92D-5DFA-4D31-A9FC-4CFD05208CEE}

@@ -6,6 +6,11 @@ using MassTransit;
 using System.Reflection;
 using AptOnline.Api.Infrastructures.Repos;
 using AptOnline.Helpers;
+using AptOnline.Infrastructure.LocalContext.PenjualanAgg;
+using AptOnline.Infrastructure.LocalContext.ResepRsAgg;
+using AptOnline.Infrastructure.BillingContext.DokterAgg;
+using AptOnline.Infrastructure.BillingContext.LayananAgg;
+using AptOnline.Infrastructure.BpjsContext.DphoAgg;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,5 +1,4 @@
-﻿using AptOnline.Api.Infrastructures.Services;
-using AptOnline.Api.Models;
+﻿using AptOnline.Infrastructure.BpjsContext.DphoAgg;
 using MediatR;
 
 namespace AptOnline.Api.Usecases

@@ -6,6 +6,10 @@ using Nuna.Lib.DataTypeExtension;
 using AptOnline.Api.Infrastructures.Services;
 using AptOnline.Api.Workers;
 using AptOnline.Api.Helpers;
+using AptOnline.Infrastructure.LocalContext.PenjualanAgg;
+using AptOnline.Infrastructure.BillingContext.DokterAgg;
+using AptOnline.Infrastructure.BillingContext.LayananAgg;
+using AptOnline.Infrastructure.BpjsContext.DphoAgg;
 
 namespace AptOnline.Api.Usecases;
 public class SendMsgOnDoBillUmumCreatedEvent : IConsumer<DoBillUmumCreatedNotifEvent>
