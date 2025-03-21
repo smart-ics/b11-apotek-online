@@ -10,7 +10,8 @@ using AptOnline.Infrastructure.LocalContext.PenjualanAgg;
 using AptOnline.Infrastructure.LocalContext.ResepRsAgg;
 using AptOnline.Infrastructure.BillingContext.DokterAgg;
 using AptOnline.Infrastructure.BillingContext.LayananAgg;
-using AptOnline.Infrastructure.BpjsContext.DphoAgg;
+using AptOnline.Infrastructure.AptolCloudContext.DphoAgg;
+using AptOnline.Infrastructure.PharmacyContext.MapDphoAgg;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,15 +36,15 @@ builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection(Dat
 builder.Services.AddScoped<IGetDuFarmasiService, GetDuFarmasiService>();
 builder.Services.AddScoped<IGetResepFarmasiService, GetResepFarmasiService>();
 builder.Services.AddScoped<IGetSepBillingService, GetSepBillingService>();
-builder.Services.AddScoped<IListRefDphoBpjsService, ListRefDphoBpjsService>();
+builder.Services.AddScoped<IListRefDphoBpjsService, ListDphoService>();
 builder.Services.AddScoped<IListRefObatBpjsService, ListRefObatBpjsService>();
 builder.Services.AddScoped<IListRefPoliBpjsService, ListRefPoliBpjsService>();
-builder.Services.AddScoped<IListRefFaskesBpjsService, ListRefFaskesBpjsService>();
+builder.Services.AddScoped<IListRefFaskesBpjsService, ListFaskesService>();
 builder.Services.AddScoped<IGetSettingPpkBpjsService, GetSettingPpkBpjsService>();
 builder.Services.AddScoped<IInsertResepBpjsService, InsertResepBpjsService>();
 builder.Services.AddScoped<IDeleteResepBpjsService, DeleteResepBpjsService>();
 builder.Services.AddScoped<IInsertObatBpjsService, InsertObatBpjsService>();
-builder.Services.AddScoped<IGetMapDpho, GetMapDpho>();
+builder.Services.AddScoped<IGetMapDpho, GetMapDphoService>();
 builder.Services.AddScoped<IGetLayananBillingService, GetLayananBillingService>();
 builder.Services.AddScoped<IGetDokterBillingService, GetDokterBillingService>();
 builder.Services.AddScoped<ITokenService, TokenService>();

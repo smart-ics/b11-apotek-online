@@ -14,7 +14,7 @@
     <PackageReference Include="MediatR" Version="12.4.0" />
     <PackageReference Include="MyHospital.MsgContract" Version="2.1.22" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Nuna.Lib.NetStandard" Version="3.1.127" />
+    <PackageReference Include="Nuna.Lib.NetStandard" Version="3.1.143" />
     <PackageReference Include="RestSharp" Version="106.13.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>

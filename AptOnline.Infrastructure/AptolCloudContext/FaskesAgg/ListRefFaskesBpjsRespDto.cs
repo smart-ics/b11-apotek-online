@@ -1,6 +1,5 @@
-﻿namespace AptOnline.Api.Models
+﻿namespace AptOnline.Infrastructure.AptolCloudContext.FaskesAgg
 {
-
     public class ListRefFaskesBpjsRespDto
     {
         public RefFaskesResponse response { get; set; }

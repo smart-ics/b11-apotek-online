@@ -13,7 +13,11 @@
   <ItemGroup>
     <Folder Include="BillingContext\" />
     <Folder Include="EmrContext\" />
-    <Folder Include="PharmacyContext\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.4.0" />
+    <PackageReference Include="Nuna.Lib.NetStandard" Version="3.1.143" />
   </ItemGroup>
 
 </Project>
