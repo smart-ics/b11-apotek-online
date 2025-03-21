@@ -1,9 +1,7 @@
 ﻿using MassTransit;
-using MediatR;
 using MyHospital.MsgContract.Pharmacy.SalesEvents;
 using AptOnline.Api.Models;
 using Mapster;
-using System.Text.RegularExpressions;
 using Nuna.Lib.DataTypeExtension;
 using AptOnline.Api.Infrastructures.Services;
 using AptOnline.Api.Workers;
@@ -58,22 +56,19 @@ public class SendMsgOnDoBillUmumCreatedEvent : IConsumer<DoBillUmumCreatedNotifE
         var duPenjualan = du.data.Adapt<PenjualanData>();
         if (duPenjualan is null)
         {
-            LogHelper.Log(new LogModel(DateTime.Now, id, "", "", 0, 0, 
-                "DU tidak ditemukan"));
+            LogHelper.Log(id, "", "", "GetDuFarmasiService: DU tidak ditemukan");
             return Task.CompletedTask;
         }
         var resep = _getResepFarmasiService.Execute(duPenjualan.resepId);
         if (resep is null)
         {
-            LogHelper.Log(new LogModel(DateTime.Now, id, "", "", 0, 0, 
-                "Resep tidak ditemukan"));
+            LogHelper.Log(id, "", "", "GetResepFarmasiService: Resep tidak ditemukan");
             return Task.CompletedTask;
         }
         var sep = _getSepSvc.Execute(du.data.regId);
         if (sep is null)
         {
-            LogHelper.Log(new LogModel(DateTime.Now, id, "", "", 0, 0, 
-                "Sep tidak ditemukan"));
+            LogHelper.Log(id, "", "", "GetSepBillingService: Sep tidak ditemukan");
             return Task.CompletedTask;
         }
         var lyn = _getLayananService.Execute(resep.data.layananId);
@@ -81,8 +76,7 @@ public class SendMsgOnDoBillUmumCreatedEvent : IConsumer<DoBillUmumCreatedNotifE
         var resepBpjsReq = _resepRequestBuilder.Build(duPenjualan, resep, sep, lyn, dokter);
         if (resepBpjsReq is null)
         {
-            LogHelper.Log(new LogModel(DateTime.Now, id, "", "", 0, 0, 
-                "Gagal generate Resep BPJS Request"));
+            LogHelper.Log(id, "", "", "ResepRequestBuilder: Gagal generate Resep BPJS Request");
             return Task.CompletedTask;
         }
         //
@@ -98,8 +92,7 @@ public class SendMsgOnDoBillUmumCreatedEvent : IConsumer<DoBillUmumCreatedNotifE
         }
         if (listDpho.IsNullOrEmpty())
         {
-            LogHelper.Log(new LogModel(DateTime.Now, id, "", "", 0, 0, 
-                "Map DPHO tidak ditemukan"));
+            LogHelper.Log(id, "", "", "Map DPHO tidak ditemukan");
             return Task.CompletedTask;
         }
 
@@ -108,8 +101,7 @@ public class SendMsgOnDoBillUmumCreatedEvent : IConsumer<DoBillUmumCreatedNotifE
         var headerResep = _insertResepBpjsService.Execute(resepBpjsReq);
         if (headerResep is null)
         {
-            LogHelper.Log(new LogModel(DateTime.Now, id, resepBpjsReq.ToString(), "", 0, 0, 
-                "Request Resep Header BPJS gagal"));
+            LogHelper.Log(id, "", "", "Request Resep Header BPJS gagal");
             return Task.CompletedTask;
         }
         //---kirim detail obat racik ke bpjs

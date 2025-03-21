@@ -56,8 +56,15 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
+    <Folder Include="Tables" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="APTOL_Log.sql" />
+    <None Include="Tables\APTOL_Log.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tables\APTOL_Resep.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tables\APTOL_ResepItem.sql" />
   </ItemGroup>
 </Project>

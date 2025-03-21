@@ -1,4 +1,5 @@
 ﻿using AptOnline.Api.Helpers;
+using AptOnline.Api.Infrastructures.Repos;
 using AptOnline.Api.Infrastructures.Services;
 using AptOnline.Api.Models;
 using AptOnline.Api.Workers;
@@ -36,6 +37,7 @@ namespace AptOnline.Api.Usecases
         private readonly IResepRequestBuilder _resepRequestBuilder;
         private readonly IItemNonRacikBuilder _itemNonRacikBuilder;
         private readonly IItemRacikBuilder _itemRacikBuilder;
+        private readonly IResepWriter _resepWiter;
 
         public SendResepToAptolCommandHandler(IInsertResepBpjsService insertResepBpjsService,
         IGetDuFarmasiService getDuFarmasiService,
@@ -47,7 +49,8 @@ namespace AptOnline.Api.Usecases
         IGetDokterBillingService getDokterService,
         IResepRequestBuilder resepRequestBuilder,
         IItemNonRacikBuilder itemNonRacikBuilder,
-        IItemRacikBuilder itemRacikBuilder)
+        IItemRacikBuilder itemRacikBuilder,
+        IResepWriter resepWiter)
         {
             _insertResepBpjsService = insertResepBpjsService;
             _getDuFarmasiService = getDuFarmasiService;
@@ -60,8 +63,9 @@ namespace AptOnline.Api.Usecases
             _resepRequestBuilder = resepRequestBuilder;
             _itemNonRacikBuilder = itemNonRacikBuilder;
             _itemRacikBuilder = itemRacikBuilder;
+            _resepWiter = resepWiter;
         }
-        public Task<SendResepToAptolCommandResponse> Handle(SendResepToAptolCommand request, 
+        public Task<SendResepToAptolCommandResponse>? Handle(SendResepToAptolCommand request, 
             CancellationToken cancellationToken)
         {
             // BUILD
@@ -75,8 +79,10 @@ namespace AptOnline.Api.Usecases
             var lyn = _getLayananService.Execute(resep.data.layananId);
             var dokter = _getDokterService.Execute(resep.data.dokterId);
             var resepBpjsReq = _resepRequestBuilder.Build(duPenjualan, resep, sep, lyn, dokter);
-            LogHelper.Log(new LogModel(DateTime.Now, request.PenjualanId, "", "", 0, 0, "Tes"));
+           
             if (resepBpjsReq is null)
+            {
+                LogHelper.Log(request.PenjualanId, "", "", "Build resep request failed");
                 return Task.FromResult(new SendResepToAptolCommandResponse
                 {
                     Success = false,
@@ -84,6 +90,7 @@ namespace AptOnline.Api.Usecases
                     BpjsReffId = string.Empty,
                     Message = "Build resep request failed"
                 });
+            }
             //
             var listBarangResep = resep.data.listBarang;
             var listBarangJual = duPenjualan.listBarang;
@@ -95,7 +102,9 @@ namespace AptOnline.Api.Usecases
                 if (dpho is null) continue;
                 listDpho.Add(dpho);
             }
-            if (listDpho.IsNullOrEmpty()) 
+            if (listDpho.IsNullOrEmpty())
+            {
+                LogHelper.Log(request.PenjualanId, "", "", "DPHO map not found");
                 return Task.FromResult(new SendResepToAptolCommandResponse
                 {
                     Success = false,
@@ -103,11 +112,14 @@ namespace AptOnline.Api.Usecases
                     BpjsReffId = string.Empty,
                     Message = "DPHO map not found"
                 });
-
+            }
+            
             //SEND
             //---kirim header resep ke bpjs
             var headerResep = _insertResepBpjsService.Execute(resepBpjsReq);
-            if (headerResep is null) 
+            if (headerResep.response is null)
+            {
+                LogHelper.Log(request.PenjualanId, "", "", "Send resep header (BPJS) failed");
                 return Task.FromResult(new SendResepToAptolCommandResponse
                 {
                     Success = false,
@@ -115,13 +127,45 @@ namespace AptOnline.Api.Usecases
                     BpjsReffId = string.Empty,
                     Message = "Send resep header (BPJS) failed"
                 });
+            }
+                
+            //apply repo resep
+            var resepModel = new ResepModel
+            {
+                PenjualanId = request.PenjualanId,
+                EntryDate = headerResep.response.tglEntry,
+                ReffId = headerResep.response.noApotik,
+                SepId = headerResep.response.noSep_Kunjungan,
+                FaskesAsal = headerResep.response.faskesAsal,
+                NoPeserta = headerResep.response.noKartu,
+                ResepDate = DateTime.Parse(headerResep.response.tglResep),
+                JenisObatId = headerResep.response.kdJnsObat
+            };
+            _ = _resepWiter.Save(resepModel);
             //---kirim detail obat racik ke bpjs
             var listRacik = _itemRacikBuilder.Build(listBarangJual, headerResep, listBarangResep, listDpho);
             if (listRacik.Any())
             {
                 foreach (var item in listRacik)
                 {
-                    _sendObatSvc.ExecuteRacik(item);
+                    var x = _sendObatSvc.ExecuteRacik(item);
+                    if (x is null || !x.metaData.code.Equals("200")) continue;
+                    //apply repo item
+                    var resepItem = new ResepItemModel
+                    {
+                        PenjualanId = request.PenjualanId,
+                        BarangId = item.BarangId,
+                        DphoId = item.KDOBT,
+                        DphoName = item.NMOBAT,
+                        IsRacik = "1",
+                        RacikId = item.JNSROBT,
+                        Signa1 = item.SIGNA1OBT.ToString(),
+                        Signa2 = item.SIGNA2OBT.ToString(),
+                        Jho = item.JHO.ToString(),
+                        Qty = item.JMLOBT.ToString(),
+                        Note = item.CatKhsObt
+                    };
+                    _resepWiter.SaveItem(resepItem);
                 }
             }
             //---kirim detail obat non racik ke bpjs
@@ -130,7 +174,24 @@ namespace AptOnline.Api.Usecases
             {
                 foreach (var item in listNonRacik)
                 {
-                    _sendObatSvc.ExecuteNonRacik(item);
+                    var x = _sendObatSvc.ExecuteNonRacik(item);
+                    if (x is null || !x.metaData.code.Equals("200")) continue;
+                    //apply repo item non racik
+                    var resepItem = new ResepItemModel
+                    {
+                        PenjualanId = request.PenjualanId,
+                        BarangId = item.BarangId,
+                        DphoId = item.KDOBT,
+                        DphoName = item.NMOBAT,
+                        IsRacik = "0",
+                        RacikId = "",
+                        Signa1 = item.SIGNA1OBT.ToString(),
+                        Signa2 = item.SIGNA2OBT.ToString(),
+                        Jho = item.JHO.ToString(),
+                        Qty = item.JMLOBT.ToString(),
+                        Note = item.CatKhsObt
+                    };
+                    _resepWiter.SaveItem(resepItem);
                 }
             }
             // RETURN

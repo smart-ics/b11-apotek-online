@@ -3,10 +3,9 @@ using AptOnline.Api.Infrastructures.Services;
 using AptOnline.Api.Workers;
 using AptOnline.Api.Helpers;
 using MassTransit;
-using Microsoft.Extensions.DependencyInjection;
-using System.Net.Mime;
 using System.Reflection;
 using AptOnline.Api.Infrastructures.Repos;
+using AptOnline.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,12 +25,18 @@ cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 builder.Services.Configure<FarmasiOptions>(builder.Configuration.GetSection(FarmasiOptions.SECTION_NAME));
 builder.Services.Configure<BillingOptions>(builder.Configuration.GetSection(BillingOptions.SECTION_NAME));
 builder.Services.Configure<BpjsOptions>(builder.Configuration.GetSection(BpjsOptions.SECTION_NAME));
+builder.Services.Configure<DatabaseOptions>(builder.Configuration.GetSection(DatabaseOptions.SECTION_NAME));
 //Register Services
 builder.Services.AddScoped<IGetDuFarmasiService, GetDuFarmasiService>();
 builder.Services.AddScoped<IGetResepFarmasiService, GetResepFarmasiService>();
 builder.Services.AddScoped<IGetSepBillingService, GetSepBillingService>();
 builder.Services.AddScoped<IListRefDphoBpjsService, ListRefDphoBpjsService>();
+builder.Services.AddScoped<IListRefObatBpjsService, ListRefObatBpjsService>();
+builder.Services.AddScoped<IListRefPoliBpjsService, ListRefPoliBpjsService>();
+builder.Services.AddScoped<IListRefFaskesBpjsService, ListRefFaskesBpjsService>();
+builder.Services.AddScoped<IGetSettingPpkBpjsService, GetSettingPpkBpjsService>();
 builder.Services.AddScoped<IInsertResepBpjsService, InsertResepBpjsService>();
+builder.Services.AddScoped<IDeleteResepBpjsService, DeleteResepBpjsService>();
 builder.Services.AddScoped<IInsertObatBpjsService, InsertObatBpjsService>();
 builder.Services.AddScoped<IGetMapDpho, GetMapDpho>();
 builder.Services.AddScoped<IGetLayananBillingService, GetLayananBillingService>();
@@ -40,6 +45,10 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IResepRequestBuilder, ResepRequestBuilder>();
 builder.Services.AddScoped<IItemNonRacikBuilder, ItemNonRacikBuilder>();
 builder.Services.AddScoped<IItemRacikBuilder, ItemRacikBuilder>();
+builder.Services.AddScoped<IResepWriter, ResepWriter>();
+
+builder.Services.AddScoped<IResepDal, ResepDal>();
+builder.Services.AddScoped<IResepItemDal, ResepItemDal>();
 
 builder.Services.AddTransient<ILogDal, LogDal>();
 

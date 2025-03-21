@@ -28,8 +28,11 @@ namespace AptOnline.Api.Infrastructures.Services
         }
         public InsertResepBpjsRespDto Execute(InsertResepBpjsReqDto req)
         {
+            var jReq = JObject.FromObject(req);
+            jReq.Property("PenjualanId").Remove();
+            var reqBody = JsonConvert.SerializeObject(jReq);
             var endpoint = $"{_opt.BaseApiUrl}/sjpresep/v3/insert";
-            var reqBody = JsonConvert.SerializeObject(req);
+            //var reqBody = JsonConvert.SerializeObject(req);
             var client = new RestClient(endpoint)
             {
                 ClientCertificates = new X509CertificateCollection()
@@ -43,20 +46,26 @@ namespace AptOnline.Api.Infrastructures.Services
 
             request.AddParameter("application/x-www-form-urlencoded", reqBody, ParameterType.RequestBody);
             var response = client.Execute(request);
-
+            
             JObject jResult;
             try { jResult = JObject.Parse(response.Content); }
-            catch { throw new Exception(response.StatusDescription); }
+            catch 
+            {
+                LogHelper.Log(req.PenjualanId, reqBody, response.ErrorMessage, response.StatusCode.ToString());
+                throw new Exception(response.StatusDescription); 
+            }
 
             if (!jResult["metaData"]["code"].ToString().Equals("200"))
             {
-                throw new Exception(response.Content);
+                LogHelper.Log(req.PenjualanId, reqBody, response.Content, response.StatusCode.ToString());
+                //throw new Exception(response.Content);
             }
             var tempResp = jResult.SelectToken("response");
             try
             {
                 string decryptedResp = BpjsHelper.Decrypt(_decryptKey, tempResp.ToString());
                 jResult["response"] = JObject.Parse(decryptedResp);
+                LogHelper.Log(req.PenjualanId, reqBody, jResult.ToString(), response.StatusCode.ToString());
             }
             catch { }
             var result = jResult.ToObject<InsertResepBpjsRespDto>();
@@ -67,6 +76,7 @@ namespace AptOnline.Api.Infrastructures.Services
 
     public class InsertResepBpjsReqDto
     {
+        public  string PenjualanId { get; set; } //untuk save resep
         public string TGLSJP { get; set; } //tgl sep
         public string REFASALSJP { get; set; } //nosep (api sep)
         public string POLIRSP { get; set; } //poli asal resep

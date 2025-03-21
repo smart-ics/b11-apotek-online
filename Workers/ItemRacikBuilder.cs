@@ -46,6 +46,7 @@ namespace AptOnline.Api.Workers
                     int jho = (int)Math.Ceiling((double)(obat.qty / (signa1 * signa2)));
                     listDto.Add(new InsertObatRacikReqDto
                     {
+                        BarangId = obat.brgId,
                         NOSJP = header.response.noApotik,
                         NORESEP = header.response.noResep,
                         JNSROBT = obat.racikId,

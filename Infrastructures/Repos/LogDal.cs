@@ -23,20 +23,18 @@ namespace AptOnline.Api.Infrastructures.Repos
         public bool Insert(LogModel log)
         {
             const string sql = @"
-                INSERT INTO SCHED_Log 
-                            (LogDateTime, ResepId, ResepRequest, ResepResponse, ItemNonRacikCount, ItemRacikCount, Message)
-                VALUES      (@LogDateTime, @ResepId, @ResepRequest, @ResepResponse, @ItemNonRacikCount, @ItemRacikCount, @Message)";
+                INSERT INTO APTOL_Log
+                    (LogDateTime, ResepId, Request, Response, Message)
+                VALUES
+                    (@LogDateTime, @ResepId, @Request, @Response, @Message)";
             var dp = new DynamicParameters();
             dp.AddParam("@LogDateTime", log.LogDateTime, SqlDbType.DateTime);
             dp.AddParam("@ResepId", log.ResepId, SqlDbType.VarChar);
-            dp.AddParam("@ResepRequest", log.ResepRequest, SqlDbType.VarChar);
-            dp.AddParam("@ResepResponse", log.ResepResponse, SqlDbType.VarChar);
-            dp.AddParam("@ItemNonRacikCount", log.ItemNonRacikCount, SqlDbType.Int);
-            dp.AddParam("@ItemRacikCount", log.ItemRacikCount, SqlDbType.Int);
+            dp.AddParam("@Request", log.ResepRequest, SqlDbType.VarChar);
+            dp.AddParam("@Response", log.ResepResponse, SqlDbType.VarChar);
             dp.AddParam("@Message", log.Message, SqlDbType.VarChar);
 
             // EXECUTE
-
             using var conn = new SqlConnection(ConnStringHelper.Get(_options));
             try
             {

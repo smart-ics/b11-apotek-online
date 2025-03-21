@@ -32,7 +32,10 @@ namespace AptOnline.Api.Infrastructures.Services
 
         public InsertObatRespDto ExecuteNonRacik(InsertObatNonRacikReqDto req)
         {
-            var reqBody = JsonConvert.SerializeObject(req);
+            var jReq = JObject.FromObject(req);
+            jReq.Property("PenjualanId").Remove();
+            jReq.Property("BarangId").Remove();
+            var reqBody = JsonConvert.SerializeObject(jReq);
             var endpoint = $"{_opt.BaseApiUrl}/obatnonracikan/v3/insert";
             var client = new RestClient(endpoint)
             {
@@ -48,8 +51,10 @@ namespace AptOnline.Api.Infrastructures.Services
             request.AddParameter("application/x-www-form-urlencoded", reqBody, ParameterType.RequestBody);
 
             var response = client.Execute(request);
+
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
+                LogHelper.Log(req.NOSJP, reqBody, response.Content, response.StatusCode.ToString());
                 try
                 {
                     //{ "response":null,"metaData":{ "code":"201","message":"300 - Obat Beirisan dengan pemakaian obat Tgl Resep 28-01-2025"} }
@@ -62,12 +67,18 @@ namespace AptOnline.Api.Infrastructures.Services
                 }
             }
             else
+            {
+                LogHelper.Log(req.NOSJP, reqBody, response.ErrorMessage, response.StatusCode.ToString());
                 throw new Exception(response.ErrorMessage);
+            }
         }
 
         public InsertObatRespDto ExecuteRacik(InsertObatRacikReqDto req)
         {
-            var reqBody = JsonConvert.SerializeObject(req);
+            var jReq = JObject.FromObject(req);
+            jReq.Property("PenjualanId").Remove();
+            jReq.Property("BarangId").Remove();
+            var reqBody = JsonConvert.SerializeObject(jReq);
             var endpoint = $"{_opt.BaseApiUrl}/obatnonracikan/v3/insert";
             var client = new RestClient(endpoint)
             {
@@ -81,8 +92,8 @@ namespace AptOnline.Api.Infrastructures.Services
             request.AddHeader("Content-Type", "Application/x-www-form-urlencoded");
 
             request.AddParameter("application/x-www-form-urlencoded", reqBody, ParameterType.RequestBody);
-            //request.AddJsonBody(req);
             var response = client.Execute(request);
+            LogHelper.Log(req.NOSJP, reqBody, response.Content, response.StatusCode.ToString());
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
 
             {
@@ -105,6 +116,7 @@ namespace AptOnline.Api.Infrastructures.Services
 
     public class InsertObatNonRacikReqDto
     {
+        public string BarangId { get; set; }
         public string NOSJP { get; set; } //no apotik (response insert resep)
         public string NORESEP { get; set; } //kp
         public string KDOBT { get; set; } // mapping dpho
@@ -118,6 +130,7 @@ namespace AptOnline.Api.Infrastructures.Services
 
     public class InsertObatRacikReqDto
     {
+        public string BarangId {  get; set; }    
         public string NOSJP { get; set; }
         public string NORESEP { get; set; }
         public string JNSROBT { get; set; }

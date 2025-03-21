@@ -10,12 +10,14 @@ namespace AptOnline.Api.Helpers
         {
             _serviceProvider = serviceProvider;
         }
-        public static void Log(LogModel log)
+        public static void Log(string resepId, string request, string response, string message )
         {
+            LogModel logModel = new(DateTime.Now, resepId, request, response,
+                0, 0, message);
             try 
             {
                 var _logDal = _serviceProvider.GetRequiredService<ILogDal>();
-                _logDal.Insert(log);
+                _logDal.Insert(logModel);
             }
             catch { }
         }

@@ -20,6 +20,7 @@ namespace AptOnline.Api.Workers
 
             var result = new InsertResepBpjsReqDto
             {
+                PenjualanId = du.penjualanId,
                 TGLPELRSP = resep.data.tglJam,
                 REFASALSJP = sep.data.sepNo,
                 POLIRSP = lyn.data.layananBpjsId,
