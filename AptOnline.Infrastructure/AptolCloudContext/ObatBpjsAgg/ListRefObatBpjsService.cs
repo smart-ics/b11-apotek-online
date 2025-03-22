@@ -1,18 +1,14 @@
-﻿using AptOnline.Api.Models;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Security.Cryptography.X509Certificates;
 using AptOnline.Api.Helpers;
 using MassTransit.Configuration;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using JknBridgerService.Helpers;
 using Newtonsoft.Json.Linq;
+using AptOnline.Infrastructure.AptolCloudContext.ObatBpjsAgg;
 
 namespace AptOnline.Api.Infrastructures.Services
 {
-    public interface IListRefObatBpjsService
-    {
-        ListRefObatBpjsRespDto Execute(string kodeJnsObat, string tglResep, string keyword);
-    }
     public class ListRefObatBpjsService : IListRefObatBpjsService
     {
         private readonly BpjsOptions _opt;
@@ -26,7 +22,7 @@ namespace AptOnline.Api.Infrastructures.Services
             _signature = BpjsHelper.GenHMAC256(_opt.ConsId + "&" + _timestamp, _opt.SecretKey);
             _decryptKey = _opt.ConsId + _opt.SecretKey + _timestamp;
         }
-        public ListRefObatBpjsRespDto Execute(string kodeJnsObat, string tglResep, string keyword)
+        public ListObatBpjsResponse Execute(string kodeJnsObat, string tglResep, string keyword)
         {
             var endpoint = $"{_opt.BaseApiUrl}/referensi/obat/{kodeJnsObat}/{tglResep}/{keyword}";
             var client = new RestClient(endpoint)
@@ -55,7 +51,7 @@ namespace AptOnline.Api.Infrastructures.Services
                 jResult["response"] = JObject.Parse(decryptedResp);
             }
             catch { }
-            var result = jResult.ToObject<ListRefObatBpjsRespDto>();
+            var result = jResult.ToObject<ListObatBpjsResponse>();
             return result;
         }
     }

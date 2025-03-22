@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using AptOnline.Api.Helpers;
-using MassTransit.Configuration;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using JknBridgerService.Helpers;
@@ -54,7 +53,7 @@ namespace AptOnline.Api.Infrastructures.Services
                 jResult["response"] = JObject.Parse(decryptedResp);
             }
             catch { }
-            var result = jResult.ToObject<ListRefFaskesBpjsRespDto>();
+            var result = jResult.ToObject<ListFaskesResponse>();
             return result;
         }
     }
