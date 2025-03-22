@@ -1,4 +1,4 @@
-﻿namespace AptOnline.Application.EmrContext.ResepRsAgg;
+﻿namespace AptOnline.Domain.EmrContext.ResepRsAgg;
 
 public class ResepRsItemModel
 {

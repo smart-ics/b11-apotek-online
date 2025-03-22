@@ -1,4 +1,6 @@
-﻿namespace AptOnline.Infrastructure.AptolCloudContext.FaskesAgg
+﻿using AptOnline.Infrastructure.AptolCloudContext.Shared;
+
+namespace AptOnline.Infrastructure.AptolCloudContext.FaskesAgg
 {
     public class ListFaskesResponse
     {

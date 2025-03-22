@@ -1,9 +1,9 @@
-﻿using AptOnline.Api.Models;
-using AptOnline.Api.Helpers;
+﻿using AptOnline.Infrastructure.AptolMidwareContext.ResepRsAgg;
+using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
-namespace AptOnline.Api.Infrastructures.Services;
+namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg;
 
 public interface IGetResepFarmasiService
 {

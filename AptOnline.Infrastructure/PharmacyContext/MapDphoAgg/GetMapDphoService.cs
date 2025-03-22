@@ -1,6 +1,6 @@
-﻿using AptOnline.Api.Helpers;
-using AptOnline.Application.PharmacyContext.MapDphoAgg;
+﻿using AptOnline.Application.PharmacyContext.MapDphoAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
+using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using RestSharp;
 

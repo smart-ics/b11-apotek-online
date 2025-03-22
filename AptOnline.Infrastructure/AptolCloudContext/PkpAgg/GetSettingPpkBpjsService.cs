@@ -1,12 +1,10 @@
-﻿using AptOnline.Api.Models;
-using System.Security.Cryptography.X509Certificates;
-using AptOnline.Api.Helpers;
+﻿using System.Security.Cryptography.X509Certificates;
+using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
-using RestSharp;
-using JknBridgerService.Helpers;
 using Newtonsoft.Json.Linq;
+using RestSharp;
 
-namespace AptOnline.Api.Infrastructures.Services
+namespace AptOnline.Infrastructure.AptolCloudContext.PkpAgg
 {
     public interface IGetSettingPpkBpjsService
     {

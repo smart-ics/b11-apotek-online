@@ -1,16 +1,7 @@
-﻿using AptOnline.Api.Helpers;
-using AptOnline.Api.Infrastructures.Services;
-using AptOnline.Api.Models;
-using AptOnline.Api.Workers;
-using AptOnline.Infrastructure.LocalContext.ResepRsAgg;
-using Mapster;
+﻿using AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg;
 using MediatR;
-using Newtonsoft.Json;
-using Nuna.Lib.DataTypeExtension;
-using System;
-using System.Text.RegularExpressions;
 
-namespace AptOnline.Api.Usecases
+namespace AptOnline.Infrastructure.AptolMidwareContext.ResepRsAgg
 {
     public class DeleteResepAptolCommand : IRequest<DeleteResepAptolCommandResponse>
     {

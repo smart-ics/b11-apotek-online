@@ -1,4 +1,6 @@
-﻿namespace AptOnline.Infrastructure.AptolCloudContext.ObatBpjsAgg;
+﻿using AptOnline.Infrastructure.AptolCloudContext.Shared;
+
+namespace AptOnline.Infrastructure.AptolCloudContext.ObatBpjsAgg;
 
 
 public class ListObatBpjsResponse

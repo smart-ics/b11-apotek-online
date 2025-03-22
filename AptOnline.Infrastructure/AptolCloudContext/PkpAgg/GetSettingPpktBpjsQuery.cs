@@ -1,8 +1,6 @@
-﻿using AptOnline.Api.Infrastructures.Services;
-using AptOnline.Api.Models;
-using MediatR;
+﻿using MediatR;
 
-namespace AptOnline.Api.Usecases
+namespace AptOnline.Infrastructure.AptolCloudContext.PkpAgg
 {
     public class GetSettingPpkBpjsQuery : IRequest<GetSettingPpkBpjsRespDto>
     {

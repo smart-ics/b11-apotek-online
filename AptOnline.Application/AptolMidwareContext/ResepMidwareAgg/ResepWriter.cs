@@ -1,8 +1,4 @@
-﻿using AptOnline.Api.Infrastructures.Services;
-using AptOnline.Api.Models;
-using AptOnline.Infrastructure.LocalContext.ResepRsAgg;
-
-namespace AptOnline.Api.Workers
+﻿namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg
 {
     public interface IResepWriter
     {

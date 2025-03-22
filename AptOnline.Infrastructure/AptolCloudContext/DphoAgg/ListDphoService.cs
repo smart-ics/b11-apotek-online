@@ -1,9 +1,8 @@
 ﻿using System.Security.Cryptography.X509Certificates;
-using AptOnline.Api.Helpers;
 using Microsoft.Extensions.Options;
-using JknBridgerService.Helpers;
 using AptOnline.Application.AptolCloudContext.DphoAgg;
 using AptOnline.Domain.AptolCloudContext.DphoAgg;
+using AptOnline.Infrastructure.Helpers;
 using RestSharp;
 using Newtonsoft.Json.Linq;
 

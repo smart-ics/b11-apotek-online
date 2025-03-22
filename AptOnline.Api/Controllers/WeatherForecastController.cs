@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace AptOnline.Controllers
+namespace AptOnline.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]

@@ -1,9 +1,8 @@
-﻿using AptOnline.Api.Models;
-using AptOnline.Api.Helpers;
+﻿using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
-namespace AptOnline.Infrastructure.LocalContext.PenjualanAgg;
+namespace AptOnline.Infrastructure.AptolMidwareContext.PenjualanAgg;
 
 public interface IGetDuFarmasiService
 {

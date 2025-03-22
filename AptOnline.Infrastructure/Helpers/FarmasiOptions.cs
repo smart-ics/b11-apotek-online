@@ -1,4 +1,4 @@
-﻿namespace AptOnline.Api.Helpers
+﻿namespace AptOnline.Infrastructure.Helpers
 {
     public class FarmasiOptions
     {

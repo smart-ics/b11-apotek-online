@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AptOnline.Application.AptolMidwareContext.ResepMidwareAgg;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Nuna.Lib.ActionResultHelper;
-using AptOnline.Api.Usecases;
 
-namespace AptOnline.Controllers
+namespace AptOnline.Api.Controllers
 {
     [Route("api/resep")]
     public class ResepController : Controller

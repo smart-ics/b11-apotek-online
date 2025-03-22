@@ -1,4 +1,4 @@
-namespace AptOnline
+namespace AptOnline.Api
 {
     public class WeatherForecast
     {

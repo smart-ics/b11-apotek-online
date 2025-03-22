@@ -1,17 +1,6 @@
-﻿using MassTransit;
-using MyHospital.MsgContract.Pharmacy.SalesEvents;
-using AptOnline.Api.Models;
-using Mapster;
-using Nuna.Lib.DataTypeExtension;
-using AptOnline.Api.Infrastructures.Services;
-using AptOnline.Api.Workers;
-using AptOnline.Api.Helpers;
-using AptOnline.Infrastructure.LocalContext.PenjualanAgg;
-using AptOnline.Infrastructure.BillingContext.DokterAgg;
-using AptOnline.Infrastructure.BillingContext.LayananAgg;
-using AptOnline.Infrastructure.BpjsContext.DphoAgg;
+﻿using Nuna.Lib.DataTypeExtension;
 
-namespace AptOnline.Api.Usecases;
+namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg;
 public class SendMsgOnDoBillUmumCreatedEvent : IConsumer<DoBillUmumCreatedNotifEvent>
 {
     private readonly IInsertResepBpjsService _insertResepBpjsService;

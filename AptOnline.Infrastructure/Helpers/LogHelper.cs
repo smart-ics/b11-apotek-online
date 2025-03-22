@@ -1,7 +1,7 @@
-﻿using AptOnline.Api.Infrastructures.Repos;
-using AptOnline.Api.Models;
+﻿using AptOnline.Application.AptolCloudContext.LogAgg;
+using AptOnline.Infrastructure.AptolMidwareContext.LogAgg;
 
-namespace AptOnline.Api.Helpers
+namespace AptOnline.Infrastructure.Helpers
 {
     public static class LogHelper
     {

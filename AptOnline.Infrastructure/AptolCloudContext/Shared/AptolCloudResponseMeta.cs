@@ -1,4 +1,4 @@
-﻿namespace AptOnline.Infrastructure.AptolCloudContext;
+﻿namespace AptOnline.Infrastructure.AptolCloudContext.Shared;
 
 public class AptolCloudResponseMeta
 {

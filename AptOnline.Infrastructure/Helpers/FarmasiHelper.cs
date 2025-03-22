@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace AptOnline.Api.Helpers
+namespace AptOnline.Infrastructure.Helpers
 {
     public static class FarmasiHelper
     {

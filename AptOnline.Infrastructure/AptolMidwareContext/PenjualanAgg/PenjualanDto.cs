@@ -1,4 +1,4 @@
-﻿namespace AptOnline.Api.Models
+﻿namespace AptOnline.Infrastructure.AptolMidwareContext.PenjualanAgg
 {
 
     public class PenjualanDto

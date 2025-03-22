@@ -1,4 +1,4 @@
-﻿namespace AptOnline.Api.Models
+﻿namespace AptOnline.Application.AptolCloudContext.LogAgg
 {
     public class LogModel
     {

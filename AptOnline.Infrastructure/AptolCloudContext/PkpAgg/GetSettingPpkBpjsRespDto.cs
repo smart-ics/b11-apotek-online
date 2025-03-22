@@ -1,4 +1,4 @@
-﻿namespace AptOnline.Api.Models
+﻿namespace AptOnline.Infrastructure.AptolCloudContext.PkpAgg
 {
 
     public class GetSettingPpkBpjsRespDto

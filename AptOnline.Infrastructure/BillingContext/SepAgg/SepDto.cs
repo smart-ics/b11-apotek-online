@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace AptOnline.Api.Models
+﻿namespace AptOnline.Infrastructure.BillingContext.SepAgg
 {
 
     public class SepDto

@@ -1,4 +1,6 @@
-﻿namespace AptOnline.Infrastructure.AptolCloudContext.DphoAgg;
+﻿using AptOnline.Infrastructure.AptolCloudContext.Shared;
+
+namespace AptOnline.Infrastructure.AptolCloudContext.DphoAgg;
 
 public class ListDphoResponse
 {

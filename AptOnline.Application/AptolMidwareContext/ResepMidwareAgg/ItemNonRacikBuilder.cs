@@ -1,9 +1,4 @@
-﻿using AptOnline.Api.Helpers;
-using AptOnline.Api.Infrastructures.Services;
-using AptOnline.Api.Models;
-using AptOnline.Infrastructure.BpjsContext.DphoAgg;
-
-namespace AptOnline.Api.Workers
+﻿namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg
 {
     public interface IItemNonRacikBuilder
     {

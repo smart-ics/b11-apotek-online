@@ -1,9 +1,9 @@
-﻿using AptOnline.Api.Helpers;
+﻿using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
-namespace AptOnline.Api.Infrastructures.Services;
+namespace AptOnline.Infrastructure.BillingContext;
 
 public interface ITokenService
 {

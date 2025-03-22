@@ -1,9 +1,4 @@
-﻿using AptOnline.Helpers;
-using MassTransit.Configuration;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Configuration;
-
-namespace AptOnline.Api.Helpers;
+﻿namespace AptOnline.Infrastructure.Helpers;
 
 public static class ConnStringHelper
 {

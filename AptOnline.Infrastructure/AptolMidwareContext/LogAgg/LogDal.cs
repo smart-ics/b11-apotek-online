@@ -1,13 +1,12 @@
-﻿using AptOnline.Api.Models;
-using Dapper;
+﻿using System.Data;
 using System.Data.SqlClient;
-using System.Data;
-using Nuna.Lib.DataAccessHelper;
-using AptOnline.Api.Helpers;
-using AptOnline.Helpers;
+using AptOnline.Application.AptolCloudContext.LogAgg;
+using AptOnline.Infrastructure.Helpers;
+using Dapper;
 using Microsoft.Extensions.Options;
+using Nuna.Lib.DataAccessHelper;
 
-namespace AptOnline.Api.Infrastructures.Repos
+namespace AptOnline.Infrastructure.AptolMidwareContext.LogAgg
 {
     public interface ILogDal
     {

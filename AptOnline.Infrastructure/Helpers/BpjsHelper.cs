@@ -1,10 +1,7 @@
-﻿using System;
-using System.IO;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
-using LZString;
 
-namespace JknBridgerService.Helpers
+namespace AptOnline.Infrastructure.Helpers
 {
     public static class BpjsHelper
     {

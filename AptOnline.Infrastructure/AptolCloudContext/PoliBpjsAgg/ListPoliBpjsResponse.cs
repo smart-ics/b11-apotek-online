@@ -1,4 +1,6 @@
-﻿namespace AptOnline.Infrastructure.AptolCloudContext.PoliBpjsAgg;
+﻿using AptOnline.Infrastructure.AptolCloudContext.Shared;
+
+namespace AptOnline.Infrastructure.AptolCloudContext.PoliBpjsAgg;
 
 
 public class ListPoliBpjsResponse

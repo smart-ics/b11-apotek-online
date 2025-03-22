@@ -1,14 +1,12 @@
 ﻿using System.Security.Cryptography.X509Certificates;
-using AptOnline.Api.Helpers;
-using Microsoft.Extensions.Options;
-using RestSharp;
-using JknBridgerService.Helpers;
-using Newtonsoft.Json.Linq;
-using AptOnline.Infrastructure.AptolCloudContext.ObatBpjsAgg;
 using AptOnline.Application.AptolCloudContext.ObatBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.ObatBpjsAgg;
+using AptOnline.Infrastructure.Helpers;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 
-namespace AptOnline.Api.Infrastructures.Services
+namespace AptOnline.Infrastructure.AptolCloudContext.ObatBpjsAgg
 {
     public class ListRefObatBpjsService : IListObatBpjsService
     {

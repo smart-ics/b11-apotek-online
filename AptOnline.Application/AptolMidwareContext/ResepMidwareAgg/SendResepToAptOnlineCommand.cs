@@ -1,20 +1,7 @@
-﻿using AptOnline.Api.Helpers;
-using AptOnline.Api.Infrastructures.Repos;
-using AptOnline.Api.Infrastructures.Services;
-using AptOnline.Api.Models;
-using AptOnline.Api.Workers;
-using AptOnline.Infrastructure.BillingContext.DokterAgg;
-using AptOnline.Infrastructure.BillingContext.LayananAgg;
-using AptOnline.Infrastructure.BpjsContext.DphoAgg;
-using AptOnline.Infrastructure.LocalContext.PenjualanAgg;
-using Mapster;
-using MediatR;
-using Newtonsoft.Json;
+﻿using MediatR;
 using Nuna.Lib.DataTypeExtension;
-using System;
-using System.Text.RegularExpressions;
 
-namespace AptOnline.Api.Usecases
+namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg
 {
     public class SendResepToAptolCommand : IRequest<SendResepToAptolCommandResponse>
     {

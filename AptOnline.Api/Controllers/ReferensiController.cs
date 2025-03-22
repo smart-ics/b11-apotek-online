@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AptOnline.Infrastructure.AptolCloudContext.PkpAgg;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Nuna.Lib.ActionResultHelper;
-using AptOnline.Api.Usecases;
 
-namespace AptOnline.Controllers
+namespace AptOnline.Api.Controllers
 {
     [Route("api/ref")]
     public class ReferensiController : Controller

@@ -1,13 +1,11 @@
-﻿using AptOnline.Api.Models;
-using Dapper;
+﻿using System.Data;
 using System.Data.SqlClient;
-using System.Data;
-using Nuna.Lib.DataAccessHelper;
-using AptOnline.Api.Helpers;
-using AptOnline.Helpers;
+using AptOnline.Infrastructure.Helpers;
+using Dapper;
 using Microsoft.Extensions.Options;
+using Nuna.Lib.DataAccessHelper;
 
-namespace AptOnline.Infrastructure.LocalContext.ResepRsAgg
+namespace AptOnline.Infrastructure.AptolMidwareContext.ResepRsAgg
 {
     public interface IResepItemDal
     {

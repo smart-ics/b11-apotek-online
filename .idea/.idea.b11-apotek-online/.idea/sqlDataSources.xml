@@ -11,7 +11,7 @@
             <array />
           </option>
           <option name="remarks" value="Database Project" />
-          <option name="outPath" value="$PROJECT_DIR$/db/AptOnline.Db" />
+          <option name="outPath" value="$PROJECT_DIR$/AptOnline.Db" />
           <option name="codeStyleName" value="Visual Studio Database Project" />
           <option name="outLayout" value="File per object by schema.groovy" />
           <option name="scriptOptions">
