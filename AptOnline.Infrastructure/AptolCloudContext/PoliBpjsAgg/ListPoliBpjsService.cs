@@ -1,32 +1,31 @@
-﻿using AptOnline.Api.Models;
-using System.Security.Cryptography.X509Certificates;
+﻿using System.Security.Cryptography.X509Certificates;
 using AptOnline.Api.Helpers;
 using MassTransit.Configuration;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using JknBridgerService.Helpers;
 using Newtonsoft.Json.Linq;
+using AptOnline.Application.AptolCloudContext.PoliBpjsAgg;
+using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
+using AptOnline.Infrastructure.AptolCloudContext.PoliBpjsAgg;
 
 namespace AptOnline.Api.Infrastructures.Services
 {
-    public interface IListRefPoliBpjsService
-    {
-        ListRefPoliBpjsRespDto Execute(string keyword);
-    }
-    public class ListRefPoliBpjsService : IListRefPoliBpjsService
+    public class ListPoliBpjsService : IListPoliBpjsService
     {
         private readonly BpjsOptions _opt;
         private readonly string _timestamp;
         private readonly string _signature;
         private readonly string _decryptKey;
-        public ListRefPoliBpjsService(IOptions<BpjsOptions> opt)
+
+        public ListPoliBpjsService(IOptions<BpjsOptions> opt)
         {
             _opt = opt.Value;
             _timestamp = BpjsHelper.GetTimeStamp().ToString();
             _signature = BpjsHelper.GenHMAC256(_opt.ConsId + "&" + _timestamp, _opt.SecretKey);
             _decryptKey = _opt.ConsId + _opt.SecretKey + _timestamp;
         }
-        public ListRefPoliBpjsRespDto Execute(string keyword)
+        public IEnumerable<PoliBpjsModel> Execute(string keyword)
         {
             var endpoint = $"{_opt.BaseApiUrl}/referensi/poli/{keyword}";
             var client = new RestClient(endpoint)
@@ -55,7 +54,12 @@ namespace AptOnline.Api.Infrastructures.Services
                 jResult["response"] = JObject.Parse(decryptedResp);
             }
             catch { }
-            var result = jResult.ToObject<ListRefPoliBpjsRespDto>();
+            var resp = jResult.ToObject<ListPoliBpjsResponse>();
+            var result = resp.response.list.Select(x => new PoliBpjsModel
+            {
+                PoliBpjsId = x.kode,
+                PoliBpjsName = x.nama
+            });
             return result;
         }
     }

@@ -38,7 +38,7 @@ builder.Services.AddScoped<IGetResepFarmasiService, GetResepFarmasiService>();
 builder.Services.AddScoped<IGetSepBillingService, GetSepBillingService>();
 builder.Services.AddScoped<IListRefDphoBpjsService, ListDphoService>();
 builder.Services.AddScoped<IListRefObatBpjsService, ListRefObatBpjsService>();
-builder.Services.AddScoped<IListRefPoliBpjsService, ListRefPoliBpjsService>();
+builder.Services.AddScoped<IListRefPoliBpjsService, ListPoliBpjsService>();
 builder.Services.AddScoped<IListRefFaskesBpjsService, ListFaskesService>();
 builder.Services.AddScoped<IGetSettingPpkBpjsService, GetSettingPpkBpjsService>();
 builder.Services.AddScoped<IInsertResepBpjsService, InsertResepBpjsService>();
