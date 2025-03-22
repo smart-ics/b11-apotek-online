@@ -1,6 +1,5 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using AptOnline.Api.Helpers;
-using MassTransit.Configuration;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using JknBridgerService.Helpers;

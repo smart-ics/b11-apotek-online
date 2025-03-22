@@ -53,7 +53,12 @@ namespace AptOnline.Api.Infrastructures.Services
                 jResult["response"] = JObject.Parse(decryptedResp);
             }
             catch { }
-            var result = jResult.ToObject<ListFaskesResponse>();
+            var resp = jResult.ToObject<ListFaskesResponse>();
+            var result = resp.response.list.Select(x => new FaskesModel
+            {
+                FaskesId = x.kode,
+                FaskesName = x.nama,
+            });
             return result;
         }
     }
