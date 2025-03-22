@@ -6,8 +6,4 @@ namespace AptOnline.Application.AptolCloudContext.FaskesAgg;
 public interface IListFaskesService : INunaService<IEnumerable<FaskesModel>, ListFaskesQueryParam>
 {
 }
-public class ListFaskesQueryParam
-{
-    public string JenisFaskes { get; set; }
-    public string Keyword { get; set; }
-}
+public record ListFaskesQueryParam(string JenisFaskes, string Keyword);
