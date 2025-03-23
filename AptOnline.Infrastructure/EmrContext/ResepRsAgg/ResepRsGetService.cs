@@ -24,6 +24,7 @@ public class ResepRsGetService : IResepRsGetService
     {
         if (id.Trim().Length == 0)
             return null;
+
         // BUILD
         var endpoint = $"{_opt.BaseApiUrl}/api/Resep";
         var client = new RestClient(endpoint);

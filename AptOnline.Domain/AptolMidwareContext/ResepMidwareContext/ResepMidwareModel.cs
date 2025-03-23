@@ -1,4 +1,6 @@
-﻿namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
+﻿using AptOnline.Domain.EmrContext.ResepRsAgg;
+
+namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 
 public class ResepMidwareModel : IResepMidwareKey
 {
@@ -22,4 +24,10 @@ public class ResepMidwareModel : IResepMidwareKey
     public string DokterName { get; set; }
     public int Iterasi { get; set; }
     public List<ResepMidwareItemModel> ListItem { get; set; }
+    
+    
+    public void ImportItems(ResepRsModel model)
+    {
+        throw new NotImplementedException();
+    }
 }
