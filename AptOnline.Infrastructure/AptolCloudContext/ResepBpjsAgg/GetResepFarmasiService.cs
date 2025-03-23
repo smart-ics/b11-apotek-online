@@ -1,4 +1,5 @@
 ﻿using AptOnline.Infrastructure.AptolMidwareContext.ResepRsAgg;
+using AptOnline.Infrastructure.EmrContext.ResepRsAgg;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using RestSharp;
@@ -7,7 +8,7 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg;
 
 public interface IGetResepFarmasiService
 {
-    ResepDto Execute(string resepId);
+    ResepRsDto Execute(string resepId);
 }
 public class GetResepFarmasiService : IGetResepFarmasiService
 {
@@ -18,7 +19,7 @@ public class GetResepFarmasiService : IGetResepFarmasiService
         _opt = opt.Value;
     }
 
-    public ResepDto? Execute(string id)
+    public ResepRsDto? Execute(string id)
     {
 
         var du = Task.Run(() => ExecuteAsync(id)).GetAwaiter().GetResult();
@@ -26,7 +27,7 @@ public class GetResepFarmasiService : IGetResepFarmasiService
         return du;
     }
 
-    private async Task<ResepDto> ExecuteAsync(string id)
+    private async Task<ResepRsDto> ExecuteAsync(string id)
     {
         if (id.Trim().Length == 0)
             return null;
@@ -37,7 +38,7 @@ public class GetResepFarmasiService : IGetResepFarmasiService
             .AddUrlSegment("resepId", id);
 
         //  EXECUTE
-        var response = await client.ExecuteGetAsync<ResepDto>(req);
+        var response = await client.ExecuteGetAsync<ResepRsDto>(req);
         if (response.StatusCode != System.Net.HttpStatusCode.OK)
             return null;
         //  RETURN
