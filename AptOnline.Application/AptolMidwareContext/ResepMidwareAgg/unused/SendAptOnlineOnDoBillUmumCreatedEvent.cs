@@ -1,6 +1,8 @@
 ﻿using Nuna.Lib.DataTypeExtension;
 
-namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg;
+namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.unused;
+
+/*
 public class SendMsgOnDoBillUmumCreatedEvent : IConsumer<DoBillUmumCreatedNotifEvent>
 {
     private readonly IInsertResepBpjsService _insertResepBpjsService;
@@ -119,3 +121,4 @@ public class SendMsgOnDoBillUmumCreatedEvent : IConsumer<DoBillUmumCreatedNotifE
         return Task.CompletedTask;
     }
 }
+*/

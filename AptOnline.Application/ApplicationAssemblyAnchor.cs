@@ -1,4 +1,4 @@
-﻿namespace AptOnline.Api;
+﻿namespace AptOnline.Application;
 
 public class ApplicationAssemblyAnchor
 {

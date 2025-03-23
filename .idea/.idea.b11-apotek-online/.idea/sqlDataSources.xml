@@ -8,7 +8,11 @@
           <option name="name" value="AptOnline.Db" />
           <option name="dbmsName" value="MSSQL" />
           <option name="urls">
-            <array />
+            <array>
+              <option value="file://$PROJECT_DIR$/AptOnline.Db/AptolMidwareContext/APTOL_ResepMidware.sql" />
+              <option value="file://$PROJECT_DIR$/AptOnline.Db/AptolMidwareContext/APTOL_ResepMidwareItem.sql" />
+              <option value="file://$PROJECT_DIR$/AptOnline.Db/AptolMidwareContext/APTOL_Log.sql" />
+            </array>
           </option>
           <option name="remarks" value="Database Project" />
           <option name="outPath" value="$PROJECT_DIR$/AptOnline.Db" />

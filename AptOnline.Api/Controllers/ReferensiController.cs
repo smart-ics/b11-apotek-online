@@ -19,27 +19,30 @@ namespace AptOnline.Api.Controllers
         [Route("dpho")]
         public async Task<IActionResult> ListDpho()
         {
-            var query = new ListRefDphoBpjsQuery();
-            var result = await _mediator.Send(query);
-            return Ok(new JSendOk(result));
+            // var query = new ListRefDphoBpjsQuery();
+            // var result = await _mediator.Send(query);
+            // return Ok(new JSendOk(result));
+            throw new NotImplementedException();
         }
 
         [HttpGet]
         [Route("poli")]
         public async Task<IActionResult> ListPoli(string keyword)
         {
-            var query = new ListRefPoliBpjsQuery(keyword);
-            var result = await _mediator.Send(query);
-            return Ok(new JSendOk(result));
+            // var query = new ListRefPoliBpjsQuery(keyword);
+            // var result = await _mediator.Send(query);
+            // return Ok(new JSendOk(result));
+            throw new NotImplementedException();
         }
 
         [HttpGet]
         [Route("faskes")]
         public async Task<IActionResult> ListFaskes(string jenisFaskes, string keyword)
         {
-            var query = new ListRefFaskesBpjsQuery(jenisFaskes, keyword);
-            var result = await _mediator.Send(query);
-            return Ok(new JSendOk(result));
+            // var query = new ListRefFaskesBpjsQuery(jenisFaskes, keyword);
+            // var result = await _mediator.Send(query);
+            // return Ok(new JSendOk(result));
+            throw new NotImplementedException();
         }
 
         [HttpGet]
@@ -55,9 +58,10 @@ namespace AptOnline.Api.Controllers
         [Route("obat")]
         public async Task<IActionResult> ListObat(string kodeJenisObat, string tglResep, string keyword)
         {
-            var query = new ListRefObatBpjsQuery(kodeJenisObat, tglResep, keyword);
-            var result = await _mediator.Send(query);
-            return Ok(new JSendOk(result));
+            // var query = new ListRefObatBpjsQuery(kodeJenisObat, tglResep, keyword);
+            // var result = await _mediator.Send(query);
+            // return Ok(new JSendOk(result));
+            throw new NotImplementedException();
         }
     }
 }

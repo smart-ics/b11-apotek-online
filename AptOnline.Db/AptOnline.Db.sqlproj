@@ -59,8 +59,8 @@
     <Folder Include="AptolMidwareContext" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="AptolMidwareContext\APTOL_Resep.sql" />
-    <Build Include="AptolMidwareContext\APTOL_ResepItem.sql" />
+    <Build Include="AptolMidwareContext\APTOL_ResepMidware.sql" />
+    <Build Include="AptolMidwareContext\APTOL_ResepMidwareItem.sql" />
     <Build Include="AptolMidwareContext\APTOL_Log.sql" />
   </ItemGroup>
 </Project>

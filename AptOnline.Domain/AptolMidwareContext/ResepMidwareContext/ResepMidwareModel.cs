@@ -1,45 +1,25 @@
 ﻿namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 
-public class ResepMidwareModel
+public class ResepMidwareModel : IResepMidwareKey
 {
-    public string ResepId { get; set; }
-    public string ResepAptolId { get; set; }
-    public DateTime ResepDate { get; set; }
-    public DateTime ResepPelDate { get; set; }
+    public string ResepMidwareId { get; set; }
+    public string ReffId { get; set; }
+    public DateTime ResepMidwareDate { get; set; }
+    public DateTime EntryDate { get; set; }
 
     public string SepId { get; set; }
     public DateTime SepDate { get; set; }
-    public string SepUserId { get; set; }
+    public string NoPeserta { get; set; }
 
+    public string FaskesId { get; set; }
+    public string FaskesName { get; set; }
     public string PoliBpjsId { get; set; }
     public string PoliBpjsName { get; set; }
-    public string KodeJenisObat { get; set; }
+
+    public string JenisObatId { get; set; }
 
     public string DokterId { get; set; }
+    public string DokterName { get; set; }
     public int Iterasi { get; set; }
-    public List<AbstractResepMidwareItemModel> ListItem { get; set; }
-}
-
-public abstract class AbstractResepMidwareItemModel
-{
-    public string ResepId { get; set; }
-
-    public string ObatBpjsId { get; set; }
-    public string ObatBpjsName { get; set; }
-
-    public int Signa1 { get; set; }
-    public int Signa2 { get; set; }
-    public int Jumlah { get; set; }
-    public int Jho { get; set; }
-
-    public string Catatan { get; set; }
-}
-
-public class ResepMidwareNonRacikModel : AbstractResepMidwareItemModel
-{
-}
-
-public class  ResepMidwareRacikModel : AbstractResepMidwareItemModel
-{
-    public string JenisRacikan { get; set; }
+    public List<ResepMidwareItemModel> ListItem { get; set; }
 }
