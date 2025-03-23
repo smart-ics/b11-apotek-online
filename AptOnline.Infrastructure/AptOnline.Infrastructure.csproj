@@ -17,10 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="EmrContext\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\AptOnline.Application\AptOnline.Application.csproj" />
     <ProjectReference Include="..\AptOnline.Domain\AptOnline.Domain.csproj" />
   </ItemGroup>

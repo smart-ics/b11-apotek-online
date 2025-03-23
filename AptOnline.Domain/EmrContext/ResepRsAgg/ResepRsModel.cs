@@ -2,12 +2,17 @@
 
 public class ResepRsModel
 {
-    public string PenjualanId { get;set; }
-    public string ReffId { get; set; }
-    public string SepId { get; set; }
-    public DateTime ResepDate { get; set; }
-    public string NoPeserta { get; set; }
-    public string JenisObatId { get; set; }
-    public string EntryDate { get; set; }
-    public string FaskesAsal { get; set; }
+    public string ResepId { get; set; }
+    public string TglJam { get; set; }
+    public string RegId { get; set; }
+    public string PasienId { get; set; }
+    public string PasienName { get; set; }
+    public string LayananId { get; set; }
+    public string LayananName { get; set; }
+    public string DokterId { get; set; }
+    public string DokterName { get; set; }
+    public string UrgenitasId { get; set; }
+    public string UrgenitasName { get; set; }
+    public int Iter { get; set; }
+    public IEnumerable<ResepRsItemModel> ListBarang { get; set; }
 }

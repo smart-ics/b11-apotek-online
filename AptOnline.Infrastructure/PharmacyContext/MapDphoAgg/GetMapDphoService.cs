@@ -43,6 +43,7 @@ public class GetMapDphoService : IGetMapDphoService
         var response = await client.ExecuteGetAsync<GetMapDphoResponse>(req);
         if (response.StatusCode != System.Net.HttpStatusCode.OK)
             return null;
+
         //  RETURN
         return response.Data;
     }

@@ -1,37 +1,32 @@
-﻿namespace AptOnline.Domain.EmrContext.ResepRsAgg;
+namespace AptOnline.Domain.EmrContext.ResepRsAgg;
 
-public class ResepRsItemModel
+public class ResepRsItemModel : IResepRsKey
 {
-    //public ResepItemModel(string penjualanId, 
-    //    string orderNo, string isRacik, string racikId, 
-    //    string barangId, string dphoId, string dphoName, 
-    //    string signa1, string signa2, string jho, 
-    //    string qty, string note)
-    //{
-    //    PenjualanId = penjualanId;
-    //    OrderNo = orderNo;
-    //    IsRacik = isRacik;
-    //    RacikId = racikId;
-    //    BarangId = barangId;
-    //    DphoId = dphoId;
-    //    DphoName = dphoName;
-    //    Signa1 = signa1;
-    //    Signa2 = signa2;
-    //    Jho = jho;
-    //    Qty = qty;
-    //    Note = note;
-    //}
+    public string ResepId { get; set; }
+    public int NoUrut { get; set; }
+    public string BrgId { get; set; }
+    public string BrgName { get; set; }
+    public int Qty { get; set; }
+    public string SatuanId { get; set; }
+    public string SatuanName { get; set; }
+    public int Iter { get; set; }
+    public bool IsRacik { get; set; }
+    public bool IsKomponen { get; set; }
+    public string EtiketJenisObatId { get; set; }
+    public string EtiketJenisObatName { get; set; }
+    public string KetSigna { get; set; }
+    public int EtiketQty { get; set; }
+    public int EtiketHariQty { get; set; }
+    public string EtiketHari { get; set; }
+    public string EtiketSatuanPakaiId { get; set; }
+    public string EtiketSatuanPakaiName { get; set; }
+    public string EtiketCaraPakaiId { get; set; }
+    public string EtiketCaraPakaiName { get; set; }
+    public string EtiketNote { get; set; }
+    public string EtiketDescription { get; set; }
+}
 
-    public string PenjualanId { get; set; }  
-    public string OrderNo { get; set; }
-    public string IsRacik { get; set; }
-    public string RacikId { get; set; }
-    public string BarangId { get; set; }
-    public string DphoId { get; set; }
-    public string DphoName { get; set; }
-    public string Signa1 { get; set; }
-    public string Signa2 { get; set; }
-    public string Jho { get; set; }
-    public string Qty { get; set; }
-    public string Note { get; set; }
+public interface IResepRsKey
+{
+    public string ResepId { get; }
 }
