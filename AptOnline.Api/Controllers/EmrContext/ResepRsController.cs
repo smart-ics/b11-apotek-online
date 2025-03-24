@@ -1,4 +1,5 @@
 ﻿using AptOnline.Application.AptolCloudContext.DphoAgg;
+using AptOnline.Application.EmrContext.ResepRsAgg;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,7 @@ namespace AptOnline.Api.Controllers.EmrContext
         [HttpGet("{id}")]
         public async Task<IActionResult> GetData(string id)
         {
-            var query = new ListDphoQuery();
+            var query = new ResepRsGetDataQuery(id);
             var result = await _mediator.Send(query);
             return Ok(new JSendOk(result));
         }
