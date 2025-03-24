@@ -3,16 +3,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>AptOnline.Db</Name>
+    <Name>AptOnline.SqlDb</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{301358d0-0f59-4de8-853b-72f47d2843bd}</ProjectGuid>
+    <ProjectGuid>{3bdd6394-842b-4984-843b-61541f07e1be}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql160DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>AptOnline.Db</RootNamespace>
-    <AssemblyName>AptOnline.Db</AssemblyName>
+    <RootNamespace>AptOnline.SqlDb</RootNamespace>
+    <AssemblyName>AptOnline.SqlDb</AssemblyName>
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
@@ -59,8 +59,8 @@
     <Folder Include="AptolMidwareContext" />
   </ItemGroup>
   <ItemGroup>
+    <Build Include="AptolMidwareContext\APTOL_Log.sql" />
     <Build Include="AptolMidwareContext\APTOL_ResepMidware.sql" />
     <Build Include="AptolMidwareContext\APTOL_ResepMidwareItem.sql" />
-    <Build Include="AptolMidwareContext\APTOL_Log.sql" />
   </ItemGroup>
 </Project>
