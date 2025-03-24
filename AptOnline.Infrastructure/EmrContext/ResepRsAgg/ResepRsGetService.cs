@@ -6,7 +6,7 @@ using RestSharp;
 
 namespace AptOnline.Infrastructure.EmrContext.ResepRsAgg;
 
-public class ResepRsGetService : IResepRsGetService
+public class ResepRsGetService : IResepRsGetDataService
 {
     private readonly FarmasiOptions _opt;
 
