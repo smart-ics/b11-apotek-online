@@ -7,7 +7,7 @@ using Nuna.Lib.DataAccessHelper;
 
 namespace AptOnline.Infrastructure.Helpers;
 
-public class ParamNoDal : INunaCounterDal
+public class ParamNoDal : INunaCounterDal, INunaCounterDecDal
 {
     private readonly DatabaseOptions _opt;
     public ParamNoDal(IOptions<DatabaseOptions> opt)
@@ -74,5 +74,20 @@ public class ParamNoDal : INunaCounterDal
     {
         public string Prefix { get; set; }
         public string HexVal { get; set; }
+    }
+
+    public long GetNewDecNumber(string prefix)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateNewDecNumber(string prefix, long decValue)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void InsertNewDecNumber(string prefix, long decValue)
+    {
+        throw new NotImplementedException();
     }
 }

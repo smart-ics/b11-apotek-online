@@ -9,15 +9,15 @@ public class ListDphoQuery : IRequest<IEnumerable<DphoModel>>
 
 public class ListDphoHandler : IRequestHandler<ListDphoQuery, IEnumerable<DphoModel>>
 {
-    private readonly IListDphoService _listRefDphoBpjsService;
-    public ListDphoHandler(IListDphoService listRefDphoBpjsService)
+    private readonly IListDphoService _listDphoService;
+    public ListDphoHandler(IListDphoService listDphoService)
     {
-        _listRefDphoBpjsService = listRefDphoBpjsService;
+        _listDphoService = listDphoService;
     }
 
     public Task<IEnumerable<DphoModel>> Handle(ListDphoQuery request, CancellationToken cancellationToken)
     {
-        var x = _listRefDphoBpjsService.Execute();
+        var x = _listDphoService.Execute();
         return Task.FromResult(x);
     }
 }

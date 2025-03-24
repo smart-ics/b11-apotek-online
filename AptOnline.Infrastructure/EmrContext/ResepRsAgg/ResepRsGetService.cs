@@ -17,7 +17,7 @@ public class ResepRsGetService : IResepRsGetService
     public ResepRsModel Execute(IResepRsKey req)
     {
         var resepRsDto = Task.Run(() => ExecuteAsync(req.ResepId)).GetAwaiter().GetResult();
-        return resepRsDto?.data.ToModel();
+        return resepRsDto?.data;
     }
 
     private async Task<ResepRsDto> ExecuteAsync(string id)

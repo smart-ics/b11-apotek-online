@@ -21,6 +21,7 @@ public static class InfrastructureService
             .AddScoped<ITokenService, TokenService>()
             .AddScoped<IMemoryCache, MemoryCache>()
             .AddScoped<INunaCounterDal, ParamNoDal>()
+            .AddScoped<INunaCounterDecDal, ParamNoDal>()
             .AddMemoryCache();
 
         services
