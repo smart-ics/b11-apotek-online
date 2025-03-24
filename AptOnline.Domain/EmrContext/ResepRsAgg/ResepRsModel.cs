@@ -14,5 +14,5 @@ public class ResepRsModel
     public string UrgenitasId { get; set; }
     public string UrgenitasName { get; set; }
     public int Iter { get; set; }
-    public IEnumerable<ResepRsItemModel> ListBarang { get; set; }
+    public IEnumerable<ResepRsItemModel> ListObat { get; set; }
 }

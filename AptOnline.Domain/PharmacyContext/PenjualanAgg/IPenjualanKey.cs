@@ -1,7 +1,7 @@
 ﻿namespace AptOnline.Domain.PharmacyContext.TrsDuAgg
 {
-    public interface ITrsDuKey
+    public interface IPenjualanKey
     {
-        string TrsDuId { get; }
+        string PenjualanId { get; }
     }
 }
