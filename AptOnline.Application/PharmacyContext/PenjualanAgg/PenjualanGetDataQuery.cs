@@ -1,9 +1,7 @@
-﻿using AptOnline.Application.PharmacyContext.PenjualanAgg;
-using AptOnline.Domain.EmrContext.ResepRsAgg;
-using AptOnline.Domain.PharmacyContext.TrsDuAgg;
+﻿using AptOnline.Domain.PharmacyContext.TrsDuAgg;
 using MediatR;
 
-namespace AptOnline.Application.EmrContext.ResepRsAgg
+namespace AptOnline.Application.PharmacyContext.PenjualanAgg
 {
     public record PenjualanGetDataQuery(string PenjualanId) : IRequest<PenjualanModel>, IPenjualanKey;
 
