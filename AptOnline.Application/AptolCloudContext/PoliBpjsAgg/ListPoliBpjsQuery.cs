@@ -15,7 +15,7 @@ public class ListPoliBpjsHandler : IRequestHandler<ListPoliBpjsQuery, IEnumerabl
     }
     public Task<IEnumerable<PoliBpjsModel>> Handle(ListPoliBpjsQuery request, CancellationToken cancellationToken)
     {
-        var x = _listRefPoliBpjsService.Execute(request.Keyword);
-        return Task.FromResult(x);
+        var result = _listRefPoliBpjsService.Execute(request.Keyword);
+        return Task.FromResult(result);
     }
 }

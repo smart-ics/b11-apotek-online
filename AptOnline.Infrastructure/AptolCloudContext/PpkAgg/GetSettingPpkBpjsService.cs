@@ -1,4 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
+using AptOnline.Application.AptolCloudContext.PpkAgg;
+using AptOnline.Domain.AptolCloudContext.PpkAgg;
+using AptOnline.Infrastructure.AptolCloudContext.PpkAgg;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
@@ -6,10 +9,7 @@ using RestSharp;
 
 namespace AptOnline.Infrastructure.AptolCloudContext.PkpAgg
 {
-    public interface IGetSettingPpkBpjsService
-    {
-        GetSettingPpkBpjsRespDto Execute();
-    }
+
     public class GetSettingPpkBpjsService : IGetSettingPpkBpjsService
     {
         private readonly BpjsOptions _opt;
@@ -23,7 +23,7 @@ namespace AptOnline.Infrastructure.AptolCloudContext.PkpAgg
             _signature = BpjsHelper.GenHMAC256(_opt.ConsId + "&" + _timestamp, _opt.SecretKey);
             _decryptKey = _opt.ConsId + _opt.SecretKey + _timestamp;
         }
-        public GetSettingPpkBpjsRespDto Execute()
+        public PpkSettingModel Execute()
         {
             var endpoint = $"{_opt.BaseApiUrl}/referensi/settingppk/read/{_opt.ProviderId}";
             var client = new RestClient(endpoint)
@@ -52,7 +52,23 @@ namespace AptOnline.Infrastructure.AptolCloudContext.PkpAgg
                 jResult["response"] = JObject.Parse(decryptedResp);
             }
             catch { }
-            var result = jResult.ToObject<GetSettingPpkBpjsRespDto>();
+            var tempResult = jResult.ToObject<GetSettingPpkBpjsResponse>();
+            var result = new PpkSettingModel
+            {
+                PpkId = tempResult.response.kode,
+                NamaApoteker = tempResult.response.namaapoteker,
+                NamaKepala = tempResult.response.namakepala,
+                JabatanKepala = tempResult.response.jabatankepala,
+                NipKepala = tempResult.response.nipkepala,
+                Siup = tempResult.response.siup,
+                Alamat = tempResult.response.alamat,
+                Kota = tempResult.response.kota,
+                NamaVerifikator = tempResult.response.namaverifikator,
+                NppVerifikator = tempResult.response.nppverifikator,
+                NamaPetugasApotek = tempResult.response.namapetugasapotek,
+                NipPetugasApotek = tempResult.response.nippetugasapotek,
+                CheckStock = tempResult.response.checkstock
+            };
             return result;
         }
     }
