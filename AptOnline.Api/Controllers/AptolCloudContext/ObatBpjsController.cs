@@ -7,11 +7,11 @@ namespace AptOnline.Api.Controllers.AptolCloudContext
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ObatController : ControllerBase
+    public class ObatBpjsController : ControllerBase
     {
         private readonly IMediator _mediator;
 
-        public ObatController(IMediator mediator)
+        public ObatBpjsController(IMediator mediator)
         {
             _mediator = mediator;
         }

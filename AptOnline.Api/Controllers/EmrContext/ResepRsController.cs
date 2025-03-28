@@ -1,7 +1,5 @@
-﻿using AptOnline.Application.AptolCloudContext.DphoAgg;
-using AptOnline.Application.EmrContext.ResepRsAgg;
+﻿using AptOnline.Application.EmrContext.ResepRsAgg;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nuna.Lib.ActionResultHelper;
 

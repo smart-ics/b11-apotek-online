@@ -1,7 +1,5 @@
-﻿using AptOnline.Application.AptolCloudContext.DphoAgg;
-using AptOnline.Application.PharmacyContext.PenjualanAgg;
+﻿using AptOnline.Application.PharmacyContext.PenjualanAgg;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Nuna.Lib.ActionResultHelper;
 
