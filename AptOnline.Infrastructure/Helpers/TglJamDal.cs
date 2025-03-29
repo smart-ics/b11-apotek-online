@@ -1,10 +1,10 @@
 ﻿using System.Data.SqlClient;
-using AptOnline.Application.Helpers;
 using Microsoft.Extensions.Options;
+using Nuna.Lib.ValidationHelper;
 
 namespace AptOnline.Infrastructure.Helpers;
 
-public class TglJamDal : ITglJamDal
+public class TglJamDal : ITglJamProvider
 {
     private readonly DatabaseOptions _opt;
 

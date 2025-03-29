@@ -1,34 +1,32 @@
-﻿using AptOnline.Infrastructure.Helpers;
+﻿using AptOnline.Application.BillingContext.LayananAgg;
+using AptOnline.Domain.BillingContext.LayananAgg;
+using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
 namespace AptOnline.Infrastructure.BillingContext.LayananAgg;
 
-public interface IGetLayananBillingService
-{
-    LayananDto? Execute(string regId);
-}
-public class GetLayananBillingService : IGetLayananBillingService
+public class LayananGetService : ILayananGetService
 {
     private readonly BillingOptions _opt;
 
-    public GetLayananBillingService(IOptions<BillingOptions> opt)
+    public LayananGetService(IOptions<BillingOptions> opt)
     {
         _opt = opt.Value;
     }
 
-    public LayananDto? Execute(string id)
+    public LayananModel Execute(ILayananKey req)
     {
-
-        var layanan = Task.Run(() => ExecuteAsync(id)).GetAwaiter().GetResult();
-        if (layanan is null) return null;
-        return layanan;
+        var responseData = Task.Run(() => ExecuteAsync(req.LayananId)).GetAwaiter().GetResult();
+        var result = responseData?.data;
+        return result;
     }
 
-    private async Task<LayananDto?> ExecuteAsync(string id)
+    private async Task<LayananGetResponse?> ExecuteAsync(string id)
     {
         if (id.Trim().Length == 0)
             return null;
+        
         // BUILD
         var endpoint = $"{_opt.BaseApiUrl}/api/Layanan";
         var client = new RestClient(endpoint);
@@ -36,10 +34,12 @@ public class GetLayananBillingService : IGetLayananBillingService
             .AddUrlSegment("id", id);
 
         //  EXECUTE
-        var response = await client.ExecuteGetAsync<LayananDto>(req);
+        var response = await client.ExecuteGetAsync<LayananGetResponse>(req);
         if (response.StatusCode != System.Net.HttpStatusCode.OK)
             return null;
+        
         //  RETURN
         return response.Data;
     }
+
 }

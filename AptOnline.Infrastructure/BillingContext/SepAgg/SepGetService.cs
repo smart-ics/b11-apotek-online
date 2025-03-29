@@ -18,9 +18,8 @@ public class SepGetService : ISepGetService
 
     public SepModel Execute(ISepKey req)
     {
-
-        var sep = Task.Run(() => ExecuteAsync(req.SepId)).GetAwaiter().GetResult();
-        var result = sep?.data;
+        var responseData = Task.Run(() => ExecuteAsync(req.SepId)).GetAwaiter().GetResult();
+        var result = responseData?.data;
         return result;
     }
 
