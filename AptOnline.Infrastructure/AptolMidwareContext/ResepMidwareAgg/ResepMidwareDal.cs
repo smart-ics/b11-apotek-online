@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 using Nuna.Lib.DataAccessHelper;
 using Nuna.Lib.ValidationHelper;
 
-namespace AptOnline.Infrastructure.AptolMidwareContext.ResepRsAgg;
+namespace AptOnline.Infrastructure.AptolMidwareContext.ResepMidwareAgg;
 
 public class ResepMidwareDal : IResepMidwareDal
 {
@@ -22,22 +22,34 @@ public class ResepMidwareDal : IResepMidwareDal
     {
         const string sql = @"
             INSERT INTO APTOL_ResepMidware(
-                ResepMidwareId, ReffId, ResepMidwareDate, EntryDate, 
+                ResepMidwareId, ResepMidwareDate, BridgeState, 
+                CreateTimestamp, SyncTimestamp, UploadTimestamp,
+                ChartId, ResepRsId, RegId, PasienId, PasienName,
                 SepId, SepDate, NoPeserta, FaskesId, FaskesAsal, 
-                PoliBpjsId, PoliBpjsName, JenisObatId, 
-                DokterId, DokterName, Iterasi)
+                PoliBpjsId, PoliBpjsName, JenisObatId, DokterId, DokterName, 
+                ReffId, JenisObatId, Iterasi)
             VALUES(
-                @ResepMidwareId, @ReffId, @ResepMidwareDate, @EntryDate, 
+                @ResepMidwareId, @ResepMidwareDate, @BridgeState, 
+                @CreateTimestamp, @SyncTimestamp, @UploadTimestamp,
+                @ChartId, @ResepRsId, @RegId, @PasienId, @PasienName,
                 @SepId, @SepDate, @NoPeserta, @FaskesId, @FaskesAsal, 
-                @PoliBpjsId, @PoliBpjsName, @JenisObatId, 
-                @DokterId, @DokterName, @Iterasi)";
+                @PoliBpjsId, @PoliBpjsName, @JenisObatId, @DokterId, @DokterName, 
+                @ReffId, @JenisObatId, @Iterasi)";
 
         var dp = new DynamicParameters();
         dp.AddParam("@ResepMidwareId", resepMidware.ResepMidwareId, SqlDbType.VarChar);
-        dp.AddParam("@ReffId", resepMidware.ReffId, SqlDbType.VarChar);
         dp.AddParam("@ResepMidwareDate", resepMidware.ReffId, SqlDbType.DateTime);
-        dp.AddParam("@EntryDate", resepMidware.ReffId, SqlDbType.DateTime);
+        dp.AddParam("@BridgeState", resepMidware.BridgeState, SqlDbType.VarChar);
+        dp.AddParam("@CreateTimestamp", resepMidware.CreateTimestamp, SqlDbType.DateTime);
+        dp.AddParam("@SyncTimestamp", resepMidware.SyncTimestamp, SqlDbType.DateTime);
+        dp.AddParam("@UploadTimestamp", resepMidware.UploadTimestamp, SqlDbType.DateTime);
 
+        dp.AddParam("@ChartId", resepMidware.ChartId, SqlDbType.VarChar); 
+        dp.AddParam("@ResepRsId", resepMidware.ResepRsId, SqlDbType.VarChar); 
+        dp.AddParam("@RegId", resepMidware.RegId, SqlDbType.VarChar); 
+        dp.AddParam("@PasienId", resepMidware.PasienId, SqlDbType.VarChar); 
+        dp.AddParam("@PasienName", resepMidware.PasienName, SqlDbType.VarChar);
+        
         dp.AddParam("@SepId", resepMidware.SepId, SqlDbType.VarChar);
         dp.AddParam("@SepDate", resepMidware.SepId, SqlDbType.DateTime);
         dp.AddParam("@NoPeserta", resepMidware.SepId, SqlDbType.VarChar);
@@ -45,10 +57,11 @@ public class ResepMidwareDal : IResepMidwareDal
         dp.AddParam("@FaskesName", resepMidware.FaskesName, SqlDbType.VarChar);
         dp.AddParam("@PoliBpjsId", resepMidware.PoliBpjsId, SqlDbType.VarChar);
         dp.AddParam("@PoliBpjsName", resepMidware.PoliBpjsName, SqlDbType.VarChar);
-
-        dp.AddParam("@JenisObatId", resepMidware.JenisObatId, SqlDbType.VarChar);
         dp.AddParam("@DokterId", resepMidware.DokterId, SqlDbType.VarChar);
         dp.AddParam("@DokterName", resepMidware.DokterName, SqlDbType.VarChar);
+        
+        dp.AddParam("@JenisObatId", resepMidware.JenisObatId, SqlDbType.VarChar);
+        dp.AddParam("@ReffId", resepMidware.ReffId, SqlDbType.VarChar);
         dp.AddParam("@Iterasi", resepMidware.Iterasi, SqlDbType.Int);
 
         //  EXECUTE
@@ -62,9 +75,13 @@ public class ResepMidwareDal : IResepMidwareDal
             UPDATE
                 APTOL_ResepMidware
             SET     
-                ReffId = @ReffId,
                 ResepMidwareDate = @ResepMidwareDate,
-                EntryDate = @EntryDate,
+                BridgeState = @BridgeState,
+                CreateTimestamp = @CreateTimestamp,
+                SyncTimestamp = @SyncTimestamp,
+                UploadTimestamp = @UploadTimestamp,
+
+                ChartId = @ChartId,
                 SepId = @SepId,
                 SepDate = @SepDate,
                 NoPeserta = @NoPeserta,
@@ -72,19 +89,29 @@ public class ResepMidwareDal : IResepMidwareDal
                 FaskesName = @FaskesName,
                 PoliBpjsId = @PoliBpjsId,
                 PoliBpjsName = @PoliBpjsName,
-                JenisObatId = @JenisObatId, 
                 DokterId = @DokterId,
                 DokterName = @DokterName, 
+
+                JenisObatId = @JenisObatId, 
+                ReffId = @ReffId,
                 Iterasi = @Iterasi
             WHERE
                 ResepMidwareId = @ResepMidwareId ";
 
         var dp = new DynamicParameters();
         dp.AddParam("@ResepMidwareId", resepMidware.ResepMidwareId, SqlDbType.VarChar);
-        dp.AddParam("@ReffId", resepMidware.ReffId, SqlDbType.VarChar);
         dp.AddParam("@ResepMidwareDate", resepMidware.ReffId, SqlDbType.DateTime);
-        dp.AddParam("@EntryDate", resepMidware.ReffId, SqlDbType.DateTime);
+        dp.AddParam("@BridgeState", resepMidware.BridgeState, SqlDbType.VarChar);
+        dp.AddParam("@CreateTimestamp", resepMidware.CreateTimestamp, SqlDbType.DateTime);
+        dp.AddParam("@SyncTimestamp", resepMidware.SyncTimestamp, SqlDbType.DateTime);
+        dp.AddParam("@UploadTimestamp", resepMidware.UploadTimestamp, SqlDbType.DateTime);
 
+        dp.AddParam("@ChartId", resepMidware.ChartId, SqlDbType.VarChar); 
+        dp.AddParam("@ResepRsId", resepMidware.ResepRsId, SqlDbType.VarChar); 
+        dp.AddParam("@RegId", resepMidware.RegId, SqlDbType.VarChar); 
+        dp.AddParam("@PasienId", resepMidware.PasienId, SqlDbType.VarChar); 
+        dp.AddParam("@PasienName", resepMidware.PasienName, SqlDbType.VarChar);
+        
         dp.AddParam("@SepId", resepMidware.SepId, SqlDbType.VarChar);
         dp.AddParam("@SepDate", resepMidware.SepId, SqlDbType.DateTime);
         dp.AddParam("@NoPeserta", resepMidware.SepId, SqlDbType.VarChar);
@@ -92,10 +119,11 @@ public class ResepMidwareDal : IResepMidwareDal
         dp.AddParam("@FaskesName", resepMidware.FaskesName, SqlDbType.VarChar);
         dp.AddParam("@PoliBpjsId", resepMidware.PoliBpjsId, SqlDbType.VarChar);
         dp.AddParam("@PoliBpjsName", resepMidware.PoliBpjsName, SqlDbType.VarChar);
-
-        dp.AddParam("@JenisObatId", resepMidware.JenisObatId, SqlDbType.VarChar);
         dp.AddParam("@DokterId", resepMidware.DokterId, SqlDbType.VarChar);
         dp.AddParam("@DokterName", resepMidware.DokterName, SqlDbType.VarChar);
+        
+        dp.AddParam("@JenisObatId", resepMidware.JenisObatId, SqlDbType.VarChar);
+        dp.AddParam("@ReffId", resepMidware.ReffId, SqlDbType.VarChar);
         dp.AddParam("@Iterasi", resepMidware.Iterasi, SqlDbType.Int);
 
         //  EXECUTE
@@ -122,10 +150,12 @@ public class ResepMidwareDal : IResepMidwareDal
     {
         const string sql = @"
             SELECT 
-                ResepMidwareId, ReffId, ResepMidwareDate, EntryDate, 
+                ResepMidwareId, ResepMidwareDate, BridgeState, 
+                CreateTimestamp, SyncTimestamp, UploadTimestamp,
+                ChartId, ResepRsId, RegId, PasienId, PasienName,
                 SepId, SepDate, NoPeserta, FaskesId, FaskesAsal, 
-                PoliBpjsId, PoliBpjsName, JenisObatId, 
-                DokterId, DokterName, Iterasi            
+                PoliBpjsId, PoliBpjsName, JenisObatId, DokterId, DokterName, 
+                ReffId, JenisObatId, Iterasi            
             FROM
                 APTOL_ResepMidware
             WHERE
@@ -138,19 +168,20 @@ public class ResepMidwareDal : IResepMidwareDal
         return conn.ReadSingle<ResepMidwareModel>(sql, dp);
     }
 
-
     public IEnumerable<ResepMidwareModel> ListData(Periode filter)
     {
         const string sql = @"
             SELECT 
-                ResepMidwareId, ReffId, ResepMidwareDate, EntryDate, 
+                ResepMidwareId, ResepMidwareDate, BridgeState, 
+                CreateTimestamp, SyncTimestamp, UploadTimestamp,
+                ChartId, ResepRsId, RegId, PasienId, PasienName,
                 SepId, SepDate, NoPeserta, FaskesId, FaskesAsal, 
-                PoliBpjsId, PoliBpjsName, JenisObatId, 
-                DokterId, DokterName, Iterasi            
+                PoliBpjsId, PoliBpjsName, JenisObatId, DokterId, DokterName, 
+                ReffId, JenisObatId, Iterasi            
             FROM
                 APTOL_ResepMidware
             WHERE
-                ResepDate BETWEEN @StartDate AND @EndDate";
+                ResepMidwareDate BETWEEN @StartDate AND @EndDate";
 
         var dp = new DynamicParameters();
         dp.AddParam("@StartDate", filter.Tgl1, SqlDbType.DateTime);

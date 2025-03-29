@@ -2,5 +2,5 @@
 
 public interface IResepMidwareKey
 {
-    public string ResepMidwareId { get; }
+    string ResepMidwareId { get; }
 }

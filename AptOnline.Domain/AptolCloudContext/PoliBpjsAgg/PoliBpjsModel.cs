@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AptOnline.Domain.AptolCloudContext.PoliBpjsAgg
+namespace AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
+
+public class PoliBpjsModel : IPoliBpjsKey
 {
-    public class PoliBpjsModel
-    {
-        public string PoliBpjsId { get; set; }
-        public string PoliBpjsName { get; set; }
-    }
+    public string PoliBpjsId { get; set; }
+    public string PoliBpjsName { get; set; }
 }

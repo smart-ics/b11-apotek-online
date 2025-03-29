@@ -1,28 +1,27 @@
-﻿using AptOnline.Infrastructure.Helpers;
+﻿using AptOnline.Application.BillingContext.SepAgg;
+using AptOnline.Domain.BillingContext.SepAgg;
+using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using RestSharp;
 
 namespace AptOnline.Infrastructure.BillingContext.SepAgg;
 
-public interface IGetSepBillingService
-{
-    SepDto? Execute(string regId);
-}
-public class GetSepBillingService : IGetSepBillingService
+
+public class SepGetService : ISepGetService
 {
     private readonly BillingOptions _opt;
 
-    public GetSepBillingService(IOptions<BillingOptions> opt)
+    public SepGetService(IOptions<BillingOptions> opt)
     {
         _opt = opt.Value;
     }
 
-    public SepDto? Execute(string id)
+    public SepModel Execute(ISepKey req)
     {
 
-        var sep = Task.Run(() => ExecuteAsync(id)).GetAwaiter().GetResult();
-        if (sep is null) return null;
-        return sep;
+        var sep = Task.Run(() => ExecuteAsync(req.SepId)).GetAwaiter().GetResult();
+        var result = sep?.data;
+        return result;
     }
 
     private async Task<SepDto?> ExecuteAsync(string id)

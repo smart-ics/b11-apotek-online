@@ -3,7 +3,7 @@ using Nuna.Lib.AutoNumberHelper;
 using Nuna.Lib.CleanArchHelper;
 using Nuna.Lib.TransactionHelper;
 
-namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.unused;
+namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg;
 
 public interface IResepWriter : INunaWriterWithReturn<ResepMidwareModel>
 {

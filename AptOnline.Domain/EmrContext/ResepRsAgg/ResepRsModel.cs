@@ -1,6 +1,8 @@
-﻿namespace AptOnline.Domain.EmrContext.ResepRsAgg;
+﻿using AptOnline.Domain.BillingContext.RegAgg;
 
-public class ResepRsModel
+namespace AptOnline.Domain.EmrContext.ResepRsAgg;
+
+public class ResepRsModel : IRegKey
 {
     public string ResepId { get; set; }
     public string TglJam { get; set; }

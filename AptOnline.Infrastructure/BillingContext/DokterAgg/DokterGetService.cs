@@ -1,30 +1,29 @@
-﻿using AptOnline.Infrastructure.Helpers;
+﻿using AptOnline.Application.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using RestSharp.Authenticators;
 
 namespace AptOnline.Infrastructure.BillingContext.DokterAgg;
 
-public interface IGetDokterBillingService
-{
-    DokterDto? Execute(string id);
-}
-public class GetDokterBillingService : IGetDokterBillingService
+public class DokterGetService : IDokterGetService
 {
     private readonly BillingOptions _opt;
     private readonly ITokenService _token;
 
-    public GetDokterBillingService(IOptions<BillingOptions> opt, ITokenService token)
+    public DokterGetService(IOptions<BillingOptions> opt, ITokenService token)
     {
         _opt = opt.Value;
         _token = token;
     }
 
-    public DokterDto? Execute(string id)
+    public DokterModel Execute(IDokterKey req)
     {
-        var dokter = Task.Run(() => ExecuteAsync(id)).GetAwaiter().GetResult();
-        if (dokter is null) return null;
-        return dokter;
+        var dokter = Task.Run(() => ExecuteAsync(req.DokterId)).GetAwaiter().GetResult();
+        var result = dokter is null ? 
+            null : new DokterModel(dokter.data.dokterId, dokter.data.dokterName);
+        return result!;
     }
 
     private async Task<DokterDto?> ExecuteAsync(string id)
