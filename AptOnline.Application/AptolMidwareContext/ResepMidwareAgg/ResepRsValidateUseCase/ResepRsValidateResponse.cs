@@ -1,4 +1,6 @@
-﻿namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg;
+﻿using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
+
+namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.ResepRsValidateUseCase;
 
 public class ResepRsValidateResponse
 {
@@ -15,3 +17,9 @@ public class ResepRsValidateResponse
     public string ValidationResult{get;set;}
     public string ValidationNote{get;set;}
 }
+
+public record ResepRsValidateResponseDto(
+    int NoUrut,
+    ResepMidwareModel ResepMidware,
+    bool IsCreated,
+    string ValidationNote);

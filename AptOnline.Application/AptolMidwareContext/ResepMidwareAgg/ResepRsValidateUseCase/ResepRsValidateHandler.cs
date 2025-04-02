@@ -54,7 +54,7 @@ public class ResepRsValidateCommandHandler :
                       ?? throw new KeyNotFoundException($"Layanan {request.LayananId} not found");
 
         //  BUILD
-        var listResult = new List<ResepMidwareResultDto>();
+        var listResult = new List<ResepRsValidateResponseDto>();
         var noUrutResep = 0;
         foreach (var item in request.ListResep)
         {
@@ -82,51 +82,73 @@ public class ResepRsValidateCommandHandler :
         return Task.FromResult(response);
     }
 
-    private ResepMidwareResultDto BuildResepMidware(int noUrut,
+    private ResepRsValidateResponseDto BuildResepMidware(int noUrut,
         ResepRsValidateCommandResep resep,
         RegModel reg, SepModel sep, FaskesModel faskes, LayananModel layanan)
     {
-        var resepMidware = new ResepMidwareModel();
-        resepMidware.SetRegister(reg);
-        resepMidware.SetSep(sep);
-        resepMidware.SetFaskes(faskes);
-        resepMidware.SetPoliBpjs(layanan);
+        var resepMidware = CreateResepHeader(reg, sep, faskes, layanan);
+
         var listValidationNote = new List<string>();
         var itemCount = 0;
-        foreach (var item in resep.ListItem)
+        foreach (var itemObat in resep.ListItem)
         {
-            itemCount++;
-            var mapDpho = _mapDphoGetService.Execute(item);
-            if (mapDpho is null)
-                continue;
-            var result = resepMidware.AddObat(mapDpho, item.Signa, item.Qty);
-            if (result.IsFailed)
-            {
-                listValidationNote.Add(result.ErrorMessage);
-                continue;
-            }
-
-            foreach (var itemRacik in item.ListKomponenRacik)
-            {
-                itemCount++;
-                mapDpho = _mapDphoGetService.Execute(itemRacik);
-                result = resepMidware.AddRacik(mapDpho, item.Signa, itemRacik.Qty);
-                if (result.IsFailed)
-                    listValidationNote.Add(result.ErrorMessage);
-            }
+            resepMidware = AddItemObat(
+                itemObat, resepMidware, 
+                ref itemCount, ref listValidationNote);
+            
+            foreach (var itemRacik in itemObat.ListKomponenRacik)
+                resepMidware = AddItemRacik(
+                    itemRacik, resepMidware, itemObat.Signa, 
+                    ref itemCount, ref listValidationNote);
         }
 
         var listValidationNoteStr = string.Join(", ", listValidationNote);
         if (listValidationNote.Count == itemCount)
-            return new ResepMidwareResultDto(noUrut, 
+            return new ResepRsValidateResponseDto(noUrut, 
                 resepMidware, false, listValidationNoteStr);
-        else
-            return new ResepMidwareResultDto(noUrut,
-                resepMidware, true, listValidationNoteStr);
+
+        return new ResepRsValidateResponseDto(noUrut,
+            resepMidware, true, listValidationNoteStr);
+    }
+    
+    private static ResepMidwareModel CreateResepHeader(RegModel reg, SepModel sep, 
+        FaskesModel faskes, LayananModel layanan)
+    {
+        var result = new ResepMidwareModel();
+        result.SetRegister(reg);
+        result.SetSep(sep);
+        result.SetFaskes(faskes);
+        result.SetPoliBpjs(layanan);
+        return result;
+    }
+    
+    private ResepMidwareModel AddItemObat(ResepRsValidateCommandObat itemObat,
+        ResepMidwareModel resepMidware,
+        ref int itemCount, 
+        ref List<string> listValidationNote)
+    {
+        itemCount++;
+        var mapDpho = _mapDphoGetService.Execute(itemObat);
+        if (mapDpho is null)
+            return resepMidware;
+        var resultType = resepMidware.AddObat(mapDpho, itemObat.Signa, itemObat.Qty);
+        if (resultType.IsFailed)
+            listValidationNote.Add(resultType.ErrorMessage);
+        return resepMidware;
+    }
+
+    private ResepMidwareModel AddItemRacik(ResepRsValidateCommandKomponenRacik itemRacik,
+        ResepMidwareModel resepMidware,
+        string signa,
+        ref int itemCount,
+        ref List<string> listValidationNote)
+    {
+        itemCount++;
+        var mapDpho = _mapDphoGetService.Execute(itemRacik);
+        var resultType = resepMidware.AddRacik(mapDpho, signa, itemRacik.Qty);
+        if (resultType.IsFailed)
+            listValidationNote.Add(resultType.ErrorMessage);
+        return resepMidware;
     }
 }
-public record ResepMidwareResultDto(
-    int NoUrut,
-    ResepMidwareModel ResepMidware,
-    bool IsCreated,
-    string ValidationNote);
+
