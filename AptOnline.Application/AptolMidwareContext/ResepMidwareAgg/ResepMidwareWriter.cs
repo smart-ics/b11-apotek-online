@@ -5,16 +5,16 @@ using Nuna.Lib.TransactionHelper;
 
 namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg;
 
-public interface IResepWriter : INunaWriterWithReturn<ResepMidwareModel>
+public interface IResepMidwareWriter : INunaWriterWithReturn<ResepMidwareModel>
 {
 }
-public class ResepWriter: IResepWriter
+public class ResepMidwareWriter: IResepMidwareWriter
 {
     private readonly IResepMidwareDal _resepMidwareDal;
     private readonly IResepMidwareItemDal _resepMidwareItemDal;
     private readonly INunaCounterBL _counter;
 
-    public ResepWriter(IResepMidwareDal resepMidwareDal, 
+    public ResepMidwareWriter(IResepMidwareDal resepMidwareDal, 
         IResepMidwareItemDal resepMidwareItemDal, INunaCounterBL counter)
     {
         _resepMidwareDal = resepMidwareDal;
@@ -27,7 +27,7 @@ public class ResepWriter: IResepWriter
         if (model.ResepMidwareId == string.Empty)
             model.ResepMidwareId = _counter.Generate("RSPM", IDFormatEnum.PREFYYMnnnnnC);
         foreach (var item in model.ListItem)
-            item.ResepMidwareId = model.ResepMidwareId;
+            item.SetId(model.ResepMidwareId);
 
         using var trans = TransHelper.NewScope();
         

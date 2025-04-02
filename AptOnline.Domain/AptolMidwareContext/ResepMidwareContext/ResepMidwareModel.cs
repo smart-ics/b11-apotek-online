@@ -3,8 +3,10 @@ using AptOnline.Domain.AptolCloudContext.FaskesAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
+using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using GuardNet;
 using Nuna.Lib.DataTypeExtension;
+using Nuna.Lib.PatternHelper;
 using Nuna.Lib.ValidationHelper;
 
 namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
@@ -47,8 +49,7 @@ public class ResepMidwareModel : IResepMidwareKey
     public List<ResepMidwareItemModel> ListItem { get; set;}
     #endregion
     
-    #region METHODS
-
+    #region METHODS-HEADER-RELATED
     public void SetRegister(RegModel reg)
     {
         //  GUARD
@@ -121,5 +122,31 @@ public class ResepMidwareModel : IResepMidwareKey
         FaskesId = faskes.FaskesId;
         FaskesName = faskes.FaskesName;
     }
+    #endregion
+    
+    #region METHODS-ITEM-RELATED
+
+    public NunaResult<string> AddObat(MapDphoModel brgDpho, string signa, int qty)
+    {
+        var no = ListItem.Max(x => x.NoUrut+1);
+        var newItem = new ResepMidwareItemModel(no);
+        var result = newItem.SetSigna(signa, qty);
+        if (!result.IsSuccess)
+            return NunaResult<string>.Failure(result.ErrorMessage);
+
+        return NunaResult<string>.Success("Success");
+    }
+    public NunaResult<string> AddRacik(MapDphoModel brgDpho, string signa, int qty)
+    {
+        // var no = ListItem.Max(x => x.NoUrut+1);
+        // var newItem = new ResepMidwareItemModel(no);
+        // var result = newItem.SetSigna(signa, qty);
+        // if (!result.IsSuccess)
+        //     return NunaResult<string>.Failure(result.ErrorMessage);
+        //
+        // return NunaResult<string>.Success("Success");
+        throw new NotImplementedException();
+    }
+
     #endregion
 }
