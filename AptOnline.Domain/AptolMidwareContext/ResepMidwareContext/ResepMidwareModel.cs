@@ -2,6 +2,7 @@
 using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using GuardNet;
 using Nuna.Lib.PatternHelper;
@@ -22,7 +23,7 @@ public class ResepMidwareModel : IResepMidwareKey
     #region BILLING-EMR-RELATED
     public string ChartId { get; set; }
     public string ResepRsId { get; set; }
-    public RegType Reg { get; private set; }
+    public SepType Sep { get; private set; }
     public FaskesType Faskes { get; private set; }
     public PoliBpjsType PoliBpjs { get; private set; }
     #endregion
@@ -35,10 +36,10 @@ public class ResepMidwareModel : IResepMidwareKey
     #endregion
     
     #region METHODS-HEADER-RELATED
-    public void SetReg(RegType reg)
+    public void SetSep(SepType sep)
     {
-        Guard.NotNull(reg, nameof(reg));
-        Reg = reg;
+        Guard.NotNull(sep, nameof(sep));
+        Sep = sep;
     }
     public void SetPoliBpjs(LayananModel layanan)
     {

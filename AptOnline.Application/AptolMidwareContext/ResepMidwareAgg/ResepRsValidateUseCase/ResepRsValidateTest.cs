@@ -36,7 +36,7 @@ public class ResepRsValidateTest
     private readonly ResepRsValidateHandler _sut;
     private readonly Mock<IResepMidwareWriter> _writer;
     private readonly Mock<IRegGetService> _regGetService;
-    private readonly Mock<ISepGetService> _sepGetService;
+    private readonly Mock<ISepGetByRegService> _sepGetByRegService;
     private readonly Mock<IFaskesGetService> _faskesGetService;
     private readonly Mock<ILayananGetService> _layananGetService;
     private readonly Mock<IMapDphoGetService> _mapDphoGetService;
@@ -45,13 +45,13 @@ public class ResepRsValidateTest
     {
         _writer = new Mock<IResepMidwareWriter>();
         _regGetService = new Mock<IRegGetService>();
-        _sepGetService = new Mock<ISepGetService>();
+        _sepGetByRegService = new Mock<ISepGetByRegService>();
         _faskesGetService = new Mock<IFaskesGetService>();
         _layananGetService = new Mock<ILayananGetService>();
         _mapDphoGetService = new Mock<IMapDphoGetService>();
         _sut = new ResepRsValidateHandler(
             _regGetService.Object,
-            _sepGetService.Object,
+            _sepGetByRegService.Object,
             _faskesGetService.Object,
             _layananGetService.Object,
             _mapDphoGetService.Object,
@@ -72,13 +72,13 @@ public class ResepRsValidateTest
     //         .Setup(x => x.Execute(It.IsAny<IRegKey>()))
     //         .Returns(FakeReg());
     
-    private static SepModel FakeSep()
-        => new SepModel
-        {
-            SepId = "SEP-001",
-            DpjpId = "DPJP-001",
-            DpjpName = "DPJP-001-Name",
-        };
+    // private static SepType FakeSep()
+    //     => new SepType
+    //     {
+    //         SepId = "SEP-001",
+    //         DpjpId = "DPJP-001",
+    //         DpjpName = "DPJP-001-Name",
+    //     };
 
     // private static List<MapDphoModel> ListMapDpho()
     //     => new()

@@ -16,7 +16,7 @@ public class SepGetService : ISepGetService
         _opt = opt.Value;
     }
 
-    public SepModel Execute(ISepKey req)
+    public SepType Execute(ISepKey req)
     {
         var responseData = Task.Run(() => ExecuteAsync(req.SepId)).GetAwaiter().GetResult();
         var result = responseData?.data;

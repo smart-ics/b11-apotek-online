@@ -6,7 +6,6 @@ using AptOnline.Application.PharmacyContext.MapDphoAgg;
 using AptOnline.Domain.AptolCloudContext.FaskesAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 using AptOnline.Domain.BillingContext.LayananAgg;
-using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using MediatR;
 using Nuna.Lib.TransactionHelper;
@@ -16,9 +15,9 @@ namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.ResepRsValid
 public class ResepRsValidateHandler :
     IRequestHandler<ResepRsValidateCommand, IEnumerable<ResepRsValidateResponse>>
 {
-    private readonly IResepMidwareWriter _writer;
     private readonly IRegGetService _regGetService;
-    private readonly ISepGetService _sepGetService;
+    private readonly IResepMidwareWriter _writer;
+    private readonly ISepGetByRegService _sepGetByRegService;
     private readonly IFaskesGetService _faskesGetService;
     private readonly ILayananGetService _layananGetService;
     private readonly IMapDphoGetService _mapDphoGetService;
@@ -26,14 +25,14 @@ public class ResepRsValidateHandler :
 
     public ResepRsValidateHandler(
         IRegGetService regGetService,
-        ISepGetService sepGetService,
+        ISepGetByRegService sepGetByRegService,
         IFaskesGetService faskesGetService,
         ILayananGetService layananGetService,
-        IMapDphoGetService mapDphoGetService,
+        IMapDphoGetService mapDphoGetService, 
         IResepMidwareWriter writer)
     {
         _regGetService = regGetService;
-        _sepGetService = sepGetService;
+        _sepGetByRegService = sepGetByRegService;
         _faskesGetService = faskesGetService;
         _layananGetService = layananGetService;
         _mapDphoGetService = mapDphoGetService;
@@ -46,6 +45,8 @@ public class ResepRsValidateHandler :
         //  GUARD (header only)
         var reg = _regGetService.Execute(request)
                   ?? throw new KeyNotFoundException($"Register {request.RegId} not found");
+        var sep = _sepGetByRegService.Execute(reg)
+                  ?? throw new KeyNotFoundException($"SEP for register {reg.RegId} not found");
         var faskes = _faskesGetService.Execute()
                      ?? throw new KeyNotFoundException($"Setting Faskes not found");
         var layanan = _layananGetService.Execute(request)
@@ -57,7 +58,7 @@ public class ResepRsValidateHandler :
         foreach (var item in request.ListResep)
         {
             noUrutResep++;
-            var createResult = BuildResepMidware(noUrutResep, item, reg, faskes, layanan);
+            var createResult = BuildResepMidware(noUrutResep, item, sep, faskes, layanan);
             listResult.Add(createResult);
         }
 
@@ -82,9 +83,9 @@ public class ResepRsValidateHandler :
 
     private ResepRsValidateResponseDto BuildResepMidware(int noUrut,
         ResepRsValidateCommandResep resep,
-        RegType reg, FaskesType faskes, LayananModel layanan)
+        SepType sep, FaskesType faskes, LayananModel layanan)
     {
-        var resepMidware = CreateResepHeader(reg, faskes, layanan);
+        var resepMidware = CreateResepHeader(sep, faskes, layanan);
 
         var listValidationNote = new List<string>();
         var itemCount = 0;
@@ -109,11 +110,11 @@ public class ResepRsValidateHandler :
             resepMidware, true, listValidationNoteStr);
     }
     
-    private static ResepMidwareModel CreateResepHeader(RegType reg, 
+    private static ResepMidwareModel CreateResepHeader(SepType sep, 
         FaskesType faskes, LayananModel layanan)
     {
         var result = new ResepMidwareModel();
-        result.SetReg(reg);
+        result.SetSep(sep);
         result.SetFaskes(faskes);
         result.SetPoliBpjs(layanan);
         return result;
