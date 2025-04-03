@@ -3,6 +3,6 @@ using Nuna.Lib.CleanArchHelper;
 
 namespace AptOnline.Application.AptolCloudContext.FaskesAgg;
 
-public interface IFaskesGetService : INunaService<FaskesModel>
+public interface IFaskesGetService : INunaService<FaskesType>
 {
 }

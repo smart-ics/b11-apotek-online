@@ -1,9 +1,10 @@
-﻿using FluentAssertions;
+﻿using AptOnline.Domain.PharmacyContext.MapDphoAgg;
+using FluentAssertions;
 using Xunit;
 
 namespace AptOnline.Domain.PharmacyContext.BrgAgg;
 
-public record BrgType
+public record BrgType : IBrgKey
 {
     public BrgType(string id, string name)
     {
@@ -14,7 +15,8 @@ public record BrgType
     }
     public string BrgId { get; }
     public string BrgName { get; }
-    public static BrgType Default => new BrgType(string.Empty, string.Empty);
+    public static BrgType Default 
+        => new BrgType(string.Empty, string.Empty);
 }
 
 public static class BrgTypeTest

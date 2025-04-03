@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using AptOnline.Domain.AptolCloudContext.FaskesAgg;
+using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
@@ -36,10 +37,8 @@ public class ResepMidwareModel : IResepMidwareKey
     public string NoPeserta { get; set;}
     
     
-    public string FaskesId { get; set;}
-    public string FaskesName { get; set;}
-    public string PoliBpjsId { get; set;}
-    public string PoliBpjsName { get; set;}
+    public FaskesType Faskes { get; private set; }
+    public PoliBpjsType PoliBpjs { get; private set; }
     public string DokterId { get; set;}
     public string DokterName { get; set;}
     #endregion
@@ -103,20 +102,14 @@ public class ResepMidwareModel : IResepMidwareKey
 
     public void SetPoliBpjs(LayananModel layanan)
     {
-        //  GUARD
         Guard.NotNull(layanan, nameof(layanan));
-        Guard.NotNullOrWhitespace(layanan.LayananBpjsId, nameof(layanan.LayananBpjsId));
-        Guard.NotNullOrWhitespace(layanan.LayananBpjsName, nameof(layanan.LayananBpjsName));
-        
-        //  BUILD
-        PoliBpjsId = layanan.LayananBpjsId;
-        PoliBpjsName = layanan.LayananBpjsName;
+        PoliBpjs = layanan.PoliBpjs;
     }
 
-    public void SetFaskes(FaskesModel faskes)
+    public void SetFaskes(FaskesType faskes)
     {
-        FaskesId = faskes.FaskesId;
-        FaskesName = faskes.FaskesName;
+        Guard.NotNull(faskes, nameof(faskes));
+        Faskes = faskes;
     }
     #endregion
     

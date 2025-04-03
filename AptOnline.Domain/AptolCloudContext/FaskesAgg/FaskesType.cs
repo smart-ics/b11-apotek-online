@@ -4,9 +4,9 @@ using Xunit;
 
 namespace AptOnline.Domain.AptolCloudContext.FaskesAgg;
 
-public class FaskesModel : IFaskesKey
+public record FaskesType : IFaskesKey
 {
-    public FaskesModel(string id, string name)
+    public FaskesType(string id, string name)
     {
         if (id == string.Empty ^ name == string.Empty)
             throw new ArgumentException("FaskesModel is invalid");
@@ -15,27 +15,35 @@ public class FaskesModel : IFaskesKey
         FaskesName = name;
     }
 
-    public static FaskesModel Default()
-        => new FaskesModel(string.Empty, string.Empty);
     public string FaskesId { get; private set; }
     public string FaskesName { get; private set; }
+    public static FaskesType Default 
+        => new FaskesType(string.Empty, string.Empty);
 }
 
-public class FaskesModelTest
+public class FaskesTypeTest
 {
     [Fact]
     public void UT1_GivenAllPropertiesNotEmpty_ShouldReturnValidFaskesModel()
     {
-        var act = () => new FaskesModel("A", "B");
+        var act = () => new FaskesType("A", "B");
     }
     [Fact]
     public void UT2_GivenAllPropertiesEmpty_ShouldReturnValidFaskesModel()
     {
-        var act = () => new FaskesModel("", "");
+        var act = () => new FaskesType("", "");
     }
     [Fact]
     public void UT3_GivenSomePropertyEmpty_ShouldThrowArgumentException()
     {
-        var act = () => new FaskesModel("A", "");
+        var act = () => new FaskesType("A", "");
         act.Should().Throw<ArgumentException>();
-    }}
+    }
+    [Fact]
+    public void UT4_GivenEmptyProps_WhenCompareToDefault_ShouldBeTrue()
+    {
+        var emptyFaskes = new FaskesType("", "");
+        var act = emptyFaskes == FaskesType.Default;
+        act.Should().Be(true);
+    }
+}

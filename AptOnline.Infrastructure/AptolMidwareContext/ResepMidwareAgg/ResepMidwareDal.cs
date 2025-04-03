@@ -53,10 +53,10 @@ public class ResepMidwareDal : IResepMidwareDal
         dp.AddParam("@SepId", resepMidware.SepId, SqlDbType.VarChar);
         dp.AddParam("@SepDate", resepMidware.SepId, SqlDbType.DateTime);
         dp.AddParam("@NoPeserta", resepMidware.SepId, SqlDbType.VarChar);
-        dp.AddParam("@FaskesId", resepMidware.FaskesId, SqlDbType.VarChar);
-        dp.AddParam("@FaskesName", resepMidware.FaskesName, SqlDbType.VarChar);
-        dp.AddParam("@PoliBpjsId", resepMidware.PoliBpjsId, SqlDbType.VarChar);
-        dp.AddParam("@PoliBpjsName", resepMidware.PoliBpjsName, SqlDbType.VarChar);
+        dp.AddParam("@FaskesId", resepMidware.Faskes.FaskesId, SqlDbType.VarChar);
+        dp.AddParam("@FaskesName", resepMidware.Faskes.FaskesName, SqlDbType.VarChar);
+        dp.AddParam("@PoliBpjsId", resepMidware.PoliBpjs.PoliBpjsId, SqlDbType.VarChar);
+        dp.AddParam("@PoliBpjsName", resepMidware.PoliBpjs.PoliBpjsName, SqlDbType.VarChar);
         dp.AddParam("@DokterId", resepMidware.DokterId, SqlDbType.VarChar);
         dp.AddParam("@DokterName", resepMidware.DokterName, SqlDbType.VarChar);
         
@@ -115,10 +115,10 @@ public class ResepMidwareDal : IResepMidwareDal
         dp.AddParam("@SepId", resepMidware.SepId, SqlDbType.VarChar);
         dp.AddParam("@SepDate", resepMidware.SepId, SqlDbType.DateTime);
         dp.AddParam("@NoPeserta", resepMidware.SepId, SqlDbType.VarChar);
-        dp.AddParam("@FaskesId", resepMidware.FaskesId, SqlDbType.VarChar);
-        dp.AddParam("@FaskesName", resepMidware.FaskesName, SqlDbType.VarChar);
-        dp.AddParam("@PoliBpjsId", resepMidware.PoliBpjsId, SqlDbType.VarChar);
-        dp.AddParam("@PoliBpjsName", resepMidware.PoliBpjsName, SqlDbType.VarChar);
+        dp.AddParam("@FaskesId", resepMidware.Faskes.FaskesId, SqlDbType.VarChar);
+        dp.AddParam("@FaskesName", resepMidware.Faskes.FaskesName, SqlDbType.VarChar);
+        dp.AddParam("@PoliBpjsId", resepMidware.PoliBpjs.PoliBpjsId, SqlDbType.VarChar);
+        dp.AddParam("@PoliBpjsName", resepMidware.PoliBpjs.PoliBpjsName, SqlDbType.VarChar);
         dp.AddParam("@DokterId", resepMidware.DokterId, SqlDbType.VarChar);
         dp.AddParam("@DokterName", resepMidware.DokterName, SqlDbType.VarChar);
         
@@ -154,7 +154,7 @@ public class ResepMidwareDal : IResepMidwareDal
                 CreateTimestamp, SyncTimestamp, UploadTimestamp,
                 ChartId, ResepRsId, RegId, PasienId, PasienName,
                 SepId, SepDate, NoPeserta, FaskesId, FaskesAsal, 
-                PoliBpjsId, PoliBpjsName, JenisObatId, DokterId, DokterName, 
+                PoliBpjsId, PoliBpjsName, DokterId, DokterName, 
                 ReffId, JenisObatId, Iterasi            
             FROM
                 APTOL_ResepMidware
@@ -165,7 +165,9 @@ public class ResepMidwareDal : IResepMidwareDal
         dp.AddParam("@ResepMidwareId", key.ResepMidwareId, SqlDbType.VarChar);
         
         using var conn = new SqlConnection(ConnStringHelper.Get(_options));
-        return conn.ReadSingle<ResepMidwareModel>(sql, dp);
+        var result =  conn.ReadSingle<ResepMidwareDto>(sql, dp);
+        return result.ToModel();
+
     }
 
     public IEnumerable<ResepMidwareModel> ListData(Periode filter)
@@ -176,7 +178,7 @@ public class ResepMidwareDal : IResepMidwareDal
                 CreateTimestamp, SyncTimestamp, UploadTimestamp,
                 ChartId, ResepRsId, RegId, PasienId, PasienName,
                 SepId, SepDate, NoPeserta, FaskesId, FaskesAsal, 
-                PoliBpjsId, PoliBpjsName, JenisObatId, DokterId, DokterName, 
+                PoliBpjsId, PoliBpjsName, DokterId, DokterName, 
                 ReffId, JenisObatId, Iterasi            
             FROM
                 APTOL_ResepMidware
@@ -188,6 +190,43 @@ public class ResepMidwareDal : IResepMidwareDal
         dp.AddParam("@EndDate", filter.Tgl2, SqlDbType.DateTime);
         
         using var conn = new SqlConnection(ConnStringHelper.Get(_options));
-        return conn.Read<ResepMidwareModel>(sql, dp);
+        var result = conn.Read<ResepMidwareDto>(sql, dp);
+        var response = result?.Select(x => x.ToModel());
+        return response;
+    }
+}
+
+internal record ResepMidwareDto(
+    string ResepMidwareId,
+    DateTime ResepMidwareDate,
+    DateTime BridgeState,
+    DateTime CreateTimestamp,
+    DateTime SyncTimestamp,
+    DateTime UploadTimestamp,
+    string ChartId,
+    string ResepRsId,
+    string RegId,
+    string PasienId,
+    string PasienName,
+    string SepId,
+    DateTime SepDate,
+    string NoPeserta,
+    string FaskesId,
+    string FaskesAsal,
+    string PoliBpjsId,
+    string PoliBpjsName,
+    string JenisObatId,
+    string DokterId,
+    string DokterName,
+    string ReffId,
+    int Iterasi)
+{
+    public ResepMidwareModel ToModel()
+    {
+        var result = new ResepMidwareModel
+        {
+
+        };
+        return result;
     }
 }

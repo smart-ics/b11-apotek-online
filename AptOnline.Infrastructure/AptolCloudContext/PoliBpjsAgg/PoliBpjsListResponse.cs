@@ -3,7 +3,7 @@
 namespace AptOnline.Infrastructure.AptolCloudContext.PoliBpjsAgg;
 
 
-public class ListPoliBpjsResponse
+public class PoliBpjsListResponse
 {
     public ListPoliBpjsResponseContent response { get; set; }
     public AptolCloudResponseMeta metaData { get; set; }

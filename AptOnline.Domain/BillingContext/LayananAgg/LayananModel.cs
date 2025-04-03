@@ -1,28 +1,24 @@
-﻿namespace AptOnline.Domain.BillingContext.LayananAgg;
+﻿using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
+
+namespace AptOnline.Domain.BillingContext.LayananAgg;
 
 public class LayananModel : ILayananKey
 {
-    public LayananModel()
+    public LayananModel(string id, string name, bool isActive)
     {
-    }
-
-    public LayananModel(string id)
-    {
+        if (id == string.Empty ^ name == string.Empty)
+            throw new ArgumentException("Layanan is invalid");
         LayananId = id;
+        LayananName = name;
+        IsActive = isActive;
+        PoliBpjs = PoliBpjsType.Default;
     }
-    public string LayananId { get; set; }
-    public string LayananName { get; set; }
-    public string SmfId { get; set; }
-    public string SmfName { get; set; }
-    public string InstalasiId { get; set; }
-    public string Instalasi { get; set; }
-    public string InstalasiDkId { get; set; }
-    public string InstalasiDkName { get; set; }
-    public string LayananDkId { get; set; }
-    public string LayananDkName { get; set; }
-    public string LayananTipeDkId { get; set; }
-    public string LayananTipeDkName { get; set; }
-    public string LayananBpjsId { get; set; }
-    public string LayananBpjsName { get; set; }
-    public bool IsActive { get; set; }
+    public string LayananId { get; private set; }
+    public string LayananName { get; private set; }
+    public PoliBpjsType PoliBpjs { get; private set; }
+    public bool IsActive { get; private set; }
+
+    public static LayananModel Default => new LayananModel("", "", false); 
+    public void SetPoliBpjs(PoliBpjsType poliBpjs) => PoliBpjs = poliBpjs;
 }
+

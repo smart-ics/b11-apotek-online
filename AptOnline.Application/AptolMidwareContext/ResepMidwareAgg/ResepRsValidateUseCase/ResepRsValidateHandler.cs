@@ -84,7 +84,7 @@ public class ResepRsValidateHandler :
 
     private ResepRsValidateResponseDto BuildResepMidware(int noUrut,
         ResepRsValidateCommandResep resep,
-        RegModel reg, SepModel sep, FaskesModel faskes, LayananModel layanan)
+        RegModel reg, SepModel sep, FaskesType faskes, LayananModel layanan)
     {
         var resepMidware = CreateResepHeader(reg, sep, faskes, layanan);
 
@@ -112,7 +112,7 @@ public class ResepRsValidateHandler :
     }
     
     private static ResepMidwareModel CreateResepHeader(RegModel reg, SepModel sep, 
-        FaskesModel faskes, LayananModel layanan)
+        FaskesType faskes, LayananModel layanan)
     {
         var result = new ResepMidwareModel();
         result.SetRegister(reg);

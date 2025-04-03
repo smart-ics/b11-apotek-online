@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AptOnline.Application.AptolCloudContext.PoliBpjsAgg
 {
-    public  interface IListPoliBpjsService : INunaService<IEnumerable<PoliBpjsModel>, string>
+    public  interface IListPoliBpjsService : INunaService<IEnumerable<PoliBpjsType>, string>
     {
     }
 }

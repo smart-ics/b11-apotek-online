@@ -5,8 +5,8 @@ namespace AptOnline.Infrastructure.AptolCloudContext.FaskesAgg;
 
 public class FaskesGetService : IFaskesGetService
 {
-    public FaskesModel Execute()
+    public FaskesType Execute()
     {
-        return new FaskesModel("0176B004", "RS Sehat Sejahtera");
+        return new FaskesType("0176B004", "RS Sehat Sejahtera");
     }
 }

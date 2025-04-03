@@ -1,7 +1,6 @@
 ﻿using System.Security.Cryptography.X509Certificates;
 using AptOnline.Application.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
-using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
@@ -9,21 +8,21 @@ using RestSharp;
 
 namespace AptOnline.Infrastructure.AptolCloudContext.PoliBpjsAgg
 {
-    public class ListPoliBpjsService : IListPoliBpjsService
+    public class PoliBpjsListService : IListPoliBpjsService
     {
         private readonly BpjsOptions _opt;
         private readonly string _timestamp;
         private readonly string _signature;
         private readonly string _decryptKey;
 
-        public ListPoliBpjsService(IOptions<BpjsOptions> opt)
+        public PoliBpjsListService(IOptions<BpjsOptions> opt)
         {
             _opt = opt.Value;
             _timestamp = BpjsHelper.GetTimeStamp().ToString();
             _signature = BpjsHelper.GenHMAC256(_opt.ConsId + "&" + _timestamp, _opt.SecretKey);
             _decryptKey = _opt.ConsId + _opt.SecretKey + _timestamp;
         }
-        public IEnumerable<PoliBpjsModel> Execute(string keyword)
+        public IEnumerable<PoliBpjsType> Execute(string keyword)
         {
             var endpoint = $"{_opt.BaseApiUrl}/referensi/poli/{keyword}";
             var client = new RestClient(endpoint)
@@ -52,12 +51,8 @@ namespace AptOnline.Infrastructure.AptolCloudContext.PoliBpjsAgg
                 jResult["response"] = JObject.Parse(decryptedResp);
             }
             catch { }
-            var resp = jResult.ToObject<ListPoliBpjsResponse>();
-            var result = resp.response.list.Select(x => new PoliBpjsModel
-            {
-                PoliBpjsId = x.kode,
-                PoliBpjsName = x.nama
-            });
+            var resp = jResult.ToObject<PoliBpjsListResponse>();
+            var result = resp.response.list.Select(x => new PoliBpjsType(x.kode,x.nama));
             return result;
         }
     }

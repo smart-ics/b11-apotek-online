@@ -22,7 +22,7 @@ namespace AptOnline.Infrastructure.AptolCloudContext.FaskesAgg
             _signature = BpjsHelper.GenHMAC256(_opt.ConsId + "&" + _timestamp, _opt.SecretKey);
             _decryptKey = _opt.ConsId + _opt.SecretKey + _timestamp;
         }
-        public IEnumerable<FaskesModel> Execute(ListFaskesQueryParam req)
+        public IEnumerable<FaskesType> Execute(ListFaskesQueryParam req)
         {
             var endpoint = $"{_opt.BaseApiUrl}/referensi/ppk/{req.JenisFaskes}/{req.Keyword}";
             var client = new RestClient(endpoint)
@@ -52,7 +52,7 @@ namespace AptOnline.Infrastructure.AptolCloudContext.FaskesAgg
             }
             catch { }
             var resp = jResult.ToObject<ListFaskesResponse>();
-            var result = resp.response.list.Select(x => new FaskesModel(x.kode, x.nama));
+            var result = resp.response.list.Select(x => new FaskesType(x.kode, x.nama));
             return result;
         }
     }

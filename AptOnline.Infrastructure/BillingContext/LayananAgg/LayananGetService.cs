@@ -1,4 +1,5 @@
 ﻿using AptOnline.Application.BillingContext.LayananAgg;
+using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
@@ -17,8 +18,18 @@ public class LayananGetService : ILayananGetService
 
     public LayananModel Execute(ILayananKey req)
     {
-        var responseData = Task.Run(() => ExecuteAsync(req.LayananId)).GetAwaiter().GetResult();
-        var result = responseData?.data;
+        var response = Task.Run(() => ExecuteAsync(req.LayananId)).GetAwaiter().GetResult();
+        var responseData = response?.data;
+        if (responseData is null)
+            return LayananModel.Default;
+
+        var result = new LayananModel(
+            responseData.LayananId,
+            responseData.LayananName, 
+            responseData.IsActive);
+        result.SetPoliBpjs(new PoliBpjsType(
+            responseData.LayananBpjsId,
+            responseData.LayananBpjsName));
         return result;
     }
 
