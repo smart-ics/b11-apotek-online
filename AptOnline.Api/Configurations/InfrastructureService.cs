@@ -1,11 +1,11 @@
-﻿using AptOnline.Application.Helpers;
-using AptOnline.Infrastructure;
+﻿using AptOnline.Infrastructure;
 using AptOnline.Infrastructure.BillingContext;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Nuna.Lib.AutoNumberHelper;
 using Nuna.Lib.CleanArchHelper;
 using Nuna.Lib.DataAccessHelper;
+using Nuna.Lib.ValidationHelper;
 using Scrutor;
 
 namespace AptOnline.Api.Configurations;
@@ -17,7 +17,7 @@ public static class InfrastructureService
     {
         services
             .AddScoped<INunaCounterDal, ParamNoDal>()
-            .AddScoped<ITglJamDal, TglJamDal>()
+            .AddScoped<ITglJamProvider, TglJamDal>()
             .AddScoped<ITokenService, TokenService>()
             .AddScoped<IMemoryCache, MemoryCache>()
             .AddScoped<INunaCounterDal, ParamNoDal>()

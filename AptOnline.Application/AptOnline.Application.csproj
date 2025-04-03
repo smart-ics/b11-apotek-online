@@ -11,13 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="BillingContext\" />
+    <PackageReference Include="MediatR" Version="10.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="Nuna.Lib.NetStandard" Version="3.1.147" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="10.0.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
-    <PackageReference Include="Nuna.Lib.NetStandard" Version="3.1.143" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>
