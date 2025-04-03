@@ -1,4 +1,6 @@
-﻿using AptOnline.Domain.PharmacyContext.MapDphoAgg;
+﻿using AptOnline.Domain.PharmacyContext.BrgAgg;
+using AptOnline.Domain.PharmacyContext.DphoAgg;
+using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using GuardNet;
 
 namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
@@ -24,10 +26,8 @@ public class ResepMidwareItemModel : IResepMidwareKey
     public string ResepMidwareId { get; private set; }
     public int NoUrut { get; private set; }
 
-    public string BarangId { get; private set; }
-    public string BarangName { get; private set; }
-    public string DphoId { get; private set; }
-    public string DphoName { get; private set; }
+    public BrgType Brg { get; private set; }
+    public DphoRefference Dpho { get; private set; }
 
     public int Signa1 { get; private set; }
     public decimal Signa2 { get; private set; }
@@ -47,15 +47,8 @@ public class ResepMidwareItemModel : IResepMidwareKey
     private void SetBrg(MapDphoModel mapDpho)
     {
         Guard.NotNull(mapDpho, nameof(mapDpho));
-        Guard.NotNullOrWhitespace(mapDpho.BrgId, nameof(mapDpho.BrgId));
-        Guard.NotNullOrWhitespace(mapDpho.BrgName, nameof(mapDpho.BrgName));
-        Guard.NotNullOrWhitespace(mapDpho.DphoId, nameof(mapDpho.DphoId));
-        Guard.NotNullOrWhitespace(mapDpho.DphoName, nameof(mapDpho.DphoName));
-
-        BarangId = mapDpho.BrgId;
-        BarangName = mapDpho.BrgName;
-        DphoId = mapDpho.DphoId;
-        DphoName = mapDpho.DphoName;
+        Brg = mapDpho.Brg;
+        Dpho = mapDpho.Dpho;
     }
 
     private void SetSigna(string signa, int qty)

@@ -42,6 +42,7 @@ public record DphoRefference(string DphoId, string DphoName)
     public DphoRefference(DphoModel dpho) : this(dpho.DphoId, dpho.DphoName)
     {
     }
+    public static DphoRefference Default => new(DphoModel.Default);
 };
 
 

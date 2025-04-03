@@ -35,6 +35,7 @@ public class ResepMidwareModel : IResepMidwareKey
     public DateTime SepDate { get; set;}
     public string NoPeserta { get; set;}
     
+    
     public string FaskesId { get; set;}
     public string FaskesName { get; set;}
     public string PoliBpjsId { get; set;}

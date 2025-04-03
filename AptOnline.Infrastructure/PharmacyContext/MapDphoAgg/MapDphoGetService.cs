@@ -1,4 +1,6 @@
 ﻿using AptOnline.Application.PharmacyContext.MapDphoAgg;
+using AptOnline.Domain.PharmacyContext.BrgAgg;
+using AptOnline.Domain.PharmacyContext.DphoAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
@@ -18,11 +20,13 @@ public class MapDphoGetService : IMapDphoGetService
     public MapDphoModel Execute(IBrgKey brgKey)
     {
         var response = Task.Run(() => GetData(brgKey.BrgId)).GetAwaiter().GetResult();
-        var result = new MapDphoModel(
-            response?.data?.brgId ?? string.Empty,
-            response?.data?.brgName ?? string.Empty,
+        var brg = new BrgType(
+            response?.data?.brgId ?? string.Empty, 
+            response?.data?.brgName ?? string.Empty);
+        var dpho = new DphoRefference(
             response?.data?.dphoId ?? string.Empty,
             response?.data?.dphoName ?? string.Empty);
+        var result = new MapDphoModel(brg, dpho);
         return result;
     }
 

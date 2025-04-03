@@ -80,12 +80,12 @@ public class ResepRsValidateTest
             DpjpName = "DPJP-001-Name",
         };
 
-    private static List<MapDphoModel> ListMapDpho()
-        => new()
-        {
-            new MapDphoModel("OBT1", "Obat-1", "DPHO1", "Obat DPHO-1"),
-            new MapDphoModel("OBT2", "Obat-2", "DPHO2", "Obat DPHO-2"),
-        };
+    // private static List<MapDphoModel> ListMapDpho()
+    //     => new()
+    //     {
+    //         new MapDphoModel("OBT1", "Obat-1", "DPHO1", "Obat DPHO-1"),
+    //         new MapDphoModel("OBT2", "Obat-2", "DPHO2", "Obat DPHO-2"),
+    //     };
     
     //private static List<BrgMo
 

@@ -1,32 +1,25 @@
-﻿using AptOnline.Domain.PharmacyContext.DphoAgg;
+﻿using AptOnline.Domain.PharmacyContext.BrgAgg;
+using AptOnline.Domain.PharmacyContext.DphoAgg;
 using FluentAssertions;
 using GuardNet;
 using Xunit;
 
 namespace AptOnline.Domain.PharmacyContext.MapDphoAgg;
 
-public class MapDphoModel : IBrgKey, IDphoKey
+public class MapDphoModel
 {
-    public MapDphoModel(string brgId, string brgName, string dphoId, string dphoName)
+    public MapDphoModel(BrgType brg, DphoRefference dpho)
     {
-        var emptyCount = new[] { brgId, brgName, dphoId, dphoName }
-            .Count(string.IsNullOrEmpty);
-
-        var isInvalid = emptyCount is > 0 and < 4;
-        if (isInvalid)
-            throw new ArgumentException("MapDphoModel is invalid");        
-        
-        BrgId = brgId;
-        BrgName = brgName;
-        DphoId = dphoId;
-        DphoName = dphoName;
+        if (brg == BrgType.Default ^ dpho == DphoRefference.Default)
+            throw new ArgumentException("MapDpho is invalid state");
+        Brg = brg;
+        Dpho = dpho;
     }
     public static MapDphoModel Default 
-        => new MapDphoModel(string.Empty, string.Empty, string.Empty, string.Empty);
-    public string BrgId { get; private set; }
-    public string BrgName { get; private set; }
-    public string DphoId { get; private set; }
-    public string DphoName { get; private set; }
+        => new MapDphoModel(BrgType.Default, DphoRefference.Default);
+
+    public BrgType Brg { get; private set; }
+    public DphoRefference Dpho { get; private set; }
 }
 
 public interface IBrgKey
@@ -36,20 +29,22 @@ public interface IBrgKey
 
 public class MapDphoModelTest
 {
-    [Fact]
-    public void UT1_GivenAllPropertiesNotEmpty_ShouldReturnValidMapDphoModel()
+    [Theory]
+    [InlineData("A", "B", "C", "D")]
+    [InlineData("", "", "", "")]
+    public void UT1_GivenAllValidInput_ShouldSuccess(string brgId, string brgName,
+        string dphoId, string dphoName)
     {
-        var act = () => new MapDphoModel("A", "B", "C", "D");
+        var brg = new BrgType(brgId, brgName);
+        var dpho = new DphoRefference(dphoId, dphoName);
+        var act = () => new MapDphoModel(brg, dpho);
     }
     [Fact]
-    public void UT2_GivenAllPropertiesEmpty_ShouldReturnValidMapDphoModel()
+    public void UT2_GivenSomeEmpty_ShouldReturnException()
     {
-        var act = () => new MapDphoModel("", "", "", "");
-    }
-    [Fact]
-    public void UT3_GivenSomePropertyEmpty_ShouldThrowArgumentException()
-    {
-        var act = () => new MapDphoModel("A", "", "C", "D");
+        var brg = new BrgType("A", "B");
+        var act = () => new MapDphoModel(brg, DphoRefference.Default);
         act.Should().Throw<ArgumentException>();
     }
+
 }
