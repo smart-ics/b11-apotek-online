@@ -1,9 +1,10 @@
 ﻿using System.Globalization;
+using AptOnline.Domain.Helpers;
 using GuardNet;
 
 namespace AptOnline.Domain.BillingContext.SepAgg;
 
-public record SepSummary
+public record SepSummary : ISepKey
 {
     public SepSummary(string sepId, DateTime sepDate, string noPeserta, string dokterId, string dokterName)
     {
@@ -25,5 +26,7 @@ public record SepSummary
     public string DokterId {get;}
     public string DokterName {get;}
 
-    public static SepSummary Default => new SepSummary("-", new DateTime(3000,1,1), "-", "-", "-");
+    public static SepSummary Default => new SepSummary(
+        AppConst.DASH, AppConst.DEF_DATE, 
+        AppConst.DASH, AppConst.DASH, AppConst.DASH);
 }

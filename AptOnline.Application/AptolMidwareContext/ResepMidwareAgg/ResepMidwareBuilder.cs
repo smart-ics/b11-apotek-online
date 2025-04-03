@@ -55,11 +55,6 @@ public class ResepMidwareBuilder : IResepMidwareBuilder
             
             ChartId = resepRs.
             PasienId = resepRs.PasienId,
-            PasienName = resepRs.PasienName,
-            // SepId = resepRs.SepId,
-            // SepDate = resepRs.SepDate,
-            // NoPeserta = resepRs.NoPeserta,
-            // FaskesId = resepRs.FaskesId
         };
         // _agg.FaskesAsal = resepRs.FaskesAsal;
         // _agg.PoliBpjsId = resepRs.PoliBpjsId;

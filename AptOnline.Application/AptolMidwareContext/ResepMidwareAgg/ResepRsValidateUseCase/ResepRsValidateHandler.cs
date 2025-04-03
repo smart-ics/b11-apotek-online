@@ -46,8 +46,6 @@ public class ResepRsValidateHandler :
         //  GUARD (header only)
         var reg = _regGetService.Execute(request)
                   ?? throw new KeyNotFoundException($"Register {request.RegId} not found");
-        var sep = _sepGetService.Execute(reg)
-                  ?? throw new KeyNotFoundException($"Sep {request.RegId} not found");
         var faskes = _faskesGetService.Execute()
                      ?? throw new KeyNotFoundException($"Setting Faskes not found");
         var layanan = _layananGetService.Execute(request)
@@ -59,7 +57,7 @@ public class ResepRsValidateHandler :
         foreach (var item in request.ListResep)
         {
             noUrutResep++;
-            var createResult = BuildResepMidware(noUrutResep, item, reg, sep, faskes, layanan);
+            var createResult = BuildResepMidware(noUrutResep, item, reg, faskes, layanan);
             listResult.Add(createResult);
         }
 
@@ -84,9 +82,9 @@ public class ResepRsValidateHandler :
 
     private ResepRsValidateResponseDto BuildResepMidware(int noUrut,
         ResepRsValidateCommandResep resep,
-        RegModel reg, SepModel sep, FaskesType faskes, LayananModel layanan)
+        RegType reg, FaskesType faskes, LayananModel layanan)
     {
-        var resepMidware = CreateResepHeader(reg, sep, faskes, layanan);
+        var resepMidware = CreateResepHeader(reg, faskes, layanan);
 
         var listValidationNote = new List<string>();
         var itemCount = 0;
@@ -111,12 +109,11 @@ public class ResepRsValidateHandler :
             resepMidware, true, listValidationNoteStr);
     }
     
-    private static ResepMidwareModel CreateResepHeader(RegModel reg, SepModel sep, 
+    private static ResepMidwareModel CreateResepHeader(RegType reg, 
         FaskesType faskes, LayananModel layanan)
     {
         var result = new ResepMidwareModel();
-        result.SetRegister(reg);
-        result.SetSep(sep);
+        result.SetReg(reg);
         result.SetFaskes(faskes);
         result.SetPoliBpjs(layanan);
         return result;

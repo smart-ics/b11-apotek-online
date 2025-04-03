@@ -1,14 +1,10 @@
-﻿using System.Globalization;
-using AptOnline.Domain.AptolCloudContext.FaskesAgg;
+﻿using AptOnline.Domain.AptolCloudContext.FaskesAgg;
 using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using GuardNet;
-using Nuna.Lib.DataTypeExtension;
 using Nuna.Lib.PatternHelper;
-using Nuna.Lib.ValidationHelper;
 
 namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 
@@ -26,14 +22,7 @@ public class ResepMidwareModel : IResepMidwareKey
     #region BILLING-EMR-RELATED
     public string ChartId { get; set; }
     public string ResepRsId { get; set; }
-    public string RegId { get; set; }
-    public string PasienId { get; set; }
-    public string PasienName { get; set; }
-    #endregion
-    
-    #region SEP-RELATED
-    public SepSummary Sep { get; private set; }
-    
+    public RegType Reg { get; private set; }
     public FaskesType Faskes { get; private set; }
     public PoliBpjsType PoliBpjs { get; private set; }
     #endregion
@@ -46,25 +35,11 @@ public class ResepMidwareModel : IResepMidwareKey
     #endregion
     
     #region METHODS-HEADER-RELATED
-    public void SetRegister(RegModel reg)
+    public void SetReg(RegType reg)
     {
-        //  GUARD
         Guard.NotNull(reg, nameof(reg));
-        Guard.NotNullOrWhitespace(reg.RegId, nameof(reg.RegId));
-        Guard.NotNullOrWhitespace(reg.PasienId, nameof(reg.PasienId));
-        Guard.NotNullOrWhitespace(reg.PasienName, nameof(reg.PasienName));
-        
-        //  BUILD      
-        RegId = reg.RegId;
-        PasienId = reg.PasienId;
-        PasienName = reg.PasienName;
+        Reg = reg;
     }
-    public void SetSep(SepModel sep)
-    {
-        Guard.NotNull(sep, nameof(sep));
-        Sep = sep.ToSummary();
-    }
-
     public void SetPoliBpjs(LayananModel layanan)
     {
         Guard.NotNull(layanan, nameof(layanan));

@@ -58,19 +58,19 @@ public class ResepRsValidateTest
             _writer.Object);
     }
 
-    private static RegModel FakeReg()
-        => new RegModel
-        {
-            RegId = "RG-001",
-            PasienId = "MR-001",
-            PasienName = "John Doe",
-            RegDate = "2025-04-01",
-            SepId = "SEP-001",
-        };
-    private void MockRegGetService() 
-        => _regGetService
-            .Setup(x => x.Execute(It.IsAny<IRegKey>()))
-            .Returns(FakeReg());
+    // private static RegType FakeReg()
+    //     => new RegType
+    //     {
+    //         RegId = "RG-001",
+    //         PasienId = "MR-001",
+    //         PasienName = "John Doe",
+    //         RegDate = "2025-04-01",
+    //         Sep = "SEP-001",
+    //     };
+    // private void MockRegGetService() 
+    //     => _regGetService
+    //         .Setup(x => x.Execute(It.IsAny<IRegKey>()))
+    //         .Returns(FakeReg());
     
     private static SepModel FakeSep()
         => new SepModel
