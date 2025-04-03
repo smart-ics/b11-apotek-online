@@ -50,15 +50,15 @@ public class ResepMidwareDal : IResepMidwareDal
         dp.AddParam("@PasienId", resepMidware.PasienId, SqlDbType.VarChar); 
         dp.AddParam("@PasienName", resepMidware.PasienName, SqlDbType.VarChar);
         
-        dp.AddParam("@SepId", resepMidware.SepId, SqlDbType.VarChar);
-        dp.AddParam("@SepDate", resepMidware.SepId, SqlDbType.DateTime);
-        dp.AddParam("@NoPeserta", resepMidware.SepId, SqlDbType.VarChar);
+        dp.AddParam("@SepId", resepMidware.Sep.SepId, SqlDbType.VarChar);
+        dp.AddParam("@SepDate", resepMidware.Sep.SepId, SqlDbType.DateTime);
+        dp.AddParam("@NoPeserta", resepMidware.Sep.SepId, SqlDbType.VarChar);
+        dp.AddParam("@DokterId", resepMidware.Sep.DokterId, SqlDbType.VarChar);
+        dp.AddParam("@DokterName", resepMidware.Sep.DokterName, SqlDbType.VarChar);
         dp.AddParam("@FaskesId", resepMidware.Faskes.FaskesId, SqlDbType.VarChar);
         dp.AddParam("@FaskesName", resepMidware.Faskes.FaskesName, SqlDbType.VarChar);
         dp.AddParam("@PoliBpjsId", resepMidware.PoliBpjs.PoliBpjsId, SqlDbType.VarChar);
         dp.AddParam("@PoliBpjsName", resepMidware.PoliBpjs.PoliBpjsName, SqlDbType.VarChar);
-        dp.AddParam("@DokterId", resepMidware.DokterId, SqlDbType.VarChar);
-        dp.AddParam("@DokterName", resepMidware.DokterName, SqlDbType.VarChar);
         
         dp.AddParam("@JenisObatId", resepMidware.JenisObatId, SqlDbType.VarChar);
         dp.AddParam("@ReffId", resepMidware.ReffId, SqlDbType.VarChar);
@@ -112,15 +112,15 @@ public class ResepMidwareDal : IResepMidwareDal
         dp.AddParam("@PasienId", resepMidware.PasienId, SqlDbType.VarChar); 
         dp.AddParam("@PasienName", resepMidware.PasienName, SqlDbType.VarChar);
         
-        dp.AddParam("@SepId", resepMidware.SepId, SqlDbType.VarChar);
-        dp.AddParam("@SepDate", resepMidware.SepId, SqlDbType.DateTime);
-        dp.AddParam("@NoPeserta", resepMidware.SepId, SqlDbType.VarChar);
+        dp.AddParam("@SepId", resepMidware.Sep.SepId, SqlDbType.VarChar);
+        dp.AddParam("@SepDate", resepMidware.Sep.SepId, SqlDbType.DateTime);
+        dp.AddParam("@NoPeserta", resepMidware.Sep.SepId, SqlDbType.VarChar);
+        dp.AddParam("@DokterId", resepMidware.Sep.DokterId, SqlDbType.VarChar);
+        dp.AddParam("@DokterName", resepMidware.Sep.DokterName, SqlDbType.VarChar);
         dp.AddParam("@FaskesId", resepMidware.Faskes.FaskesId, SqlDbType.VarChar);
         dp.AddParam("@FaskesName", resepMidware.Faskes.FaskesName, SqlDbType.VarChar);
         dp.AddParam("@PoliBpjsId", resepMidware.PoliBpjs.PoliBpjsId, SqlDbType.VarChar);
         dp.AddParam("@PoliBpjsName", resepMidware.PoliBpjs.PoliBpjsName, SqlDbType.VarChar);
-        dp.AddParam("@DokterId", resepMidware.DokterId, SqlDbType.VarChar);
-        dp.AddParam("@DokterName", resepMidware.DokterName, SqlDbType.VarChar);
         
         dp.AddParam("@JenisObatId", resepMidware.JenisObatId, SqlDbType.VarChar);
         dp.AddParam("@ReffId", resepMidware.ReffId, SqlDbType.VarChar);
@@ -223,6 +223,7 @@ internal record ResepMidwareDto(
 {
     public ResepMidwareModel ToModel()
     {
+        // TODO: Mapping SepModel to Dto
         var result = new ResepMidwareModel
         {
 

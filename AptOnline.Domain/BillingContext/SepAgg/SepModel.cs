@@ -1,7 +1,11 @@
-﻿namespace AptOnline.Domain.BillingContext.SepAgg;
+﻿using Nuna.Lib.DataTypeExtension;
+using Nuna.Lib.ValidationHelper;
+
+namespace AptOnline.Domain.BillingContext.SepAgg;
 
 public class SepModel : ISepKey
 {
+    //  TODO: Hilangkan property yang tidak diperlukan dalam modul APTOL
     public string SepId { get; set; }
     public string SepDateTime { get; set; }
     public string RegId { get; set; }
@@ -62,9 +66,8 @@ public class SepModel : ISepKey
     public string SuratKematianNo { get; set; }
     public string LpManualNo { get; set; }
     public string RujukanInternalNo { get; set; }
-}
-
-public interface ISepKey
-{
-    string SepId { get; }
+    
+    public SepSummary ToSummary() 
+        => new SepSummary(SepId, SepDateTime.Left(10).ToDate(DateFormatEnum.YMD), 
+            PesertaJaminanId, DpjpId, DpjpName);
 }

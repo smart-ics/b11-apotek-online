@@ -32,15 +32,10 @@ public class ResepMidwareModel : IResepMidwareKey
     #endregion
     
     #region SEP-RELATED
-    public string SepId { get;  set; }
-    public DateTime SepDate { get; set;}
-    public string NoPeserta { get; set;}
-    
+    public SepSummary Sep { get; private set; }
     
     public FaskesType Faskes { get; private set; }
     public PoliBpjsType PoliBpjs { get; private set; }
-    public string DokterId { get; set;}
-    public string DokterName { get; set;}
     #endregion
 
     #region APTOL-RELATED
@@ -66,38 +61,8 @@ public class ResepMidwareModel : IResepMidwareKey
     }
     public void SetSep(SepModel sep)
     {
-        //  GUARD
         Guard.NotNull(sep, nameof(sep));
-        Guard.NotNullOrWhitespace(sep.SepId, nameof(sep.SepId));
-        Guard.For(() => IsValidDate(sep.SepDateTime), new ArgumentException(nameof(sep.SepDateTime)));
-        Guard.NotNullOrWhitespace(sep.PesertaJaminanId, nameof(sep.PesertaJaminanId));
-        Guard.NotNullOrWhitespace(sep.DpjpId, nameof(sep.DpjpId));
-        Guard.NotNullOrWhitespace(sep.DpjpName, nameof(sep.DpjpName));
-        
-        //  BUILD 
-        SepId = sep.SepId;
-        var sepDateStr = sep.SepDateTime.Left(10);
-        SepDate = sepDateStr.ToDate(DateFormatEnum.YMD);
-        NoPeserta = sep.PesertaJaminanId;
-        DokterId = sep.DpjpId;
-        DokterName = sep.DpjpName;
-        return;
-        
-        //  INNER HELPER
-        bool IsValidDate(string input)
-        {
-            if (string.IsNullOrEmpty(input) || input.Length < 10)
-                return false;
-
-            var datePart = input[..10];
-            return DateTime.TryParseExact(
-                datePart,
-                "yyyy-MM-dd",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out _
-            );
-        }        
+        Sep = sep.ToSummary();
     }
 
     public void SetPoliBpjs(LayananModel layanan)
