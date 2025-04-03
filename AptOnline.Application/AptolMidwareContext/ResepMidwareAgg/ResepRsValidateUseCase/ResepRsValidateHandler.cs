@@ -13,7 +13,7 @@ using Nuna.Lib.TransactionHelper;
 
 namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.ResepRsValidateUseCase;
 
-public class ResepRsValidateCommandHandler :
+public class ResepRsValidateHandler :
     IRequestHandler<ResepRsValidateCommand, IEnumerable<ResepRsValidateResponse>>
 {
     private readonly IResepMidwareWriter _writer;
@@ -24,7 +24,7 @@ public class ResepRsValidateCommandHandler :
     private readonly IMapDphoGetService _mapDphoGetService;
 
 
-    public ResepRsValidateCommandHandler(
+    public ResepRsValidateHandler(
         IRegGetService regGetService,
         ISepGetService sepGetService,
         IFaskesGetService faskesGetService,

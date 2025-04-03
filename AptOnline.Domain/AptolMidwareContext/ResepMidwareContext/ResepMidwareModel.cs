@@ -34,6 +34,7 @@ public class ResepMidwareModel : IResepMidwareKey
     public string SepId { get;  set; }
     public DateTime SepDate { get; set;}
     public string NoPeserta { get; set;}
+    
     public string FaskesId { get; set;}
     public string FaskesName { get; set;}
     public string PoliBpjsId { get; set;}
@@ -113,12 +114,6 @@ public class ResepMidwareModel : IResepMidwareKey
 
     public void SetFaskes(FaskesModel faskes)
     {
-        //  GUARD
-        Guard.NotNull(faskes, nameof(faskes));
-        Guard.NotNullOrWhitespace(faskes.FaskesId, nameof(faskes.FaskesId));
-        Guard.NotNullOrWhitespace(faskes.FaskesName, nameof(faskes.FaskesName));
-        
-        //  BUILD
         FaskesId = faskes.FaskesId;
         FaskesName = faskes.FaskesName;
     }
@@ -126,16 +121,33 @@ public class ResepMidwareModel : IResepMidwareKey
     
     #region METHODS-ITEM-RELATED
 
-    public NunaResult<string> AddObat(MapDphoModel brgDpho, string signa, int qty)
+    public NunaResult<string> AddObat(MapDphoModel mapBrgDpho, string signa, int qty)
     {
+        // Guard.NotNull(mapBrgDpho, nameof(mapBrgDpho));
+        // Guard.NotNullOrWhitespace(mapBrgDpho.BrgId, nameof(mapBrgDpho.BrgId));
+        // Guard.NotNullOrWhitespace(mapBrgDpho.BrgName, nameof(mapBrgDpho.BrgName));
+        // Guard.NotNullOrWhitespace(mapBrgDpho.DphoId, nameof(mapBrgDpho.DphoId));
+        // Guard.NotNullOrWhitespace(mapBrgDpho.DphoName, nameof(mapBrgDpho.DphoName));
+        // Guard.NotNullOrWhitespace(signa, nameof(signa));
+        // Guard.NotLessThan(qty, 1, nameof(qty));
+        //
         var no = ListItem.Max(x => x.NoUrut+1);
-        var newItem = new ResepMidwareItemModel(no);
-        var result = newItem.SetSigna(signa, qty);
-        if (!result.IsSuccess)
-            return NunaResult<string>.Failure(result.ErrorMessage);
+        var newItem = new ResepMidwareItemModel(no, mapBrgDpho, signa, qty);
+        
 
+        //resultType = newItem.SetBrg(mapBrgDpho, qty);
+        
+        
         return NunaResult<string>.Success("Success");
     }
+    private static ResepMidwareItemModel CreateResep(
+        Func<ResepMidwareItemModel> primaryStrategy, 
+        Func<ResepMidwareItemModel> fallbackStrategy)
+    {
+        var result = primaryStrategy() 
+            ?? fallbackStrategy(); 
+        return result;
+    }    
     public NunaResult<string> AddRacik(MapDphoModel brgDpho, string signa, int qty)
     {
         // var no = ListItem.Max(x => x.NoUrut+1);

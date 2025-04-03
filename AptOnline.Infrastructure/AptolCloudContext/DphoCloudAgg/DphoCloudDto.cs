@@ -1,6 +1,6 @@
 ﻿namespace AptOnline.Infrastructure.AptolCloudContext.DphoAgg;
 
-public class DphoDto
+public class DphoCloudDto
 {
     public string kodeobat { get; set; }
     public string namaobat { get; set; }

@@ -52,11 +52,7 @@ namespace AptOnline.Infrastructure.AptolCloudContext.FaskesAgg
             }
             catch { }
             var resp = jResult.ToObject<ListFaskesResponse>();
-            var result = resp.response.list.Select(x => new FaskesModel
-            {
-                FaskesId = x.kode,
-                FaskesName = x.nama,
-            });
+            var result = resp.response.list.Select(x => new FaskesModel(x.kode, x.nama));
             return result;
         }
     }

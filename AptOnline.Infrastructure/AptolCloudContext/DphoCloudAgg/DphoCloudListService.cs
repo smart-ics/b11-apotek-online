@@ -1,20 +1,21 @@
 ﻿using System.Security.Cryptography.X509Certificates;
-using Microsoft.Extensions.Options;
-using AptOnline.Application.AptolCloudContext.DphoAgg;
-using AptOnline.Domain.AptolCloudContext.DphoAgg;
+using AptOnline.Application.AptolCloudContext.DphoCloudAgg;
+using AptOnline.Domain.PharmacyContext.DphoAgg;
+using AptOnline.Infrastructure.AptolCloudContext.DphoAgg;
 using AptOnline.Infrastructure.Helpers;
-using RestSharp;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using RestSharp;
 
-namespace AptOnline.Infrastructure.AptolCloudContext.DphoAgg;
+namespace AptOnline.Infrastructure.AptolCloudContext.DphoCloudAgg;
 
-public class ListDphoService : IListDphoService
+public class DphoCloudListService : IDphoCloudListService
 {
     private readonly BpjsOptions _opt;
     private readonly string _timestamp;
     private readonly string _signature;
     private readonly string _decryptKey;
-    public ListDphoService(IOptions<BpjsOptions> opt)
+    public DphoCloudListService(IOptions<BpjsOptions> opt)
     {
         _opt = opt.Value;
         _timestamp = BpjsHelper.GetTimeStamp().ToString();
@@ -46,23 +47,19 @@ public class ListDphoService : IListDphoService
         var tempResp = jResult.SelectToken("response");
         try
         {
-            string decryptedResp = BpjsHelper.Decrypt(_decryptKey, tempResp?.ToString() ?? string.Empty);
+            var decryptedResp = BpjsHelper.Decrypt(_decryptKey, tempResp?.ToString() ?? string.Empty);
             jResult["response"] = JObject.Parse(decryptedResp);
         }
-        catch { }
-        var listRefDphoBpjs = jResult.ToObject<ListDphoResponse>();
-        var result = listRefDphoBpjs?.response.list.Select(x => new DphoModel
+        catch
         {
-            DphoId = x.kodeobat,
-            DphoName = x.namaobat,
-            Prb = x.prb,
-            Kronis = x.kronis,
-            Kemo = x.kemo,
-            Harga = Convert.ToDecimal(x.harga),
-            Restriksi = x.restriksi,
-            Generik = x.generik,
-            IsAktif = true//(bool)x.aktif
-        }) ?? new List<DphoModel>();
+            // ignored
+        }
+
+        var listRefDphoBpjs = jResult.ToObject<DphoCloudListResponse>();
+        var result = listRefDphoBpjs?.response.list.Select(x => new DphoModel(
+            x.kodeobat, x.namaobat, x.prb, x.kronis,
+            x.kemo, Convert.ToDecimal(x.harga), x.restriksi,
+            x.generik, true)) ?? new List<DphoModel>();
         return result;
     }
 }

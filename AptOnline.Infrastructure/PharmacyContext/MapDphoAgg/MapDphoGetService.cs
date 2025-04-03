@@ -18,7 +18,12 @@ public class MapDphoGetService : IMapDphoGetService
     public MapDphoModel Execute(IBrgKey brgKey)
     {
         var response = Task.Run(() => GetData(brgKey.BrgId)).GetAwaiter().GetResult();
-        return response?.data;
+        var result = new MapDphoModel(
+            response?.data?.brgId ?? string.Empty,
+            response?.data?.brgName ?? string.Empty,
+            response?.data?.dphoId ?? string.Empty,
+            response?.data?.dphoName ?? string.Empty);
+        return result;
     }
 
     private async Task<MapDphoGetResponse> GetData(string id)

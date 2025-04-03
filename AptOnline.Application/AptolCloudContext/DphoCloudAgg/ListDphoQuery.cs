@@ -1,4 +1,5 @@
-﻿using AptOnline.Domain.AptolCloudContext.DphoAgg;
+﻿using AptOnline.Application.AptolCloudContext.DphoCloudAgg;
+using AptOnline.Domain.PharmacyContext.DphoAgg;
 using MediatR;
 
 namespace AptOnline.Application.AptolCloudContext.DphoAgg;
@@ -9,8 +10,8 @@ public class ListDphoQuery : IRequest<IEnumerable<DphoModel>>
 
 public class ListDphoHandler : IRequestHandler<ListDphoQuery, IEnumerable<DphoModel>>
 {
-    private readonly IListDphoService _listDphoService;
-    public ListDphoHandler(IListDphoService listDphoService)
+    private readonly IDphoCloudListService _listDphoService;
+    public ListDphoHandler(IDphoCloudListService listDphoService)
     {
         _listDphoService = listDphoService;
     }
