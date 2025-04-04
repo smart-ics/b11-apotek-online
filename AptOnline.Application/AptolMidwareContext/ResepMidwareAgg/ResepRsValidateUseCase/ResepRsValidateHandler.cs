@@ -43,10 +43,8 @@ public class ResepRsValidateHandler :
         ResepRsValidateCommand request, CancellationToken cancellationToken)
     {
         //  GUARD (header only)
-        var reg = _regGetService.Execute(request)
-                  ?? throw new KeyNotFoundException($"Register {request.RegId} not found");
-        var sep = _sepGetByRegService.Execute(reg)
-                  ?? throw new KeyNotFoundException($"SEP for register {reg.RegId} not found");
+        var sep = _sepGetByRegService.Execute(request)
+                  ?? throw new KeyNotFoundException($"SEP for register {request.RegId} not found");
         var faskes = _faskesGetService.Execute()
                      ?? throw new KeyNotFoundException($"Setting Faskes not found");
         var layanan = _layananGetService.Execute(request)
