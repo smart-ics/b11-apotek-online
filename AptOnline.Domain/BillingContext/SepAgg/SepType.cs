@@ -7,7 +7,7 @@ namespace AptOnline.Domain.BillingContext.SepAgg;
 
 public record SepType : ISepKey
 {
-    public SepType(string sepId, DateTime sepDateTime, 
+    public SepType(string sepId, DateTime sepDateTime, string sepNo, 
         string pesertaJaminanId, RegType reg, DokterType dpjp, 
         bool isPrb, string prb)
     {
@@ -15,10 +15,10 @@ public record SepType : ISepKey
         Guard.NotNullOrWhitespace(pesertaJaminanId, nameof(pesertaJaminanId));
         Guard.NotNull(reg, nameof(reg));
         Guard.NotNull(dpjp, nameof(dpjp));
-        Guard.NotNullOrWhitespace(prb, nameof(prb));
         
         SepId = sepId;
         SepDateTime = sepDateTime;
+        SepNo = sepNo;
         PesertaJaminanId = pesertaJaminanId;
         Reg = reg;
         Dpjp = dpjp;
@@ -28,6 +28,7 @@ public record SepType : ISepKey
 
     public string SepId { get; private set; }
     public DateTime SepDateTime { get; private set; }
+    public string SepNo { get; private set; }
     public string PesertaJaminanId { get; private set; }
     public RegType Reg { get; private set; }
     public DokterType Dpjp { get; private set; }
@@ -36,6 +37,6 @@ public record SepType : ISepKey
     
     public static SepType Default => new SepType(
         AppConst.DASH, AppConst.DEF_DATE, AppConst.DASH, 
-        RegType.Default, DokterType.Default, false, 
+        AppConst.DASH, RegType.Default, DokterType.Default, false, 
         AppConst.DASH);
 }

@@ -22,13 +22,13 @@ public class ResepMidwareBuilder : IResepMidwareBuilder
 {
     private readonly IResepMidwareDal _resepMidwareDal;
     private readonly IResepMidwareItemDal _resepMidwareItemDal;
-    private readonly ISepGetService _sepGetService;
+    private readonly ISepGetByRegService _sepGetService;
     private readonly ITglJamProvider _dateTime;
     private ResepMidwareModel _agg;
 
     public ResepMidwareBuilder(IResepMidwareDal resepMidwareDal, 
         IResepMidwareItemDal resepMidwareItemDal, 
-        ISepGetService sepGetService, 
+        ISepGetByRegService sepGetService, 
         ITglJamProvider dateTime)
     {
         _resepMidwareDal = resepMidwareDal;

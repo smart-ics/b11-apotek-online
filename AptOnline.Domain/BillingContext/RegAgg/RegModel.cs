@@ -27,4 +27,7 @@ public record RegType : IRegKey
     public static RegType Default => new RegType(
         AppConst.DASH, AppConst.DEF_DATE,
         AppConst.DASH, AppConst.DASH);
+    public static IRegKey Key(string regId) 
+        => new RegType(regId, AppConst.DEF_DATE, AppConst.DASH, AppConst.DASH); 
 }
+
