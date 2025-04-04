@@ -57,20 +57,9 @@ public class ResepMidwareModel : IResepMidwareKey
 
     public NunaResult<string> AddObat(MapDphoModel mapBrgDpho, string signa, int qty)
     {
-        // Guard.NotNull(mapBrgDpho, nameof(mapBrgDpho));
-        // Guard.NotNullOrWhitespace(mapBrgDpho.BrgId, nameof(mapBrgDpho.BrgId));
-        // Guard.NotNullOrWhitespace(mapBrgDpho.BrgName, nameof(mapBrgDpho.BrgName));
-        // Guard.NotNullOrWhitespace(mapBrgDpho.DphoId, nameof(mapBrgDpho.DphoId));
-        // Guard.NotNullOrWhitespace(mapBrgDpho.DphoName, nameof(mapBrgDpho.DphoName));
-        // Guard.NotNullOrWhitespace(signa, nameof(signa));
-        // Guard.NotLessThan(qty, 1, nameof(qty));
-        //
         var no = ListItem.Max(x => x.NoUrut+1);
         var newItem = new ResepMidwareItemModel(no, mapBrgDpho, signa, qty);
-        
-
-        //resultType = newItem.SetBrg(mapBrgDpho, qty);
-        
+        ListItem.Add(newItem);
         
         return NunaResult<string>.Success("Success");
     }
@@ -82,17 +71,15 @@ public class ResepMidwareModel : IResepMidwareKey
             ?? fallbackStrategy(); 
         return result;
     }    
-    public NunaResult<string> AddRacik(MapDphoModel brgDpho, string signa, int qty)
+    public NunaResult<string> AddRacik(MapDphoModel mapBrgDpho, 
+        string signa, int qty, string jenisRacik)
     {
-        // var no = ListItem.Max(x => x.NoUrut+1);
-        // var newItem = new ResepMidwareItemModel(no);
-        // var result = newItem.SetSigna(signa, qty);
-        // if (!result.IsSuccess)
-        //     return NunaResult<string>.Failure(result.ErrorMessage);
-        //
-        // return NunaResult<string>.Success("Success");
-        throw new NotImplementedException();
+        var no = ListItem.Max(x => x.NoUrut+1);
+        var newItem = new ResepMidwareItemModel(no, mapBrgDpho, signa, qty);
+        newItem.SetAsRacik(jenisRacik);
+        ListItem.Add(newItem);
+        
+        return NunaResult<string>.Success("Success");
     }
-
     #endregion
 }

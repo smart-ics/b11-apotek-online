@@ -1,6 +1,5 @@
 ﻿using AptOnline.Application.AptolCloudContext.PpkAgg;
 using AptOnline.Application.BillingContext.LayananAgg;
-using AptOnline.Application.BillingContext.RegAgg;
 using AptOnline.Application.BillingContext.SepAgg;
 using AptOnline.Application.PharmacyContext.MapDphoAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
@@ -86,14 +85,15 @@ public class ResepRsValidateHandler :
         var itemCount = 0;
         foreach (var itemObat in resep.ListItem)
         {
-            resepMidware = AddItemObat(
-                itemObat, resepMidware, 
-                ref itemCount, ref listValidationNote);
-            
-            foreach (var itemRacik in itemObat.ListKomponenRacik)
-                resepMidware = AddItemRacik(
-                    itemRacik, resepMidware, itemObat.Signa, 
+            if (itemObat.ListKomponenRacik.Count > 0)
+                resepMidware = AddItemObat(
+                    itemObat, resepMidware, 
                     ref itemCount, ref listValidationNote);
+            else            
+                foreach (var itemRacik in itemObat.ListKomponenRacik)
+                    resepMidware = AddItemRacik(
+                        itemRacik, resepMidware, itemObat.Signa, itemObat.BrgId, 
+                        ref itemCount, ref listValidationNote);
         }
 
         var listValidationNoteStr = string.Join(", ", listValidationNote);
@@ -133,12 +133,13 @@ public class ResepRsValidateHandler :
     private ResepMidwareModel AddItemRacik(ResepRsValidateCommandKomponenRacik itemRacik,
         ResepMidwareModel resepMidware,
         string signa,
+        string jenisRacik,
         ref int itemCount,
         ref List<string> listValidationNote)
     {
         itemCount++;
         var mapDpho = _mapDphoGetService.Execute(itemRacik);
-        var resultType = resepMidware.AddRacik(mapDpho, signa, itemRacik.Qty);
+        var resultType = resepMidware.AddRacik(mapDpho, signa, itemRacik.Qty, jenisRacik);
         if (resultType.IsFailed)
             listValidationNote.Add(resultType.ErrorMessage);
         return resepMidware;
