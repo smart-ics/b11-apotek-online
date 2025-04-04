@@ -41,11 +41,11 @@ public class ResepRsValidateHandler :
     {
         //  GUARD (header only)
         var sep = _sepGetByRegService.Execute(request)
-                  ?? throw new KeyNotFoundException($"SEP for register {request.RegId} not found");
+            ?? throw new KeyNotFoundException($"SEP for register {request.RegId} not found");
         var ppk = _ppkGetService.Execute()
-                     ?? throw new KeyNotFoundException($"Setting Faskes not found");
+            ?? throw new KeyNotFoundException($"Setting Faskes not found");
         var layanan = _layananGetService.Execute(request)
-                      ?? throw new KeyNotFoundException($"Layanan {request.LayananId} not found");
+            ?? throw new KeyNotFoundException($"Layanan {request.LayananId} not found");
 
         //  BUILD
         var listResult = new List<ResepRsValidateResponseDto>();
