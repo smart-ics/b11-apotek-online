@@ -8,6 +8,7 @@
         public string ConsId { get; set; }
         public string SecretKey { get; set; }
         public string UserKey { get; set; }
-        public string ProviderId { get; set; }
+        public string PpkId { get; set; }
+        public string PpkName { get; set; }
     }
 }

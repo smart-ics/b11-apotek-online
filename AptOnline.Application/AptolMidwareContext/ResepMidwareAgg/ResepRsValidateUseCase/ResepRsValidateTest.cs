@@ -1,13 +1,9 @@
-﻿using AptOnline.Application.AptolCloudContext.FaskesAgg;
+﻿using AptOnline.Application.AptolCloudContext.PpkAgg;
 using AptOnline.Application.BillingContext.LayananAgg;
 using AptOnline.Application.BillingContext.RegAgg;
 using AptOnline.Application.BillingContext.SepAgg;
 using AptOnline.Application.PharmacyContext.MapDphoAgg;
-using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.BillingContext.SepAgg;
-using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using Moq;
-using Xunit;
 
 namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.ResepRsValidateUseCase;
 
@@ -35,24 +31,21 @@ public class ResepRsValidateTest
      */
     private readonly ResepRsValidateHandler _sut;
     private readonly Mock<IResepMidwareWriter> _writer;
-    private readonly Mock<IRegGetService> _regGetService;
     private readonly Mock<ISepGetByRegService> _sepGetByRegService;
-    private readonly Mock<IFaskesGetService> _faskesGetService;
+    private readonly Mock<IPpkGetService> _ppkGetService;
     private readonly Mock<ILayananGetService> _layananGetService;
     private readonly Mock<IMapDphoGetService> _mapDphoGetService;
 
-    public ResepRsValidateTest()
+    public ResepRsValidateTest(Mock<IPpkGetService> ppkGetService)
     {
         _writer = new Mock<IResepMidwareWriter>();
-        _regGetService = new Mock<IRegGetService>();
         _sepGetByRegService = new Mock<ISepGetByRegService>();
-        _faskesGetService = new Mock<IFaskesGetService>();
+        _ppkGetService = ppkGetService;
         _layananGetService = new Mock<ILayananGetService>();
         _mapDphoGetService = new Mock<IMapDphoGetService>();
         _sut = new ResepRsValidateHandler(
-            _regGetService.Object,
             _sepGetByRegService.Object,
-            _faskesGetService.Object,
+            _ppkGetService.Object,
             _layananGetService.Object,
             _mapDphoGetService.Object,
             _writer.Object);

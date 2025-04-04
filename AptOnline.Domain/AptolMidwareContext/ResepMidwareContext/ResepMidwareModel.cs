@@ -1,7 +1,6 @@
-﻿using AptOnline.Domain.AptolCloudContext.FaskesAgg;
-using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
+﻿using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
+using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
-using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using GuardNet;
@@ -24,7 +23,7 @@ public class ResepMidwareModel : IResepMidwareKey
     public string ChartId { get; set; }
     public string ResepRsId { get; set; }
     public SepType Sep { get; private set; }
-    public FaskesType Faskes { get; private set; }
+    public PpkSummary Ppk { get; private set; }
     public PoliBpjsType PoliBpjs { get; private set; }
     #endregion
 
@@ -47,10 +46,10 @@ public class ResepMidwareModel : IResepMidwareKey
         PoliBpjs = layanan.PoliBpjs;
     }
 
-    public void SetFaskes(FaskesType faskes)
+    public void SetPpk(PpkSummary ppk)
     {
-        Guard.NotNull(faskes, nameof(faskes));
-        Faskes = faskes;
+        Guard.NotNull(ppk, nameof(ppk));
+        Ppk = ppk;
     }
     #endregion
     

@@ -3,18 +3,18 @@ using MediatR;
 
 namespace AptOnline.Application.AptolCloudContext.PpkAgg
 {
-    public class GetSettingPpkBpjsQuery : IRequest<PpkSettingModel>
+    public class GetSettingPpkBpjsQuery : IRequest<PpkType>
     {
 
     }
-    public class GetSettingPpkBpjsQueryHandler : IRequestHandler<GetSettingPpkBpjsQuery, PpkSettingModel>
+    public class GetSettingPpkBpjsQueryHandler : IRequestHandler<GetSettingPpkBpjsQuery, PpkType>
     {
-        private readonly IGetSettingPpkBpjsService _getSettingPpkBpjsSvc;
-        public GetSettingPpkBpjsQueryHandler(IGetSettingPpkBpjsService getSettingPpkBpjsSvc)
+        private readonly IPpkGetService _getSettingPpkBpjsSvc;
+        public GetSettingPpkBpjsQueryHandler(IPpkGetService getSettingPpkBpjsSvc)
         {
             _getSettingPpkBpjsSvc = getSettingPpkBpjsSvc;
         }
-        public Task<PpkSettingModel> Handle(GetSettingPpkBpjsQuery request, CancellationToken cancellationToken)
+        public Task<PpkType> Handle(GetSettingPpkBpjsQuery request, CancellationToken cancellationToken)
         {
             var result = _getSettingPpkBpjsSvc.Execute();
             return Task.FromResult(result);
