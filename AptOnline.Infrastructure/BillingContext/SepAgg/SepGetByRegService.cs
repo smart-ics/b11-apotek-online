@@ -1,5 +1,7 @@
 ﻿using AptOnline.Application.BillingContext.SepAgg;
+using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
+using AptOnline.Domain.Helpers;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using RestSharp;
@@ -7,34 +9,34 @@ using RestSharp;
 namespace AptOnline.Infrastructure.BillingContext.SepAgg;
 
 
-public class SepGetService : ISepGetService
+public class SepGetByRegService : ISepGetByRegService
 {
     private readonly BillingOptions _opt;
 
-    public SepGetService(IOptions<BillingOptions> opt)
+    public SepGetByRegService(IOptions<BillingOptions> opt)
     {
         _opt = opt.Value;
     }
 
-    public SepModel Execute(ISepKey req)
+    public SepType Execute(IRegKey req)
     {
-        var responseData = Task.Run(() => ExecuteAsync(req.SepId)).GetAwaiter().GetResult();
+        var responseData = Task.Run(() => ExecuteAsync(req.RegId)).GetAwaiter().GetResult();
         var result = responseData?.data;
-        return result;
+        return result.ToSepType();
     }
 
-    private async Task<SepDto?> ExecuteAsync(string id)
+    private async Task<SepGetByRegResponse?> ExecuteAsync(string regId)
     {
-        if (id.Trim().Length == 0)
+        if (regId.Trim().Length == 0)
             return null;
         // BUILD
         var endpoint = $"{_opt.BaseApiUrl}/api/Bpjs/Sep";
         var client = new RestClient(endpoint);
         var req = new RestRequest("{regId}")
-            .AddUrlSegment("regId", id);
+            .AddUrlSegment("regId", regId);
 
         //  EXECUTE
-        var response = await client.ExecuteGetAsync<SepDto>(req);
+        var response = await client.ExecuteGetAsync<SepGetByRegResponse>(req);
         if (response.StatusCode != System.Net.HttpStatusCode.OK)
             return null;
         //  RETURN

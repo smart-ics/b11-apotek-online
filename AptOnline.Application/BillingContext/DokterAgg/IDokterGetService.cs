@@ -3,6 +3,6 @@ using Nuna.Lib.CleanArchHelper;
 
 namespace AptOnline.Application.BillingContext.DokterAgg;
 
-public interface IDokterGetService : INunaService<DokterModel, IDokterKey>
+public interface IDokterGetService : INunaService<DokterType, IDokterKey>
 {
 }

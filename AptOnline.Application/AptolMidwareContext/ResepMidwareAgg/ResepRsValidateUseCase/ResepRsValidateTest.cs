@@ -1,13 +1,9 @@
-﻿using AptOnline.Application.AptolCloudContext.FaskesAgg;
+﻿using AptOnline.Application.AptolCloudContext.PpkAgg;
 using AptOnline.Application.BillingContext.LayananAgg;
 using AptOnline.Application.BillingContext.RegAgg;
 using AptOnline.Application.BillingContext.SepAgg;
 using AptOnline.Application.PharmacyContext.MapDphoAgg;
-using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.BillingContext.SepAgg;
-using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using Moq;
-using Xunit;
 
 namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.ResepRsValidateUseCase;
 
@@ -35,50 +31,47 @@ public class ResepRsValidateTest
      */
     private readonly ResepRsValidateHandler _sut;
     private readonly Mock<IResepMidwareWriter> _writer;
-    private readonly Mock<IRegGetService> _regGetService;
-    private readonly Mock<ISepGetService> _sepGetService;
-    private readonly Mock<IFaskesGetService> _faskesGetService;
+    private readonly Mock<ISepGetByRegService> _sepGetByRegService;
+    private readonly Mock<IPpkGetService> _ppkGetService;
     private readonly Mock<ILayananGetService> _layananGetService;
     private readonly Mock<IMapDphoGetService> _mapDphoGetService;
 
-    public ResepRsValidateTest()
+    public ResepRsValidateTest(Mock<IPpkGetService> ppkGetService)
     {
         _writer = new Mock<IResepMidwareWriter>();
-        _regGetService = new Mock<IRegGetService>();
-        _sepGetService = new Mock<ISepGetService>();
-        _faskesGetService = new Mock<IFaskesGetService>();
+        _sepGetByRegService = new Mock<ISepGetByRegService>();
+        _ppkGetService = ppkGetService;
         _layananGetService = new Mock<ILayananGetService>();
         _mapDphoGetService = new Mock<IMapDphoGetService>();
         _sut = new ResepRsValidateHandler(
-            _regGetService.Object,
-            _sepGetService.Object,
-            _faskesGetService.Object,
+            _sepGetByRegService.Object,
+            _ppkGetService.Object,
             _layananGetService.Object,
             _mapDphoGetService.Object,
             _writer.Object);
     }
 
-    private static RegModel FakeReg()
-        => new RegModel
-        {
-            RegId = "RG-001",
-            PasienId = "MR-001",
-            PasienName = "John Doe",
-            RegDate = "2025-04-01",
-            SepId = "SEP-001",
-        };
-    private void MockRegGetService() 
-        => _regGetService
-            .Setup(x => x.Execute(It.IsAny<IRegKey>()))
-            .Returns(FakeReg());
+    // private static RegType FakeReg()
+    //     => new RegType
+    //     {
+    //         RegId = "RG-001",
+    //         PasienId = "MR-001",
+    //         PasienName = "John Doe",
+    //         RegDate = "2025-04-01",
+    //         Sep = "SEP-001",
+    //     };
+    // private void MockRegGetService() 
+    //     => _regGetService
+    //         .Setup(x => x.Execute(It.IsAny<IRegKey>()))
+    //         .Returns(FakeReg());
     
-    private static SepModel FakeSep()
-        => new SepModel
-        {
-            SepId = "SEP-001",
-            DpjpId = "DPJP-001",
-            DpjpName = "DPJP-001-Name",
-        };
+    // private static SepType FakeSep()
+    //     => new SepType
+    //     {
+    //         SepId = "SEP-001",
+    //         DpjpId = "DPJP-001",
+    //         DpjpName = "DPJP-001-Name",
+    //     };
 
     // private static List<MapDphoModel> ListMapDpho()
     //     => new()

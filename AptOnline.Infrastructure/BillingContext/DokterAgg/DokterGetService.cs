@@ -18,11 +18,11 @@ public class DokterGetService : IDokterGetService
         _token = token;
     }
 
-    public DokterModel Execute(IDokterKey req)
+    public DokterType Execute(IDokterKey req)
     {
         var dokter = Task.Run(() => ExecuteAsync(req.DokterId)).GetAwaiter().GetResult();
         var result = dokter is null ? 
-            null : new DokterModel(dokter.data.dokterId, dokter.data.dokterName);
+            null : new DokterType(dokter.data.dokterId, dokter.data.dokterName);
         return result!;
     }
 

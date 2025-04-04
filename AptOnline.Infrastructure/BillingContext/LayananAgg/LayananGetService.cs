@@ -2,8 +2,10 @@
 using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Infrastructure.Helpers;
+using FluentAssertions;
 using Microsoft.Extensions.Options;
 using RestSharp;
+using Xunit;
 
 namespace AptOnline.Infrastructure.BillingContext.LayananAgg;
 
@@ -52,5 +54,24 @@ public class LayananGetService : ILayananGetService
         //  RETURN
         return response.Data;
     }
+}
 
+public class LayananGetResponseTest
+{
+    private readonly LayananGetService _sut;
+
+    public LayananGetResponseTest()
+    {
+        var opt = FakeAppSetting.GetBillingOptions();
+        _sut = new LayananGetService(opt);
+    }
+
+    [Fact]
+    public void UT1_GivenValidLayananID_WhenExecute_ThenReturnAsExpected()
+    {
+        var expected = new LayananModel("2RJ05", "POLI ANAK", true);
+        expected.SetPoliBpjs(new PoliBpjsType("ANA", "ANAK"));
+        var actual = _sut.Execute(expected);
+        actual.Should().BeEquivalentTo(expected);
+    }
 }

@@ -1,14 +1,10 @@
-﻿using System.Globalization;
-using AptOnline.Domain.AptolCloudContext.FaskesAgg;
-using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
+﻿using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
+using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
-using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using GuardNet;
-using Nuna.Lib.DataTypeExtension;
 using Nuna.Lib.PatternHelper;
-using Nuna.Lib.ValidationHelper;
 
 namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 
@@ -26,21 +22,9 @@ public class ResepMidwareModel : IResepMidwareKey
     #region BILLING-EMR-RELATED
     public string ChartId { get; set; }
     public string ResepRsId { get; set; }
-    public string RegId { get; set; }
-    public string PasienId { get; set; }
-    public string PasienName { get; set; }
-    #endregion
-    
-    #region SEP-RELATED
-    public string SepId { get;  set; }
-    public DateTime SepDate { get; set;}
-    public string NoPeserta { get; set;}
-    
-    
-    public FaskesType Faskes { get; private set; }
+    public SepType Sep { get; private set; }
+    public PpkRefference Ppk { get; private set; }
     public PoliBpjsType PoliBpjs { get; private set; }
-    public string DokterId { get; set;}
-    public string DokterName { get; set;}
     #endregion
 
     #region APTOL-RELATED
@@ -51,65 +35,21 @@ public class ResepMidwareModel : IResepMidwareKey
     #endregion
     
     #region METHODS-HEADER-RELATED
-    public void SetRegister(RegModel reg)
+    public void SetSep(SepType sep)
     {
-        //  GUARD
-        Guard.NotNull(reg, nameof(reg));
-        Guard.NotNullOrWhitespace(reg.RegId, nameof(reg.RegId));
-        Guard.NotNullOrWhitespace(reg.PasienId, nameof(reg.PasienId));
-        Guard.NotNullOrWhitespace(reg.PasienName, nameof(reg.PasienName));
-        
-        //  BUILD      
-        RegId = reg.RegId;
-        PasienId = reg.PasienId;
-        PasienName = reg.PasienName;
-    }
-    public void SetSep(SepModel sep)
-    {
-        //  GUARD
         Guard.NotNull(sep, nameof(sep));
-        Guard.NotNullOrWhitespace(sep.SepId, nameof(sep.SepId));
-        Guard.For(() => IsValidDate(sep.SepDateTime), new ArgumentException(nameof(sep.SepDateTime)));
-        Guard.NotNullOrWhitespace(sep.PesertaJaminanId, nameof(sep.PesertaJaminanId));
-        Guard.NotNullOrWhitespace(sep.DpjpId, nameof(sep.DpjpId));
-        Guard.NotNullOrWhitespace(sep.DpjpName, nameof(sep.DpjpName));
-        
-        //  BUILD 
-        SepId = sep.SepId;
-        var sepDateStr = sep.SepDateTime.Left(10);
-        SepDate = sepDateStr.ToDate(DateFormatEnum.YMD);
-        NoPeserta = sep.PesertaJaminanId;
-        DokterId = sep.DpjpId;
-        DokterName = sep.DpjpName;
-        return;
-        
-        //  INNER HELPER
-        bool IsValidDate(string input)
-        {
-            if (string.IsNullOrEmpty(input) || input.Length < 10)
-                return false;
-
-            var datePart = input[..10];
-            return DateTime.TryParseExact(
-                datePart,
-                "yyyy-MM-dd",
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.None,
-                out _
-            );
-        }        
+        Sep = sep;
     }
-
     public void SetPoliBpjs(LayananModel layanan)
     {
         Guard.NotNull(layanan, nameof(layanan));
         PoliBpjs = layanan.PoliBpjs;
     }
 
-    public void SetFaskes(FaskesType faskes)
+    public void SetPpk(PpkRefference ppk)
     {
-        Guard.NotNull(faskes, nameof(faskes));
-        Faskes = faskes;
+        Guard.NotNull(ppk, nameof(ppk));
+        Ppk = ppk;
     }
     #endregion
     

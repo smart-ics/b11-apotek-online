@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using AptOnline.Domain.Helpers;
+using FluentAssertions;
+using GuardNet;
 using Xunit;
 
 namespace AptOnline.Domain.PharmacyContext.DphoAgg;
@@ -9,8 +11,8 @@ public class DphoModel : IDphoKey
         string kronis, string kemo, decimal harga, 
         string restriksi, string generik, bool isAktif)
     {
-        if (id == string.Empty ^ name == string.Empty)
-            throw new ArgumentException("DphoModel is invalid");
+        Guard.NotNullOrWhitespace(id, nameof(id));
+        Guard.NotNullOrWhitespace(name, nameof(name));
         
         DphoId = id;
         DphoName = name;
@@ -23,7 +25,7 @@ public class DphoModel : IDphoKey
         IsAktif = isAktif;
     }
     public static DphoModel Default 
-        => new DphoModel(string.Empty, string.Empty, string.Empty, 
+        => new DphoModel(AppConst.DASH, AppConst.DASH, string.Empty, 
             string.Empty, string.Empty, 0, string.Empty, 
             string.Empty, false);
     public string DphoId { get; private set; }
