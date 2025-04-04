@@ -34,5 +34,5 @@ public record PpkType
         AppConst.DASH, AppConst.DASH, AppConst.DASH, AppConst.DASH, AppConst.DASH, 
         KepalaType.Default, VerifikatorType.Default, ApotekType.Default);
 
-    public PpkSummary ToSummary() => new PpkSummary(PpkId, PpkName);
+    public PpkRefference ToRefference() => new PpkRefference(PpkId, PpkName);
 }

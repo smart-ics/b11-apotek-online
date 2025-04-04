@@ -23,7 +23,7 @@ public class ResepMidwareModel : IResepMidwareKey
     public string ChartId { get; set; }
     public string ResepRsId { get; set; }
     public SepType Sep { get; private set; }
-    public PpkSummary Ppk { get; private set; }
+    public PpkRefference Ppk { get; private set; }
     public PoliBpjsType PoliBpjs { get; private set; }
     #endregion
 
@@ -46,7 +46,7 @@ public class ResepMidwareModel : IResepMidwareKey
         PoliBpjs = layanan.PoliBpjs;
     }
 
-    public void SetPpk(PpkSummary ppk)
+    public void SetPpk(PpkRefference ppk)
     {
         Guard.NotNull(ppk, nameof(ppk));
         Ppk = ppk;

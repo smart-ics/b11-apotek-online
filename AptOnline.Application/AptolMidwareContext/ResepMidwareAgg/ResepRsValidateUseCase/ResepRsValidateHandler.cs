@@ -53,7 +53,7 @@ public class ResepRsValidateHandler :
         foreach (var item in request.ListResep)
         {
             noUrutResep++;
-            var createResult = BuildResepMidware(noUrutResep, item, sep, ppk.ToSummary(), layanan);
+            var createResult = BuildResepMidware(noUrutResep, item, sep, ppk.ToRefference(), layanan);
             listResult.Add(createResult);
         }
 
@@ -78,7 +78,7 @@ public class ResepRsValidateHandler :
 
     private ResepRsValidateResponseDto BuildResepMidware(int noUrut,
         ResepRsValidateCommandResep resep,
-        SepType sep, PpkSummary ppk, LayananModel layanan)
+        SepType sep, PpkRefference ppk, LayananModel layanan)
     {
         var resepMidware = CreateResepHeader(sep, ppk, layanan);
 
@@ -106,7 +106,7 @@ public class ResepRsValidateHandler :
     }
     
     private static ResepMidwareModel CreateResepHeader(SepType sep, 
-        PpkSummary ppk, LayananModel layanan)
+        PpkRefference ppk, LayananModel layanan)
     {
         var result = new ResepMidwareModel();
         result.SetSep(sep);
