@@ -2,35 +2,63 @@
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
+using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using GuardNet;
 using Nuna.Lib.PatternHelper;
+using Ulid = AptOnline.Domain.Helpers.Ulid;
 
 namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 
 public class ResepMidwareModel : IResepMidwareKey
 {
+    private const string BRIDGE_STATE_CREATED = "CREATED";
+    
+    public ResepMidwareModel(DateTime resepDate,int iterasi, SepType sep, PpkRefference ppk, PoliBpjsType poliBpjs)
+    {
+        Guard.NotNull(sep, nameof(sep));
+        Guard.NotNull(ppk, nameof(ppk));
+        Guard.NotNull(poliBpjs, nameof(poliBpjs));
+
+        ResepMidwareId = Ulid.NewUlid();
+        ResepMidwareDate = resepDate;
+        CreateTimestamp = DateTime.Now;
+        SyncTimestamp = AppConst.DEF_DATE;
+        UploadTimestamp = AppConst.DEF_DATE;
+        BridgeState = BRIDGE_STATE_CREATED;
+
+        ChartId = string.Empty;
+        ResepRsId = string.Empty;
+        ReffId = string.Empty;
+        JenisObatId = string.Empty;
+        Iterasi = iterasi;
+        
+        Sep = sep;
+        Ppk = ppk;
+        PoliBpjs = poliBpjs;
+        ListItem = new List<ResepMidwareItemModel>();
+    }
     #region KEY-METADATA 
-    public string ResepMidwareId { get; set; }
-    public DateTime ResepMidwareDate { get; set; }
-    public string BridgeState { get; set; }
-    public DateTime CreateTimestamp { get; set;}
-    public DateTime SyncTimestamp { get; set;}
-    public DateTime UploadTimestamp { get; set;}
+    public string ResepMidwareId { get; private set; }
+    public DateTime ResepMidwareDate { get; private set; }
+    public string BridgeState { get; private set; }
+    public DateTime CreateTimestamp { get; private set;}
+    public DateTime SyncTimestamp { get; private set;}
+    public DateTime UploadTimestamp { get; private set;}
     #endregion
     
     #region BILLING-EMR-RELATED
-    public string ChartId { get; set; }
-    public string ResepRsId { get; set; }
-    public SepType Sep { get; private set; }
+    public string ChartId { get; private set; }
+    public string ResepRsId { get; private set; }
+    public SepType Sep { get; private  set; }
     public PpkRefference Ppk { get; private set; }
     public PoliBpjsType PoliBpjs { get; private set; }
     #endregion
 
     #region APTOL-RELATED
-    public string ReffId { get; set; }
-    public string JenisObatId { get; set;}
-    public int Iterasi { get; set;}
+    public string ReffId { get; private set; }
+    public string JenisObatId { get; private set;}
+    public int Iterasi { get; private set;}
     public List<ResepMidwareItemModel> ListItem { get; set;}
     #endregion
     
@@ -40,7 +68,7 @@ public class ResepMidwareModel : IResepMidwareKey
         Guard.NotNull(sep, nameof(sep));
         Sep = sep;
     }
-    public void SetPoliBpjs(LayananModel layanan)
+    public void SetPoliBpjs(LayananType layanan)
     {
         Guard.NotNull(layanan, nameof(layanan));
         PoliBpjs = layanan.PoliBpjs;
@@ -55,7 +83,7 @@ public class ResepMidwareModel : IResepMidwareKey
     
     #region METHODS-ITEM-RELATED
 
-    public NunaResult<string> AddObat(MapDphoModel mapBrgDpho, string signa, int qty)
+    public NunaResult<string> AddObat(MapDphoType mapBrgDpho, string signa, int qty)
     {
         var no = ListItem.Max(x => x.NoUrut+1);
         var newItem = new ResepMidwareItemModel(no, mapBrgDpho, signa, qty);
@@ -71,7 +99,7 @@ public class ResepMidwareModel : IResepMidwareKey
             ?? fallbackStrategy(); 
         return result;
     }    
-    public NunaResult<string> AddRacik(MapDphoModel mapBrgDpho, 
+    public NunaResult<string> AddRacik(MapDphoType mapBrgDpho, 
         string signa, int qty, string jenisRacik)
     {
         var no = ListItem.Max(x => x.NoUrut+1);

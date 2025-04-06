@@ -3,6 +3,6 @@ using Nuna.Lib.CleanArchHelper;
 
 namespace AptOnline.Application.AptolCloudContext.DphoCloudAgg;
 
-public interface IDphoCloudListService : INunaService<IEnumerable<DphoModel>>
+public interface IDphoCloudListService : INunaService<IEnumerable<DphoType>>
 {
 }

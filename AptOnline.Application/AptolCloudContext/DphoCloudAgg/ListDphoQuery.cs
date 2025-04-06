@@ -4,11 +4,11 @@ using MediatR;
 
 namespace AptOnline.Application.AptolCloudContext.DphoAgg;
 
-public class ListDphoQuery : IRequest<IEnumerable<DphoModel>>
+public class ListDphoQuery : IRequest<IEnumerable<DphoType>>
 {
 }
 
-public class ListDphoHandler : IRequestHandler<ListDphoQuery, IEnumerable<DphoModel>>
+public class ListDphoHandler : IRequestHandler<ListDphoQuery, IEnumerable<DphoType>>
 {
     private readonly IDphoCloudListService _listDphoService;
     public ListDphoHandler(IDphoCloudListService listDphoService)
@@ -16,7 +16,7 @@ public class ListDphoHandler : IRequestHandler<ListDphoQuery, IEnumerable<DphoMo
         _listDphoService = listDphoService;
     }
 
-    public Task<IEnumerable<DphoModel>> Handle(ListDphoQuery request, CancellationToken cancellationToken)
+    public Task<IEnumerable<DphoType>> Handle(ListDphoQuery request, CancellationToken cancellationToken)
     {
         var x = _listDphoService.Execute();
         return Task.FromResult(x);

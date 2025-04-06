@@ -8,7 +8,7 @@ namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 public class ResepMidwareItemModel : IResepMidwareKey
 {
     #region CONSTRUCTOR
-    public ResepMidwareItemModel(int no, MapDphoModel mapDpho, string signa, int qty)
+    public ResepMidwareItemModel(int no, MapDphoType mapDpho, string signa, int qty)
     {
         NoUrut = no;
         SetBrg(mapDpho);
@@ -44,7 +44,7 @@ public class ResepMidwareItemModel : IResepMidwareKey
     #region METHODS
     public void SetId(string id) => ResepMidwareId = id;
 
-    private void SetBrg(MapDphoModel mapDpho)
+    private void SetBrg(MapDphoType mapDpho)
     {
         Guard.NotNull(mapDpho, nameof(mapDpho));
         Brg = mapDpho.Brg;

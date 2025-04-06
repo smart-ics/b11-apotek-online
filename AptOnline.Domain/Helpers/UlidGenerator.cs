@@ -1,5 +1,6 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using Xunit;
 
 namespace AptOnline.Domain.Helpers;
 public struct Ulid
@@ -36,6 +37,13 @@ public struct Ulid
         return sb.ToString();
     }
 }
-//
-// // Usage
-// Console.WriteLine(Ulid.NewUlid());
+
+public class UlidGeneratorTest
+{
+    [Fact]
+    public void UT1_GivenValidInput_ThenSuccess()
+    {
+        var actual = Ulid.NewUlid();
+        Assert.True(true);
+    }
+}

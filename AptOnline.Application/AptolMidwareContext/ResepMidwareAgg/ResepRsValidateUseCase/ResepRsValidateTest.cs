@@ -1,16 +1,27 @@
 ﻿using AptOnline.Application.AptolCloudContext.PpkAgg;
 using AptOnline.Application.BillingContext.LayananAgg;
-using AptOnline.Application.BillingContext.RegAgg;
 using AptOnline.Application.BillingContext.SepAgg;
 using AptOnline.Application.PharmacyContext.MapDphoAgg;
+using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
+using AptOnline.Domain.AptolCloudContext.PpkAgg;
+using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
+using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.LayananAgg;
+using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.BillingContext.SepAgg;
+using AptOnline.Domain.PharmacyContext.BrgAgg;
+using AptOnline.Domain.PharmacyContext.DphoAgg;
+using AptOnline.Domain.PharmacyContext.MapDphoAgg;
+using FluentAssertions;
 using Moq;
+using Xunit;
 
 namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.ResepRsValidateUseCase;
 
 public class ResepRsValidateTest
 {
     /* test case:
-     A. Happy Path Testig
+     A. Happy Path Testing
         1. Resep Single
             T01. All DPHO : 2 DPHO => 0 ValidationNote
             T02. Campuran : 2 DPHO + 1 Non DPHO  => 1 ValidationNote
@@ -36,11 +47,11 @@ public class ResepRsValidateTest
     private readonly Mock<ILayananGetService> _layananGetService;
     private readonly Mock<IMapDphoGetService> _mapDphoGetService;
 
-    public ResepRsValidateTest(Mock<IPpkGetService> ppkGetService)
+    public ResepRsValidateTest()
     {
         _writer = new Mock<IResepMidwareWriter>();
         _sepGetByRegService = new Mock<ISepGetByRegService>();
-        _ppkGetService = ppkGetService;
+        _ppkGetService = new Mock<IPpkGetService>();
         _layananGetService = new Mock<ILayananGetService>();
         _mapDphoGetService = new Mock<IMapDphoGetService>();
         _sut = new ResepRsValidateHandler(
@@ -51,47 +62,100 @@ public class ResepRsValidateTest
             _writer.Object);
     }
 
-    // private static RegType FakeReg()
-    //     => new RegType
-    //     {
-    //         RegId = "RG-001",
-    //         PasienId = "MR-001",
-    //         PasienName = "John Doe",
-    //         RegDate = "2025-04-01",
-    //         Sep = "SEP-001",
-    //     };
-    // private void MockRegGetService() 
-    //     => _regGetService
-    //         .Setup(x => x.Execute(It.IsAny<IRegKey>()))
-    //         .Returns(FakeReg());
+    private static SepType SepFaker()
+        => new SepType(
+            "SEP-ID-1", new DateTime(2025,4,1), "SEP-NO-1", "PESERTA-1", 
+            new RegType("REG-1", new DateTime(2025,4,1), "PASIEN-1", "PASIEN-NAME-1"),
+            new DokterType("DOKTER-ID-1", "DOKTER-NAME-1"),
+            false, "-");
+    private static PpkType PpkFaker()
+        => new PpkType(
+            "PPK-ID-1", "PPK-NAME-1","-","-","-",
+            KepalaType.Default, 
+            VerifikatorType.Default, 
+            ApotekType.Default);
+    private static LayananType LayananFaker()
+        => new LayananType(
+            "LYN-ID-1", "LYN-NAME-1", true,
+            PoliBpjsType.Default);
+    private static BrgType BrgDphoFaker()
+        => new BrgType("BRG-ID-1", "BRG-NAME-1");
+    private static BrgType BrgNonDphoFaker()
+        => new BrgType("BRG-ID-2", "BRG-NAME-2");
     
-    // private static SepType FakeSep()
-    //     => new SepType
-    //     {
-    //         SepId = "SEP-001",
-    //         DpjpId = "DPJP-001",
-    //         DpjpName = "DPJP-001-Name",
-    //     };
-
-    // private static List<MapDphoModel> ListMapDpho()
-    //     => new()
-    //     {
-    //         new MapDphoModel("OBT1", "Obat-1", "DPHO1", "Obat DPHO-1"),
-    //         new MapDphoModel("OBT2", "Obat-2", "DPHO2", "Obat DPHO-2"),
-    //     };
+    private static DphoType DphoFaker()
+        => new DphoType("DPHO-ID-1", "DPHO-NAME-1",
+            "","", "", 0,"","",false);
+    private static MapDphoType MapDphoFaker()
+        => new MapDphoType(BrgDphoFaker(), DphoFaker().ToRefference());
     
-    //private static List<BrgMo
+    private static ResepRsValidateCommand Command()
+        => new ResepRsValidateCommand("RG-001", "LYN-ID-1",
+            new List<ResepRsValidateCommandResep>
+            {
+                new ResepRsValidateCommandResep("RESEP-1",
+                    new List<ResepRsValidateCommandObat>())
+            });
 
-    private ResepRsValidateCommand Command()
-        => new ResepRsValidateCommand("RG-001", "LYN-001",
-            new List<ResepRsValidateCommandResep>());
+    private static ResepMidwareModel ResepMidware1Faker()
+        =>  new ResepMidwareModel {ResepMidwareId = "RESEP-1"};
 
-    // [Fact]
-    // public async Task T01_GivenSingleAllDpho_ThenSuccess_AndNoValidationNote()
-    // {
-    //     MockRegGetService();
-    //     
-    //     var result = await _sut.Handle()
-    // }
+    private static ResepMidwareModel ResepMidware2Faker()
+        =>  new ResepMidwareModel {ResepMidwareId = "RESEP-2"};
+    
 
+    
+    private void HappyPathMocking()
+    {
+        _sepGetByRegService
+            .Setup(x => x.Execute(It.IsAny<IRegKey>()))
+            .Returns(SepFaker());
+        _ppkGetService
+            .Setup(x => x.Execute())
+            .Returns(PpkFaker());
+        _layananGetService
+            .Setup(x => x.Execute(It.IsAny<ILayananKey>()))
+            .Returns(LayananFaker());
+        _mapDphoGetService
+            .Setup(x => x.Execute(It.Is<IBrgKey>(y => y.BrgId == "BRG-ID-1")))
+            .Returns(MapDphoFaker());
+        _writer
+            .SetupSequence(x => x.Save(It.IsAny<ResepMidwareModel>()))
+            .Returns(ResepMidware1Faker())
+            .Returns(ResepMidware2Faker());
+    }
+    
+    [Fact]
+    public async Task T01_GivenSingleAllDpho_ThenSuccess_AndNoValidationNote()
+    {
+        var cmd = Command();
+        cmd.ListResep.First().ListItem.Add(
+            new ResepRsValidateCommandObat("BRG-ID-1",
+                "BRG-NAME-1", 1, "2dd1", "CaraPakai", 1,
+                new List<ResepRsValidateCommandKomponenRacik>()));
+        HappyPathMocking();
+        var result = await _sut.Handle(cmd, CancellationToken.None);
+        var resultFetched = result.ToList();
+        resultFetched.Should().NotBeNull();
+        resultFetched.First().ValidationNote.Should().BeNullOrEmpty();
+    }
+    
+    [Fact]
+    public async Task T02_GivenSingle1Dpho_And1NonDpho_ThenSuccess_AndGet1ValidationNote()
+    {
+        var cmd = Command();
+        cmd.ListResep.First().ListItem.Add(
+            new ResepRsValidateCommandObat("BRG-ID-1",
+                "BRG-NAME-1", 1, "2dd1", "CaraPakai", 1,
+                new List<ResepRsValidateCommandKomponenRacik>()));
+        cmd.ListResep.First().ListItem.Add(
+            new ResepRsValidateCommandObat("BRG-ID-2",
+                "BRG-NAME-2", 1, "2dd1", "CaraPakai", 1,
+                new List<ResepRsValidateCommandKomponenRacik>()));
+        HappyPathMocking();
+        var result = await _sut.Handle(cmd, CancellationToken.None);
+        var resultFetched = result.ToList();
+        resultFetched.Should().NotBeNull();
+        resultFetched.First().ValidationNote.Should().NotBeNull();
+    }
 }

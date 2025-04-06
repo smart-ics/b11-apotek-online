@@ -1,4 +1,5 @@
 ﻿using AptOnline.Domain.BillingContext.LayananAgg;
+using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.BrgAgg;
 using FluentAssertions;
 using Xunit;
@@ -17,7 +18,7 @@ public record PoliBpjsType : IPoliBpjsKey
     }
     public string PoliBpjsId { get; }
     public string PoliBpjsName { get; }
-    public static PoliBpjsType Default => new(string.Empty, string.Empty);
+    public static PoliBpjsType Default => new(AppConst.DASH, AppConst.DASH);
 }
 
 public static class PoliBpjsTest

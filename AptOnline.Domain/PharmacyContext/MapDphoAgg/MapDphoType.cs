@@ -6,25 +6,20 @@ using Xunit;
 
 namespace AptOnline.Domain.PharmacyContext.MapDphoAgg;
 
-public class MapDphoModel
+public class MapDphoType
 {
-    public MapDphoModel(BrgType brg, DphoRefference dpho)
+    public MapDphoType(BrgType brg, DphoRefference dpho)
     {
         if (brg == BrgType.Default ^ dpho == DphoRefference.Default)
             throw new ArgumentException("MapDpho is invalid state");
         Brg = brg;
         Dpho = dpho;
     }
-    public static MapDphoModel Default 
-        => new MapDphoModel(BrgType.Default, DphoRefference.Default);
+    public static MapDphoType Default 
+        => new MapDphoType(BrgType.Default, DphoRefference.Default);
 
     public BrgType Brg { get; private set; }
     public DphoRefference Dpho { get; private set; }
-}
-
-public interface IBrgKey
-{
-    string BrgId { get; }
 }
 
 public class MapDphoModelTest
@@ -37,13 +32,13 @@ public class MapDphoModelTest
     {
         var brg = new BrgType(brgId, brgName);
         var dpho = new DphoRefference(dphoId, dphoName);
-        var act = () => new MapDphoModel(brg, dpho);
+        var act = () => new MapDphoType(brg, dpho);
     }
     [Fact]
     public void UT2_GivenSomeEmpty_ShouldReturnException()
     {
         var brg = new BrgType("A", "B");
-        var act = () => new MapDphoModel(brg, DphoRefference.Default);
+        var act = () => new MapDphoType(brg, DphoRefference.Default);
         act.Should().Throw<ArgumentException>();
     }
 
