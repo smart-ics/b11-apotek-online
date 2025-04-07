@@ -1,6 +1,5 @@
 ﻿using AptOnline.Application.AptolCloudContext.PpkAgg;
 using AptOnline.Application.BillingContext.LayananAgg;
-using AptOnline.Application.BillingContext.RegAgg;
 using AptOnline.Application.BillingContext.SepAgg;
 using AptOnline.Application.PharmacyContext.MapDphoAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
@@ -9,6 +8,7 @@ using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using MediatR;
 using Nuna.Lib.TransactionHelper;
+using Nuna.Lib.ValidationHelper;
 
 namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.ResepRsValidateUseCase;
 
@@ -20,6 +20,7 @@ public class ResepRsValidateHandler :
     private readonly IPpkGetService _ppkGetService;
     private readonly ILayananGetService _layananGetService;
     private readonly IMapDphoGetService _mapDphoGetService;
+    private readonly ITglJamProvider _dateTime;
 
 
     public ResepRsValidateHandler(
@@ -27,13 +28,15 @@ public class ResepRsValidateHandler :
         IPpkGetService ppkGetService,
         ILayananGetService layananGetService, 
         IMapDphoGetService mapDphoGetService, 
-        IResepMidwareWriter writer)
+        IResepMidwareWriter writer, 
+        ITglJamProvider dateTime)
     {
         _sepGetByRegService = sepGetByRegService;
         _ppkGetService = ppkGetService;
         _layananGetService = layananGetService;
         _mapDphoGetService = mapDphoGetService;
         _writer = writer;
+        _dateTime = dateTime;
     }
 
     public Task<IEnumerable<ResepRsValidateResponse>> Handle(
@@ -61,8 +64,8 @@ public class ResepRsValidateHandler :
         using var trans = TransHelper.NewScope();
         foreach (var item in listResult.Where(x => x.IsCreated))
         {
-            var writeResult = _writer.Save(item.ResepMidware);
-            item.ResepMidware.ResepMidwareId = writeResult.ResepMidwareId;
+            _ = _writer.Save(item.ResepMidware);
+            //item.ResepMidware.ResepMidwareId = writeResult.ResepMidwareId;
         }
         trans.Complete();
         
@@ -78,7 +81,7 @@ public class ResepRsValidateHandler :
 
     private ResepRsValidateResponseDto BuildResepMidware(int noUrut,
         ResepRsValidateCommandResep resep,
-        SepType sep, PpkRefference ppk, LayananModel layanan)
+        SepType sep, PpkRefference ppk, LayananType layanan)
     {
         var resepMidware = CreateResepHeader(sep, ppk, layanan);
 
@@ -86,17 +89,18 @@ public class ResepRsValidateHandler :
         var itemCount = 0;
         foreach (var itemObat in resep.ListItem)
         {
-            resepMidware = AddItemObat(
-                itemObat, resepMidware, 
-                ref itemCount, ref listValidationNote);
-            
-            foreach (var itemRacik in itemObat.ListKomponenRacik)
-                resepMidware = AddItemRacik(
-                    itemRacik, resepMidware, itemObat.Signa, 
+            if (itemObat.ListKomponenRacik.Count == 0)
+                resepMidware = AddItemObat(
+                    itemObat, resepMidware, 
                     ref itemCount, ref listValidationNote);
+            else            
+                foreach (var itemRacik in itemObat.ListKomponenRacik)
+                    resepMidware = AddItemRacik(
+                        itemRacik, resepMidware, itemObat.Signa, itemObat.BrgId, 
+                        ref itemCount, ref listValidationNote);
         }
 
-        var listValidationNoteStr = string.Join(", ", listValidationNote);
+        var listValidationNoteStr = string.Join("\n", listValidationNote);
         if (listValidationNote.Count == itemCount)
             return new ResepRsValidateResponseDto(noUrut, 
                 resepMidware, false, listValidationNoteStr);
@@ -105,13 +109,10 @@ public class ResepRsValidateHandler :
             resepMidware, true, listValidationNoteStr);
     }
     
-    private static ResepMidwareModel CreateResepHeader(SepType sep, 
-        PpkRefference ppk, LayananModel layanan)
+    private ResepMidwareModel CreateResepHeader(SepType sep, 
+        PpkRefference ppk, LayananType layanan)
     {
-        var result = new ResepMidwareModel();
-        result.SetSep(sep);
-        result.SetPpk(ppk);
-        result.SetPoliBpjs(layanan);
+        var result = new ResepMidwareModel(_dateTime.Now, 1, sep, ppk, layanan.PoliBpjs);
         return result;
     }
     
@@ -123,7 +124,10 @@ public class ResepRsValidateHandler :
         itemCount++;
         var mapDpho = _mapDphoGetService.Execute(itemObat);
         if (mapDpho is null)
+        {
+            listValidationNote.Add($"'{itemObat.BrgName}' tidak masuk dalam daftar DPHO");
             return resepMidware;
+        }
         var resultType = resepMidware.AddObat(mapDpho, itemObat.Signa, itemObat.Qty);
         if (resultType.IsFailed)
             listValidationNote.Add(resultType.ErrorMessage);
@@ -133,12 +137,13 @@ public class ResepRsValidateHandler :
     private ResepMidwareModel AddItemRacik(ResepRsValidateCommandKomponenRacik itemRacik,
         ResepMidwareModel resepMidware,
         string signa,
+        string jenisRacik,
         ref int itemCount,
         ref List<string> listValidationNote)
     {
         itemCount++;
         var mapDpho = _mapDphoGetService.Execute(itemRacik);
-        var resultType = resepMidware.AddRacik(mapDpho, signa, itemRacik.Qty);
+        var resultType = resepMidware.AddRacik(mapDpho, signa, itemRacik.Qty, jenisRacik);
         if (resultType.IsFailed)
             listValidationNote.Add(resultType.ErrorMessage);
         return resepMidware;

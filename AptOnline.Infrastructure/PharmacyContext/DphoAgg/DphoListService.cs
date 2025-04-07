@@ -1,4 +1,5 @@
 ﻿using AptOnline.Application.PharmacyContext.DphoAgg;
+using AptOnline.Domain.PharmacyContext.BrgAgg;
 using AptOnline.Domain.PharmacyContext.DphoAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using AptOnline.Infrastructure.Helpers;
@@ -16,7 +17,7 @@ public class DphoListService : IDphoListService
         _opt = opt.Value;
     }
 
-    public DphoModel Execute(IEnumerable<IBrgKey> req)
+    public DphoType Execute(IEnumerable<IBrgKey> req)
     {
         throw new NotImplementedException();
     }

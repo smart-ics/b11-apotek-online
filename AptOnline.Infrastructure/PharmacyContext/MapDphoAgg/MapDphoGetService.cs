@@ -17,7 +17,7 @@ public class MapDphoGetService : IMapDphoGetService
         _opt = opt.Value;
     }
 
-    public MapDphoModel Execute(IBrgKey brgKey)
+    public MapDphoType Execute(IBrgKey brgKey)
     {
         var response = Task.Run(() => GetData(brgKey.BrgId)).GetAwaiter().GetResult();
         var brg = new BrgType(
@@ -26,7 +26,7 @@ public class MapDphoGetService : IMapDphoGetService
         var dpho = new DphoRefference(
             response?.data?.dphoId ?? string.Empty,
             response?.data?.dphoName ?? string.Empty);
-        var result = new MapDphoModel(brg, dpho);
+        var result = new MapDphoType(brg, dpho);
         return result;
     }
 

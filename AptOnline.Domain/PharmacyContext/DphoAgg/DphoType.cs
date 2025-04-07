@@ -5,9 +5,9 @@ using Xunit;
 
 namespace AptOnline.Domain.PharmacyContext.DphoAgg;
 
-public class DphoModel : IDphoKey
+public class DphoType : IDphoKey
 {
-    public DphoModel(string id, string name, string prb, 
+    public DphoType(string id, string name, string prb, 
         string kronis, string kemo, decimal harga, 
         string restriksi, string generik, bool isAktif)
     {
@@ -24,10 +24,6 @@ public class DphoModel : IDphoKey
         Generik = generik;
         IsAktif = isAktif;
     }
-    public static DphoModel Default 
-        => new DphoModel(AppConst.DASH, AppConst.DASH, string.Empty, 
-            string.Empty, string.Empty, 0, string.Empty, 
-            string.Empty, false);
     public string DphoId { get; private set; }
     public string DphoName{ get; private set; }
     public string Prb { get; private set; }
@@ -37,14 +33,19 @@ public class DphoModel : IDphoKey
     public string Restriksi { get; private set; }
     public string Generik { get; private set; }
     public bool IsAktif { get; private set; }
+
+    public static DphoType Default 
+        => new DphoType(AppConst.DASH, AppConst.DASH, string.Empty, 
+            string.Empty, string.Empty, 0, string.Empty, 
+            string.Empty, false);
+
+    public DphoRefference ToRefference()
+        => new DphoRefference(DphoId, DphoName);
 }
 
 public record DphoRefference(string DphoId, string DphoName)
 {
-    public DphoRefference(DphoModel dpho) : this(dpho.DphoId, dpho.DphoName)
-    {
-    }
-    public static DphoRefference Default => new(DphoModel.Default);
+    public static DphoRefference Default => new(AppConst.DASH, AppConst.DASH);
 };
 
 
@@ -53,8 +54,8 @@ public class DphoRefferenceTest
     [Fact]
     public void UT1_CreateFromDphoModel_ShouldReturnValidDphoRefference()
     {
-        var dpho = new DphoModel("A","B","C","D","E",1,"F","G",true);
-        var act = new DphoRefference(dpho);
+        var dpho = new DphoType("A","B","C","D","E",1,"F","G",true);
+        var act = dpho.ToRefference();
         act.DphoId.Should().Be("A");
         act.DphoName.Should().Be("B");
     }

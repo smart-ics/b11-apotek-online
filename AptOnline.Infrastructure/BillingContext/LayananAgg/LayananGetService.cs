@@ -18,20 +18,20 @@ public class LayananGetService : ILayananGetService
         _opt = opt.Value;
     }
 
-    public LayananModel Execute(ILayananKey req)
+    public LayananType Execute(ILayananKey req)
     {
         var response = Task.Run(() => ExecuteAsync(req.LayananId)).GetAwaiter().GetResult();
         var responseData = response?.data;
         if (responseData is null)
-            return LayananModel.Default;
+            return LayananType.Default;
 
-        var result = new LayananModel(
+        var result = new LayananType(
             responseData.LayananId,
             responseData.LayananName, 
-            responseData.IsActive);
-        result.SetPoliBpjs(new PoliBpjsType(
-            responseData.LayananBpjsId,
-            responseData.LayananBpjsName));
+            responseData.IsActive,
+            new PoliBpjsType(
+                responseData.LayananBpjsId,
+                responseData.LayananBpjsName));
         return result;
     }
 
@@ -69,8 +69,8 @@ public class LayananGetResponseTest
     [Fact]
     public void UT1_GivenValidLayananID_WhenExecute_ThenReturnAsExpected()
     {
-        var expected = new LayananModel("2RJ05", "POLI ANAK", true);
-        expected.SetPoliBpjs(new PoliBpjsType("ANA", "ANAK"));
+        var poliBpjs = new PoliBpjsType("ANA", "ANAK");
+        var expected = new LayananType("2RJ05", "POLI ANAK", true, poliBpjs);
         var actual = _sut.Execute(expected);
         actual.Should().BeEquivalentTo(expected);
     }

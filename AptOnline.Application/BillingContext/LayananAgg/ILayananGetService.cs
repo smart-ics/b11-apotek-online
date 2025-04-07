@@ -3,6 +3,6 @@ using Nuna.Lib.CleanArchHelper;
 
 namespace AptOnline.Application.BillingContext.LayananAgg;
 
-public interface ILayananGetService : INunaService<LayananModel, ILayananKey>
+public interface ILayananGetService : INunaService<LayananType, ILayananKey>
 {
 }

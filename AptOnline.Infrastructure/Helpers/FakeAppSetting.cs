@@ -29,4 +29,14 @@ public class FakeAppSetting
         return result;
     }
     
+    public static IOptions<DatabaseOptions> GetDatabaseOptions()
+    {
+        var result = Options.Create(new DatabaseOptions()
+        {
+            Server  = "dev.smart-ics.com",
+            DbName  = "dev",
+            Log  = "1",
+        });
+        return result;
+    }    
 }

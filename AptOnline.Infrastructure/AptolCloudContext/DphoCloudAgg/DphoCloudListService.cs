@@ -22,7 +22,7 @@ public class DphoCloudListService : IDphoCloudListService
         _signature = BpjsHelper.GenHMAC256(_opt.ConsId + "&" + _timestamp, _opt.SecretKey);
         _decryptKey = _opt.ConsId + _opt.SecretKey + _timestamp;
     }
-    public IEnumerable<DphoModel> Execute()
+    public IEnumerable<DphoType> Execute()
     {
         var endpoint = $"{_opt.BaseApiUrl}/referensi/dpho";
         var client = new RestClient(endpoint)
@@ -56,10 +56,10 @@ public class DphoCloudListService : IDphoCloudListService
         }
 
         var listRefDphoBpjs = jResult.ToObject<DphoCloudListResponse>();
-        var result = listRefDphoBpjs?.response.list.Select(x => new DphoModel(
+        var result = listRefDphoBpjs?.response.list.Select(x => new DphoType(
             x.kodeobat, x.namaobat, x.prb, x.kronis,
             x.kemo, Convert.ToDecimal(x.harga), x.restriksi,
-            x.generik, true)) ?? new List<DphoModel>();
+            x.generik, true)) ?? new List<DphoType>();
         return result;
     }
 }
