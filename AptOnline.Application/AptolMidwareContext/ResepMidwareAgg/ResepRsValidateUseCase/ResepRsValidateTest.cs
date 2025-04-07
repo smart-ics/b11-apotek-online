@@ -14,6 +14,7 @@ using AptOnline.Domain.PharmacyContext.DphoAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using FluentAssertions;
 using Moq;
+using Nuna.Lib.ValidationHelper;
 using Xunit;
 
 namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.ResepRsValidateUseCase;
@@ -46,6 +47,7 @@ public class ResepRsValidateTest
     private readonly Mock<IPpkGetService> _ppkGetService;
     private readonly Mock<ILayananGetService> _layananGetService;
     private readonly Mock<IMapDphoGetService> _mapDphoGetService;
+    private readonly Mock<ITglJamProvider> _dateTime;
 
     public ResepRsValidateTest()
     {
@@ -54,12 +56,14 @@ public class ResepRsValidateTest
         _ppkGetService = new Mock<IPpkGetService>();
         _layananGetService = new Mock<ILayananGetService>();
         _mapDphoGetService = new Mock<IMapDphoGetService>();
+        _dateTime = new Mock<ITglJamProvider>();
         _sut = new ResepRsValidateHandler(
             _sepGetByRegService.Object,
             _ppkGetService.Object,
             _layananGetService.Object,
             _mapDphoGetService.Object,
-            _writer.Object);
+            _writer.Object,
+            _dateTime.Object);
     }
 
     private static SepType SepFaker()
@@ -97,12 +101,9 @@ public class ResepRsValidateTest
                     new List<ResepRsValidateCommandObat>())
             });
 
-    private static ResepMidwareModel ResepMidware1Faker()
-        =>  new ResepMidwareModel {ResepMidwareId = "RESEP-1"};
-
-    private static ResepMidwareModel ResepMidware2Faker()
-        =>  new ResepMidwareModel {ResepMidwareId = "RESEP-2"};
-    
+    private static ResepMidwareModel ResepMidwareFaker()
+        => new ResepMidwareModel(new DateTime(2025, 1, 1), 1, SepType.Default,
+            PpkType.Default.ToRefference(), PoliBpjsType.Default);
 
     
     private void HappyPathMocking()
@@ -120,9 +121,11 @@ public class ResepRsValidateTest
             .Setup(x => x.Execute(It.Is<IBrgKey>(y => y.BrgId == "BRG-ID-1")))
             .Returns(MapDphoFaker());
         _writer
-            .SetupSequence(x => x.Save(It.IsAny<ResepMidwareModel>()))
-            .Returns(ResepMidware1Faker())
-            .Returns(ResepMidware2Faker());
+            .Setup(x => x.Save(It.IsAny<ResepMidwareModel>()))
+            .Returns(ResepMidwareFaker());
+        _dateTime
+            .Setup(x => x.Now)
+            .Returns(new DateTime(2025, 1, 1));
     }
     
     [Fact]

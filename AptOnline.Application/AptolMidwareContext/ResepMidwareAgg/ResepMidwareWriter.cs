@@ -24,8 +24,8 @@ public class ResepMidwareWriter: IResepMidwareWriter
 
     public ResepMidwareModel Save(ResepMidwareModel model)
     {
-        if (model.ResepMidwareId == string.Empty)
-            model.ResepMidwareId = _counter.Generate("RSPM", IDFormatEnum.PREFYYMnnnnnC);
+        // if (model.ResepMidwareId == string.Empty)
+        //     model.ResepMidwareId = _counter.Generate("RSPM", IDFormatEnum.PREFYYMnnnnnC);
         foreach (var item in model.ListItem)
             item.SetId(model.ResepMidwareId);
 

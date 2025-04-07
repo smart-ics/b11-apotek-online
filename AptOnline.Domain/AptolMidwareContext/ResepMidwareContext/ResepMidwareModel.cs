@@ -1,6 +1,8 @@
 ﻿using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
+using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
+using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
@@ -38,31 +40,81 @@ public class ResepMidwareModel : IResepMidwareKey
         PoliBpjs = poliBpjs;
         ListItem = new List<ResepMidwareItemModel>();
     }
-    #region KEY-METADATA 
-    public string ResepMidwareId { get; private set; }
+
+    private ResepMidwareModel()
+    {
+    }
+
+    public static ResepMidwareModel Load(
+        string resepMidwareId, DateTime resepMidwareDate, 
+        string chartId, string resepRsId, 
+        string reffId, string jenisObatId, int iterasi,        
+        string sepId, DateTime sepDate, string sepNo, string noPeserta, 
+        string regId, DateTime regDate, string pasienId, string pasienName,
+        string dokterId, string dokterName,
+        string ppkId, string ppkName,
+        string poliBpjsId, string poliBpjsName,  
+        string bridgeState, DateTime createTimestamp, 
+        DateTime syncTimestamp, DateTime uploadTimestamp)
+    {
+        var reg = new RegType(regId, regDate, pasienId, pasienName);
+        var dokter = new DokterType(dokterId, dokterName);
+        return new ResepMidwareModel
+        {
+            ResepMidwareId = resepMidwareId,
+            ResepMidwareDate = resepMidwareDate,
+
+            ChartId = chartId,
+            ResepRsId = resepRsId,
+
+            ReffId = reffId,
+            JenisObatId = jenisObatId,
+            Iterasi = iterasi,
+
+            Sep = new SepType(sepId, sepDate, sepNo, noPeserta, reg, dokter, false, ""),
+            Ppk = new PpkRefference(ppkId, ppkName),
+            PoliBpjs = new PoliBpjsType(poliBpjsId, poliBpjsName),
+            
+            BridgeState = bridgeState,
+            CreateTimestamp = createTimestamp,
+            SyncTimestamp = syncTimestamp,
+            UploadTimestamp = uploadTimestamp,
+        };
+    }
+
+#region KEY 
+    public string ResepMidwareId { get; init; }
     public DateTime ResepMidwareDate { get; private set; }
-    public string BridgeState { get; private set; }
-    public DateTime CreateTimestamp { get; private set;}
-    public DateTime SyncTimestamp { get; private set;}
-    public DateTime UploadTimestamp { get; private set;}
     #endregion
     
-    #region BILLING-EMR-RELATED
+#region EMR-RELATED
     public string ChartId { get; private set; }
     public string ResepRsId { get; private set; }
+    #endregion
+    
+#region APTOL-RELATED
+    public string ReffId { get; private set; }
+    public string JenisObatId { get; private set;}
+    public int Iterasi { get; private set;}
+    #endregion
+
+#region SEP-RELATED
     public SepType Sep { get; private  set; }
     public PpkRefference Ppk { get; private set; }
     public PoliBpjsType PoliBpjs { get; private set; }
     #endregion
 
-    #region APTOL-RELATED
-    public string ReffId { get; private set; }
-    public string JenisObatId { get; private set;}
-    public int Iterasi { get; private set;}
-    public List<ResepMidwareItemModel> ListItem { get; set;}
+#region BRIDGING-STATE
+    public string BridgeState { get; private set; }
+    public DateTime CreateTimestamp { get; private set;}
+    public DateTime SyncTimestamp { get; private set;}
+    public DateTime UploadTimestamp { get; private set;}
     #endregion
+
+    public List<ResepMidwareItemModel> ListItem { get; set;}
+
     
-    #region METHODS-HEADER-RELATED
+#region METHODS-HEADER-RELATED
     public void SetSep(SepType sep)
     {
         Guard.NotNull(sep, nameof(sep));
@@ -81,8 +133,7 @@ public class ResepMidwareModel : IResepMidwareKey
     }
     #endregion
     
-    #region METHODS-ITEM-RELATED
-
+#region METHODS-ITEM-RELATED
     public NunaResult<string> AddObat(MapDphoType mapBrgDpho, string signa, int qty)
     {
         var no = ListItem.Max(x => x.NoUrut+1);

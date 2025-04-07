@@ -8,6 +8,7 @@ using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using MediatR;
 using Nuna.Lib.TransactionHelper;
+using Nuna.Lib.ValidationHelper;
 
 namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.ResepRsValidateUseCase;
 
@@ -19,6 +20,7 @@ public class ResepRsValidateHandler :
     private readonly IPpkGetService _ppkGetService;
     private readonly ILayananGetService _layananGetService;
     private readonly IMapDphoGetService _mapDphoGetService;
+    private readonly ITglJamProvider _dateTime;
 
 
     public ResepRsValidateHandler(
@@ -26,13 +28,15 @@ public class ResepRsValidateHandler :
         IPpkGetService ppkGetService,
         ILayananGetService layananGetService, 
         IMapDphoGetService mapDphoGetService, 
-        IResepMidwareWriter writer)
+        IResepMidwareWriter writer, 
+        ITglJamProvider dateTime)
     {
         _sepGetByRegService = sepGetByRegService;
         _ppkGetService = ppkGetService;
         _layananGetService = layananGetService;
         _mapDphoGetService = mapDphoGetService;
         _writer = writer;
+        _dateTime = dateTime;
     }
 
     public Task<IEnumerable<ResepRsValidateResponse>> Handle(
@@ -60,8 +64,8 @@ public class ResepRsValidateHandler :
         using var trans = TransHelper.NewScope();
         foreach (var item in listResult.Where(x => x.IsCreated))
         {
-            var writeResult = _writer.Save(item.ResepMidware);
-            item.ResepMidware.ResepMidwareId = writeResult.ResepMidwareId;
+            _ = _writer.Save(item.ResepMidware);
+            //item.ResepMidware.ResepMidwareId = writeResult.ResepMidwareId;
         }
         trans.Complete();
         
@@ -105,13 +109,10 @@ public class ResepRsValidateHandler :
             resepMidware, true, listValidationNoteStr);
     }
     
-    private static ResepMidwareModel CreateResepHeader(SepType sep, 
+    private ResepMidwareModel CreateResepHeader(SepType sep, 
         PpkRefference ppk, LayananType layanan)
     {
-        var result = new ResepMidwareModel();
-        result.SetSep(sep);
-        result.SetPpk(ppk);
-        result.SetPoliBpjs(layanan);
+        var result = new ResepMidwareModel(_dateTime.Now, 1, sep, ppk, layanan.PoliBpjs);
         return result;
     }
     

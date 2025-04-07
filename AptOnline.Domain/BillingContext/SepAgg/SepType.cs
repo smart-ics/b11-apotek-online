@@ -19,7 +19,7 @@ public record SepType : ISepKey
         SepId = sepId;
         SepDateTime = sepDateTime;
         SepNo = sepNo;
-        PesertaJaminanId = pesertaJaminanId;
+        NoPeserta = pesertaJaminanId;
         Reg = reg;
         Dpjp = dpjp;
         IsPrb = isPrb;
@@ -29,7 +29,8 @@ public record SepType : ISepKey
     public string SepId { get; private set; }
     public DateTime SepDateTime { get; private set; }
     public string SepNo { get; private set; }
-    public string PesertaJaminanId { get; private set; }
+    public string NoPeserta { get; private set; }
+    
     public RegType Reg { get; private set; }
     public DokterType Dpjp { get; private set; }
     public bool IsPrb { get; private set; }

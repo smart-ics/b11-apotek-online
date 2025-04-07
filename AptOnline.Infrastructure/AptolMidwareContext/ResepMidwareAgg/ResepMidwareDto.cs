@@ -2,38 +2,45 @@
 
 namespace AptOnline.Infrastructure.AptolMidwareContext.ResepMidwareAgg;
 
-internal record ResepMidwareDto(
+public record ResepMidwareDto(
     string ResepMidwareId,
     DateTime ResepMidwareDate,
-    DateTime BridgeState,
-    DateTime CreateTimestamp,
-    DateTime SyncTimestamp,
-    DateTime UploadTimestamp,
     string ChartId,
     string ResepRsId,
-    string RegId,
-    string PasienId,
-    string PasienName,
+    string ReffId,
+    string JenisObatId,
+    int Iterasi,
+    
     string SepId,
     DateTime SepDate,
+    string SepNo,
     string NoPeserta,
-    string FaskesId,
-    string FaskesAsal,
-    string PoliBpjsId,
-    string PoliBpjsName,
-    string JenisObatId,
+    string RegId,
+    DateTime RegDate,
+    string PasienId,
+    string PasienName,
     string DokterId,
     string DokterName,
-    string ReffId,
-    int Iterasi)
+
+    string PpkId,
+    string PpkName,
+    string PoliBpjsId,
+    string PoliBpjsName,
+    
+    string BridgeState,
+    DateTime CreateTimestamp,
+    DateTime SyncTimestamp,
+    DateTime UploadTimestamp)
 {
     public ResepMidwareModel ToModel()
     {
-        // TODO: Mapping SepModel to Dto
-        var result = new ResepMidwareModel
-        {
-
-        };
+        var result = ResepMidwareModel.Load(ResepMidwareId, ResepMidwareDate,
+            ChartId, ResepRsId, ReffId, JenisObatId, Iterasi, 
+            SepId, SepDate, SepNo, NoPeserta, 
+            RegId, RegDate, PasienId, PasienName, 
+            DokterId, DokterName, 
+            PpkId, PpkName, PoliBpjsId, PoliBpjsName,
+            BridgeState, CreateTimestamp, SyncTimestamp, UploadTimestamp);
         return result;
     }
 }
