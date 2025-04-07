@@ -100,7 +100,7 @@ public class ResepRsValidateHandler :
                         ref itemCount, ref listValidationNote);
         }
 
-        var listValidationNoteStr = string.Join(", ", listValidationNote);
+        var listValidationNoteStr = string.Join("\n", listValidationNote);
         if (listValidationNote.Count == itemCount)
             return new ResepRsValidateResponseDto(noUrut, 
                 resepMidware, false, listValidationNoteStr);
@@ -124,7 +124,10 @@ public class ResepRsValidateHandler :
         itemCount++;
         var mapDpho = _mapDphoGetService.Execute(itemObat);
         if (mapDpho is null)
+        {
+            listValidationNote.Add($"'{itemObat.BrgName}' tidak masuk dalam daftar DPHO");
             return resepMidware;
+        }
         var resultType = resepMidware.AddObat(mapDpho, itemObat.Signa, itemObat.Qty);
         if (resultType.IsFailed)
             listValidationNote.Add(resultType.ErrorMessage);

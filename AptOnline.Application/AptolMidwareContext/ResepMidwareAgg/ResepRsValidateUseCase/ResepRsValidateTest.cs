@@ -24,18 +24,18 @@ public class ResepRsValidateTest
     /* test case:
      A. Happy Path Testing
         1. Resep Single
-            T01. All DPHO : 2 DPHO => 0 ValidationNote
-            T02. Campuran : 2 DPHO + 1 Non DPHO  => 1 ValidationNote
+            T01. All DPHO : 1 DPHO => 0 ValidationNote
+            T02. Campuran : 1 DPHO + 1 Non DPHO  => 1 ValidationNote
         2. Resep Racik
-            T03. All DPHO : 2 DPHO  => 0 ValidationNote
-            T04. Campuran : 2 DPHO + 1 Non DPHO => 1 ValidationNote
+            T03. All DPHO : 1 DPHO  => 0 ValidationNote
+            T04. Campuran : 1 DPHO + 1 Non DPHO => 1 ValidationNote
         3. Resep Kombinasi
             T05. All DPHO : 2 DPHO         | 1 DPHO => 0 ValidationNote
             T06. Campuran : 1 DPHO + 1 Non | 1 DPHO + 1 Non DPHO => 2 ValidationNote
 
      B. Negatif Testing
-        T07. Single All DPHO
-        T08. Racik All DPHO
+        T07. Single All Non-DPHO
+        T08. Racik All Non-DPHO
         T09. Sep Not Found
         T10. Reg Not Found
         T11. Faskes Not Found
@@ -141,6 +141,8 @@ public class ResepRsValidateTest
         var resultFetched = result.ToList();
         resultFetched.Should().NotBeNull();
         resultFetched.First().ValidationNote.Should().BeNullOrEmpty();
+        resultFetched.First().ValidationResult.Should().Be("SUCCESS");
+        
     }
     
     [Fact]
@@ -159,6 +161,28 @@ public class ResepRsValidateTest
         var result = await _sut.Handle(cmd, CancellationToken.None);
         var resultFetched = result.ToList();
         resultFetched.Should().NotBeNull();
-        resultFetched.First().ValidationNote.Should().NotBeNull();
+        resultFetched.First().ValidationNote.Should().NotBeEmpty();
+        resultFetched.First().ValidationResult.Should().Be("SUCCESS");
+    }
+
+    [Fact]
+    public async Task T03_GivenRacikAllDpho_ThenSuccess_AndNoValidationNote()
+    {
+        var cmd = Command();
+        cmd.ListResep.First().ListItem.Add(
+            new ResepRsValidateCommandObat("RACIK-ID-1",
+                "RACIK-NAME-1", 1, "2dd1", "CaraPakai", 1,
+                new List<ResepRsValidateCommandKomponenRacik>
+                {
+                    new ResepRsValidateCommandKomponenRacik("BRG-ID-1", 
+                        "BRG-NAME-1", 10, "3dd1", "diminum")                    
+                }));
+
+        HappyPathMocking();
+        var result = await _sut.Handle(cmd, CancellationToken.None);
+        var resultFetched = result.ToList();
+        resultFetched.Should().NotBeNull();
+        resultFetched.First().ValidationNote.Should().BeEmpty();
+        resultFetched.First().ValidationResult.Should().Be("SUCCESS");
     }
 }
