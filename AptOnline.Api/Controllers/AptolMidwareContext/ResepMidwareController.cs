@@ -9,11 +9,11 @@ namespace AptOnline.Api.Controllers.AptolMidwareContext;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AptolMidwareController : Controller
+public class ResepMidwareController : Controller
 {
     private readonly IMediator _mediator;
 
-    public AptolMidwareController(IMediator mediator)
+    public ResepMidwareController(IMediator mediator)
     {
         _mediator = mediator;
     }
