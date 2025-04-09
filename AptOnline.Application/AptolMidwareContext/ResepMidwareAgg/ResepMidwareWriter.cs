@@ -32,7 +32,7 @@ public class ResepMidwareWriter: IResepMidwareWriter
         using var trans = TransHelper.NewScope();
         
         var resepDb = _resepMidwareDal.GetData(model);
-        if (resepDb is not null)
+        if (resepDb is null)
             _resepMidwareDal.Insert(model);
         else
             _resepMidwareDal.Update(model);

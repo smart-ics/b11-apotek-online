@@ -30,14 +30,14 @@ public class ResepMidwareDal : IResepMidwareDal
                 SepId, SepDate, SepNo, NoPeserta, 
                 RegId, RegDate, PasienId, PasienName, DokterId, DokterName,
                 PpkId, PpkName, PoliBpjsId, PoliBpjsName,   
-                BridgeState, CreateTimestamp, SyncTimestamp, UploadTimestamp)
+                BridgeState, CreateTimestamp, ConfirmTimeStamp, SyncTimestamp, UploadTimestamp)
             VALUES(
                 @ResepMidwareId, @ResepMidwareDate, 
                 @ChartId, @ResepRsId, @ReffId, @JenisObatId, @Iterasi, 
                 @SepId, @SepDate, @SepNo, @NoPeserta, 
                 @RegId, @RegDate, @PasienId, @PasienName, @DokterId, @DokterName,
                 @PpkId, @PpkName, @PoliBpjsId, @PoliBpjsName,   
-                @BridgeState, @CreateTimestamp, @SyncTimestamp, @UploadTimestamp)";
+                @BridgeState, @CreateTimestamp, @ConfirmTimeStamp, @SyncTimestamp, @UploadTimestamp)";
 
         var dp = new DynamicParameters();
         dp.AddParam("@ResepMidwareId", resepMidware.ResepMidwareId, SqlDbType.VarChar);
@@ -67,6 +67,7 @@ public class ResepMidwareDal : IResepMidwareDal
         
         dp.AddParam("@BridgeState", resepMidware.BridgeState, SqlDbType.VarChar);
         dp.AddParam("@CreateTimestamp", resepMidware.CreateTimestamp, SqlDbType.DateTime);
+        dp.AddParam("@ConfirmTimeStamp", resepMidware.ConfirmTimeStamp, SqlDbType.DateTime);
         dp.AddParam("@SyncTimestamp", resepMidware.SyncTimestamp, SqlDbType.DateTime);
         dp.AddParam("@UploadTimestamp", resepMidware.UploadTimestamp, SqlDbType.DateTime);
 
@@ -107,6 +108,7 @@ public class ResepMidwareDal : IResepMidwareDal
 
                 BridgeState = @BridgeState,
                 CreateTimestamp = @CreateTimestamp,
+                ConfirmTimeStamp = @ConfirmTimeStamp,
                 SyncTimestamp = @SyncTimestamp,
                 UploadTimestamp = @UploadTimestamp
             WHERE
@@ -140,6 +142,7 @@ public class ResepMidwareDal : IResepMidwareDal
         
         dp.AddParam("@BridgeState", resepMidware.BridgeState, SqlDbType.VarChar);
         dp.AddParam("@CreateTimestamp", resepMidware.CreateTimestamp, SqlDbType.DateTime);
+        dp.AddParam("@ConfirmTimeStamp", resepMidware.ConfirmTimeStamp, SqlDbType.DateTime);
         dp.AddParam("@SyncTimestamp", resepMidware.SyncTimestamp, SqlDbType.DateTime);
         dp.AddParam("@UploadTimestamp", resepMidware.UploadTimestamp, SqlDbType.DateTime);
 
@@ -172,7 +175,7 @@ public class ResepMidwareDal : IResepMidwareDal
                 SepId, SepDate, SepNo, NoPeserta, 
                 RegId, RegDate, PasienId, PasienName, DokterId, DokterName,
                 PpkId, PpkName, PoliBpjsId, PoliBpjsName,   
-                BridgeState, CreateTimestamp, SyncTimestamp, UploadTimestamp            
+                BridgeState, CreateTimestamp, ConfirmTimeStamp, SyncTimestamp, UploadTimestamp            
             FROM
                 APTOL_ResepMidware
             WHERE
@@ -183,8 +186,7 @@ public class ResepMidwareDal : IResepMidwareDal
         
         using var conn = new SqlConnection(ConnStringHelper.Get(_options));
         var result =  conn.ReadSingle<ResepMidwareDto>(sql, dp);
-        return result.ToModel();
-
+        return result?.ToModel();
     }
 
     public IEnumerable<ResepMidwareModel> ListData(Periode filter)
@@ -196,7 +198,7 @@ public class ResepMidwareDal : IResepMidwareDal
                 SepId, SepDate, SepNo, NoPeserta, 
                 RegId, RegDate, PasienId, PasienName, DokterId, DokterName,
                 PpkId, PpkName, PoliBpjsId, PoliBpjsName,   
-                BridgeState, CreateTimestamp, SyncTimestamp, UploadTimestamp          
+                BridgeState, CreateTimestamp, ConfirmTimeStamp, SyncTimestamp, UploadTimestamp          
             FROM
                 APTOL_ResepMidware
             WHERE
@@ -228,7 +230,8 @@ public class ResepMidwareDalTest
             "I", new DateTime(2025,4,3), "J", "K", "L", "M", "N", "O", "P", "Q", "R", 
             new DateTime(2024,4,4),
             new DateTime(2024,4,5),
-            new DateTime(2024,4,6));
+            new DateTime(2024,4,6),
+            new DateTime(2024,4,7));
     
     [Fact]
     public void UT1_Insert()

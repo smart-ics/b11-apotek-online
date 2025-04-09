@@ -143,6 +143,11 @@ public class ResepRsValidateHandler :
     {
         itemCount++;
         var mapDpho = _mapDphoGetService.Execute(itemRacik);
+        if (mapDpho is null)
+        {
+            listValidationNote.Add($"'{itemRacik.BrgName}' tidak masuk dalam daftar DPHO");
+            return resepMidware;
+        }        
         var resultType = resepMidware.AddRacik(mapDpho, signa, itemRacik.Qty, jenisRacik);
         if (resultType.IsFailed)
             listValidationNote.Add(resultType.ErrorMessage);

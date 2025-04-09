@@ -16,27 +16,51 @@ public class ResepMidwareItemModel : IResepMidwareKey
 
         ResepMidwareId = string.Empty;
         IsRacik = false;
-        JenisRacikan = string.Empty;
+        RacikId = string.Empty;
         Permintaan = 0;
         Note = string.Empty;
     }
+
+    private ResepMidwareItemModel()
+    {
+    }
+
+    public static ResepMidwareItemModel Load(
+        string respeMidwareId, int noUrut, bool isRacik, string racikId,
+        string barangId, string barangName, string dphoId, string dphoName,
+        int signa1, decimal signa2, int permintaan, int jho, int jumlah, string note)
+        => new ResepMidwareItemModel
+        {
+            ResepMidwareId = respeMidwareId,
+            NoUrut = noUrut,
+            IsRacik = isRacik,
+            RacikId = racikId,
+            Brg = new BrgType(barangId, barangName),
+            Dpho = new DphoRefference(dphoId, dphoName),
+            Signa1 = signa1,
+            Signa2 = signa2,
+            Permintaan = permintaan,
+            Jho = jho,
+            Jumlah = jumlah,
+            Note = note
+        };
     #endregion
     
     #region PROPERTIES
     public string ResepMidwareId { get; private set; }
     public int NoUrut { get; private set; }
+    public bool IsRacik { get; private set; }
+    public string RacikId { get; private set; }
 
     public BrgType Brg { get; private set; }
     public DphoRefference Dpho { get; private set; }
 
     public int Signa1 { get; private set; }
     public decimal Signa2 { get; private set; }
-    public int Jumlah { get; private set; }
-    public int Jho { get; private set; }
-
-    public bool IsRacik { get; private set; }
-    public string JenisRacikan { get; private set; }
     public int Permintaan { get; private set; }
+    public int Jho { get; private set; }
+    public int Jumlah { get; private set; }
+
     public string Note { get; private set; }
     #endregion
     
@@ -63,13 +87,13 @@ public class ResepMidwareItemModel : IResepMidwareKey
 
     public void SetAsRacik(string jenisRacik)
     {
-        JenisRacikan = jenisRacik;
+        RacikId = jenisRacik;
         IsRacik = true;
     }
 
     public void SetAsObat()
     {
-        JenisRacikan = string.Empty;
+        RacikId = string.Empty;
         IsRacik = false;
     }
     #endregion

@@ -15,6 +15,9 @@ namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 public class ResepMidwareModel : IResepMidwareKey
 {
     private const string BRIDGE_STATE_CREATED = "CREATED";
+    private const string BRIDGE_STATE_CONFIRMED = "CONFIRMED";
+    private const string BRIDGE_STATE_SYNCED = "SYNCED";
+    private const string BRIDGE_STATE_UPLOADED = "UPLOADED";
     
     public ResepMidwareModel(DateTime resepDate,int iterasi, SepType sep, PpkRefference ppk, PoliBpjsType poliBpjs)
     {
@@ -24,10 +27,6 @@ public class ResepMidwareModel : IResepMidwareKey
 
         ResepMidwareId = Ulid.NewUlid();
         ResepMidwareDate = resepDate;
-        CreateTimestamp = DateTime.Now;
-        SyncTimestamp = AppConst.DEF_DATE;
-        UploadTimestamp = AppConst.DEF_DATE;
-        BridgeState = BRIDGE_STATE_CREATED;
 
         ChartId = string.Empty;
         ResepRsId = string.Empty;
@@ -38,6 +37,13 @@ public class ResepMidwareModel : IResepMidwareKey
         Sep = sep;
         Ppk = ppk;
         PoliBpjs = poliBpjs;
+
+        BridgeState = BRIDGE_STATE_CREATED;
+        CreateTimestamp = DateTime.Now;
+        ConfirmTimeStamp = AppConst.DEF_DATE;
+        SyncTimestamp = AppConst.DEF_DATE;
+        UploadTimestamp = AppConst.DEF_DATE;
+        
         ListItem = new List<ResepMidwareItemModel>();
     }
 
@@ -54,7 +60,7 @@ public class ResepMidwareModel : IResepMidwareKey
         string dokterId, string dokterName,
         string ppkId, string ppkName,
         string poliBpjsId, string poliBpjsName,  
-        string bridgeState, DateTime createTimestamp, 
+        string bridgeState, DateTime createTimestamp, DateTime confirmTimestamp, 
         DateTime syncTimestamp, DateTime uploadTimestamp)
     {
         var reg = new RegType(regId, regDate, pasienId, pasienName);
@@ -77,6 +83,7 @@ public class ResepMidwareModel : IResepMidwareKey
             
             BridgeState = bridgeState,
             CreateTimestamp = createTimestamp,
+            ConfirmTimeStamp = confirmTimestamp,
             SyncTimestamp = syncTimestamp,
             UploadTimestamp = uploadTimestamp,
         };
@@ -105,7 +112,8 @@ public class ResepMidwareModel : IResepMidwareKey
     #endregion
 
 #region BRIDGING-STATE
-    public string BridgeState { get; private set; }
+    public string BridgeState { get; private set; } // CREATED, CONFIRMED, SYNCED, UPLOADED
+    public DateTime ConfirmTimeStamp { get; private set; }
     public DateTime CreateTimestamp { get; private set;}
     public DateTime SyncTimestamp { get; private set;}
     public DateTime UploadTimestamp { get; private set;}
@@ -115,21 +123,18 @@ public class ResepMidwareModel : IResepMidwareKey
 
     
 #region METHODS-HEADER-RELATED
-    public void SetSep(SepType sep)
-    {
-        Guard.NotNull(sep, nameof(sep));
-        Sep = sep;
-    }
-    public void SetPoliBpjs(LayananType layanan)
-    {
-        Guard.NotNull(layanan, nameof(layanan));
-        PoliBpjs = layanan.PoliBpjs;
-    }
 
-    public void SetPpk(PpkRefference ppk)
+    public void Confirm(DateTime confirmTimeStamp)
     {
-        Guard.NotNull(ppk, nameof(ppk));
-        Ppk = ppk;
+        BridgeState = BRIDGE_STATE_CONFIRMED;
+        ConfirmTimeStamp = confirmTimeStamp;
+        SyncTimestamp = AppConst.DEF_DATE;
+        UploadTimestamp = AppConst.DEF_DATE;
+    }
+    public void ChartRefference(string chartId, string resepRsId)
+    {
+        ChartId = chartId;
+        ResepRsId = resepRsId;
     }
     #endregion
     
@@ -142,14 +147,7 @@ public class ResepMidwareModel : IResepMidwareKey
         
         return NunaResult<string>.Success("Success");
     }
-    private static ResepMidwareItemModel CreateResep(
-        Func<ResepMidwareItemModel> primaryStrategy, 
-        Func<ResepMidwareItemModel> fallbackStrategy)
-    {
-        var result = primaryStrategy() 
-            ?? fallbackStrategy(); 
-        return result;
-    }    
+ 
     public NunaResult<string> AddRacik(MapDphoType mapBrgDpho, 
         string signa, int qty, string jenisRacik)
     {

@@ -22,8 +22,8 @@ public class SepGetByRegResponseData
     public string RegId {get;set;}
     public string PasienId {get;set;}
     public string PasienName {get;set;}
-    public string DpjpId {get;set;}
-    public string DpjpName {get;set;}
+    public string DpjpLayananId {get;set;}
+    public string DpjpLayananName {get;set;}
     public string IsPrb {get;set;}
     public string Prb {get;set;}
     
@@ -31,6 +31,6 @@ public class SepGetByRegResponseData
         new SepType(SepId, DateTime.Parse(SepDateTime), 
             SepNo, PesertaJaminanId, 
             new RegType(RegId, DateTime.Parse(SepDateTime), PasienId, PasienName), 
-            new DokterType(DpjpId, DpjpName), 
+            new DokterType(DpjpLayananId, DpjpLayananName), 
             bool.Parse(IsPrb), Prb.Trim());
 }
