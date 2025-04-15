@@ -20,6 +20,7 @@ public class MapDphoGetService : IMapDphoGetService
     public MapDphoType Execute(IBrgKey brgKey)
     {
         var response = Task.Run(() => GetData(brgKey.BrgId)).GetAwaiter().GetResult();
+        if (response is null) return null;
         var brg = new BrgType(
             response?.data?.BrgId ?? string.Empty, 
             response?.data?.BrgName ?? string.Empty);
@@ -33,8 +34,7 @@ public class MapDphoGetService : IMapDphoGetService
     private async Task<MapDphoGetResponse> GetData(string id)
     {
         if (id.Trim().Length == 0)
-            return null;
-        
+            return null; 
         
         // BUILD
         var endpoint = $"{_opt.BaseApiUrl}/api/Dpho/Map/{id}";

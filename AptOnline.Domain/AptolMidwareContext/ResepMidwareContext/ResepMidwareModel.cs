@@ -55,7 +55,7 @@ public class ResepMidwareModel : IResepMidwareKey
         string resepMidwareId, DateTime resepMidwareDate, 
         string chartId, string resepRsId, 
         string reffId, string jenisObatId, int iterasi,        
-        string sepId, DateTime sepDate, string sepNo, string noPeserta, 
+        string sepId, DateTime sepDate, string sepNo, string noPeserta,
         string regId, DateTime regDate, string pasienId, string pasienName,
         string dokterId, string dokterName,
         string ppkId, string ppkName,
@@ -77,7 +77,7 @@ public class ResepMidwareModel : IResepMidwareKey
             JenisObatId = jenisObatId,
             Iterasi = iterasi,
 
-            Sep = new SepType(sepId, sepDate, sepNo, noPeserta, reg, dokter, false, ""),
+            Sep = new SepType(sepId, sepDate, sepNo, noPeserta, reg, dokter, false, "", ""),
             Ppk = new PpkRefference(ppkId, ppkName),
             PoliBpjs = new PoliBpjsType(poliBpjsId, poliBpjsName),
             
