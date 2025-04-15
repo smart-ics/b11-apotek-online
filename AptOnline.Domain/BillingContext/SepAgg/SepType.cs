@@ -9,7 +9,7 @@ public record SepType : ISepKey
 {
     public SepType(string sepId, DateTime sepDateTime, string sepNo, 
         string pesertaJaminanId, RegType reg, DokterType dpjp, 
-        bool isPrb, string prb)
+        bool isPrb, string prb, string jnsPelayananId)
     {
         Guard.NotNullOrWhitespace(sepId, nameof(sepId));
         Guard.NotNullOrWhitespace(pesertaJaminanId, nameof(pesertaJaminanId));
@@ -24,13 +24,14 @@ public record SepType : ISepKey
         Dpjp = dpjp;
         IsPrb = isPrb;
         Prb = prb;
+        JenisPelayananId = jnsPelayananId;
     }
 
     public string SepId { get; private set; }
     public DateTime SepDateTime { get; private set; }
     public string SepNo { get; private set; }
     public string NoPeserta { get; private set; }
-    
+    public string JenisPelayananId { get; set; }
     public RegType Reg { get; private set; }
     public DokterType Dpjp { get; private set; }
     public bool IsPrb { get; private set; }
@@ -38,6 +39,6 @@ public record SepType : ISepKey
     
     public static SepType Default => new SepType(
         AppConst.DASH, AppConst.DEF_DATE, AppConst.DASH, 
-        AppConst.DASH, RegType.Default, DokterType.Default, false, 
-        AppConst.DASH);
+        AppConst.DASH,RegType.Default, DokterType.Default, false, 
+        AppConst.DASH, AppConst.DASH);
 }
