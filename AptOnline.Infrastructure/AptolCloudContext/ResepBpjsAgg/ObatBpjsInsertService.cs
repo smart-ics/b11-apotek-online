@@ -1,4 +1,7 @@
 ﻿using System.Security.Cryptography.X509Certificates;
+using AptOnline.Application.AptolCloudContext.ResepBpjsAgg;
+using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
+using AptOnline.Infrastructure.AptolCloudContext.Shared;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -7,18 +10,13 @@ using RestSharp;
 
 namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
 {
-    public interface IInsertObatBpjsService
-    {
-        InsertObatRespDto ExecuteRacik(InsertObatRacikReqDto req);
-        InsertObatRespDto ExecuteNonRacik(InsertObatNonRacikReqDto req);
-    }
-    public class InsertObatBpjsService : IInsertObatBpjsService
+    public class ObatBpjsInsertService : IObatBpjsInsertService
     {
         private readonly BpjsOptions _opt;
         private readonly string _timestamp;
         private readonly string _signature;
         private readonly string _decryptKey;
-        public InsertObatBpjsService(IOptions<BpjsOptions> opt)
+        public ObatBpjsInsertService(IOptions<BpjsOptions> opt)
         {
             _opt = opt.Value;
             _timestamp = BpjsHelper.GetTimeStamp().ToString();
@@ -26,9 +24,14 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
             _decryptKey = _opt.ConsId + _opt.SecretKey + _timestamp;
         }
 
-        public InsertObatRespDto ExecuteNonRacik(InsertObatNonRacikReqDto req)
+        public object Execute(ObatBpjsInsertParam req)
         {
-            var jReq = JObject.FromObject(req);
+            throw new NotImplementedException();
+        }
+
+        public object ExecuteNonRacik(ObatBpjsInsertParam reqParam)
+        {
+            var jReq = JObject.FromObject(reqParam.Obat);
             jReq.Property("PenjualanId").Remove();
             jReq.Property("BarangId").Remove();
             var reqBody = JsonConvert.SerializeObject(jReq);
@@ -50,11 +53,11 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
             {
-                LogHelper.Log(req.NOSJP, reqBody, response.Content, response.StatusCode.ToString());
+                LogHelper.Log(reqParam.NoSep, reqBody, response.Content, response.StatusCode.ToString());
                 try
                 {
                     //{ "response":null,"metaData":{ "code":"201","message":"300 - Obat Beirisan dengan pemakaian obat Tgl Resep 28-01-2025"} }
-                    var result = JsonConvert.DeserializeObject<InsertObatRespDto>(response.Content);
+                    var result = JsonConvert.DeserializeObject<ObatBpjsInsertResponse>(response.Content);
                     return result;
                 }
                 catch
@@ -64,14 +67,14 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
             }
             else
             {
-                LogHelper.Log(req.NOSJP, reqBody, response.ErrorMessage, response.StatusCode.ToString());
+                LogHelper.Log(reqParam.NoSep, reqBody, response.ErrorMessage, response.StatusCode.ToString());
                 throw new Exception(response.ErrorMessage);
             }
         }
 
-        public InsertObatRespDto ExecuteRacik(InsertObatRacikReqDto req)
+        public object ExecuteRacik(ObatBpjsInsertParam reqParam)
         {
-            var jReq = JObject.FromObject(req);
+            var jReq = JObject.FromObject(reqParam.Obat);
             jReq.Property("PenjualanId").Remove();
             jReq.Property("BarangId").Remove();
             var reqBody = JsonConvert.SerializeObject(jReq);
@@ -89,14 +92,14 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
 
             request.AddParameter("application/x-www-form-urlencoded", reqBody, ParameterType.RequestBody);
             var response = client.Execute(request);
-            LogHelper.Log(req.NOSJP, reqBody, response.Content, response.StatusCode.ToString());
+            LogHelper.Log(reqParam.NoSep, reqBody, response.Content, response.StatusCode.ToString());
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
 
             {
                 try
                 {
                     //{"response":null,"metaData":{"code":"200","message":"Obat Berhasil Simpan.."}}
-                    var result = JsonConvert.DeserializeObject<InsertObatRespDto>(response.Content);
+                    var result = JsonConvert.DeserializeObject<ObatBpjsInsertResponse>(response.Content);
                     return result;
                 }
                 catch
@@ -110,7 +113,7 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
     }
     #region Dto
 
-    public class InsertObatNonRacikReqDto
+    public class ObatBpjsInsertNonRacikRequestDto
     {
         public string BarangId { get; set; }
         public string NOSJP { get; set; } //no apotik (response insert resep)
@@ -124,7 +127,7 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
         public string CatKhsObt { get; set; } //resep
     }
 
-    public class InsertObatRacikReqDto
+    public class ObatBpjsInsertRacikRequestDto
     {
         public string BarangId {  get; set; }    
         public string NOSJP { get; set; }
@@ -139,18 +142,10 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
         public int JHO { get; set; }
         public string CatKhsObt { get; set; }
     }
-
-    public class InsertObatRespDto
+    public class ObatBpjsInsertResponse
     {
         public object response { get; set; }
-        public InsertObatRespMetadata metaData { get; set; }
+        public AptolCloudResponseMeta metaData { get; set; }
     }
-
-    public class InsertObatRespMetadata
-    {
-        public int code { get; set; }
-        public string message { get; set; }
-    }
-
     #endregion
 }
