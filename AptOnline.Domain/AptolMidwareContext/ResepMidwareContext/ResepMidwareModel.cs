@@ -31,9 +31,10 @@ public class ResepMidwareModel : IResepMidwareKey
         ChartId = string.Empty;
         ResepRsId = string.Empty;
         ReffId = string.Empty;
-        JenisObatId = string.Empty;
+        JenisObatId = poliBpjs.PoliBpjsId == "KEM" ? "3"
+              : sep.IsPrb ? "1"
+              : "2";
         Iterasi = iterasi;
-        
         Sep = sep;
         Ppk = ppk;
         PoliBpjs = poliBpjs;
