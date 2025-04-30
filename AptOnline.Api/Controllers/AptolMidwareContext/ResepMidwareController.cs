@@ -1,4 +1,4 @@
-﻿using AptOnline.Application.AptolCloudContext.PpkAgg;
+﻿using AptOnline.Application.AptolCloudContext.ResepBpjsAgg;
 using AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.ResepRsConfirmUseCase;
 using AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.ResepRsValidateUseCase;
 using MediatR;
@@ -32,5 +32,11 @@ public class ResepMidwareController : Controller
         var result = await _mediator.Send(command);
         return Ok(new JSendOk(result));
     }
-
+    [HttpPut]
+    [Route("send")]
+    public async Task<IActionResult> Send(ResepBpjsSaveCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return Ok(new JSendOk(result));
+    }
 }
