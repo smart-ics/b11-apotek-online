@@ -1,21 +1,9 @@
-﻿namespace AptOnline.Domain.EKlaimContext;
+﻿using AptOnline.Domain.Helpers;
 
-public record LetakJaninType
+namespace AptOnline.Domain.EKlaimContext;
+
+public record LetakJaninType : StringLookupValueObject<LetakJaninType>
 {
-    private LetakJaninType(string value) => Value = value;
-
-    public static LetakJaninType Create(string value)
-    {
-        value = value.ToLower();
-        string[] validValue = { "kepala", "sungsang", "lintang", "-" };
-        if (!validValue.Contains(value))
-            throw new ArgumentException("Letak Janin must be either 'kepala', 'sungsang' or 'lintang'", nameof(value));
-
-        return new LetakJaninType(value);
-    }
-
-    public static LetakJaninType Load(string value) => new LetakJaninType(value);
-
-    public static LetakJaninType Default => new LetakJaninType("-");
-    public string Value { get; init; }
+    public LetakJaninType(string value) : base(value) { }
+    protected override string[] ValidValues => new []{ "kepala", "sungsang", "lintang", "-" };
 }
