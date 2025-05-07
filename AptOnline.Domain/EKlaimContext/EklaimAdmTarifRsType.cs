@@ -1,15 +1,15 @@
 ﻿namespace AptOnline.Domain.EKlaimContext;
 
-public record TarifRsType
+public record EklaimAdmTarifRsType
 {
-    public TarifRsType(TarifRsJasaMedisType jasaMedis, TarifRsPelayananType pelayanan, TarifRsObatType obat)
+    public EklaimAdmTarifRsType(TarifRsJasaMedisType jasaMedis, TarifRsPelayananType pelayanan, TarifRsObatType obat)
     {
         JasaMedis = jasaMedis;
         Pelayanan = pelayanan;
         Obat = obat;
     }
 
-    public static TarifRsType Default => new TarifRsType(
+    public static EklaimAdmTarifRsType Default => new EklaimAdmTarifRsType(
         TarifRsJasaMedisType.Default,
         TarifRsPelayananType.Default,
         TarifRsObatType.Default);

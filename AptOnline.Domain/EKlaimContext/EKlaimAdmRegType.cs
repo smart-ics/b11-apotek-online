@@ -1,8 +1,8 @@
 ﻿namespace AptOnline.Domain.EKlaimContext;
 
-public record EKlaimRegType
+public record EKlaimAdmRegType
 {
-    public EKlaimRegType(PeriodeRawatType periodeRawat, CaraMasukValType caraMasukVal, 
+    public EKlaimAdmRegType(PeriodeRawatType periodeRawat, CaraMasukValType caraMasukVal, 
         JenisRawatValType jenisRawatVal, KelasRawatInapValType kelasRawatInap, 
         KelasRawatJalanValType kelasRawatJalanVal)
     {
