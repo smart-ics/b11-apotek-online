@@ -2,9 +2,9 @@
 
 namespace AptOnline.Domain.EKlaimContext;
 
-public record NomorKartuTType : StringLookupValueObject<NomorKartuTType>
+public record NomorKartuTValType : StringLookupValueObject<NomorKartuTValType>
 {
-    public NomorKartuTType(string value) : base(value)
+    public NomorKartuTValType(string value) : base(value)
     {
     }
 

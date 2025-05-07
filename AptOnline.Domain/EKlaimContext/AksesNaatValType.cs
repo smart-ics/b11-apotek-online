@@ -2,9 +2,9 @@
 
 namespace AptOnline.Domain.EKlaimContext;
 
-public record AksesNaatType : StringLookupValueObject<AksesNaatType>
+public record AksesNaatValType : StringLookupValueObject<AksesNaatValType>
 {
-    public AksesNaatType(string value) : base(value)
+    public AksesNaatValType(string value) : base(value)
     {
     }
 

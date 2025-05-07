@@ -2,9 +2,9 @@
 
 namespace AptOnline.Domain.EKlaimContext;
 
-public record Covid19StatusCdType : StringLookupValueObject<Covid19StatusCdType>
+public record Covid19StatusCodeValType : StringLookupValueObject<Covid19StatusCodeValType>
 {
-    public Covid19StatusCdType(string value) : base(value) { }
+    public Covid19StatusCodeValType(string value) : base(value) { }
     protected override string[] ValidValues => new[]
     {
         "1", // ODP (Orang Dalam Pemantauan)

@@ -2,9 +2,9 @@
 
 namespace AptOnline.Domain.EKlaimContext;
 
-public record EpisodeType : StringLookupValueObject<EpisodeType>
+public record EpisodeValType : StringLookupValueObject<EpisodeValType>
 {
-    public EpisodeType(string value) : base(value)
+    public EpisodeValType(string value) : base(value)
     {
     }
 

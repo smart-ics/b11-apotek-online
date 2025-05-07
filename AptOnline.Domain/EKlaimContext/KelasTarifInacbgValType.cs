@@ -2,9 +2,9 @@
 
 namespace AptOnline.Domain.EKlaimContext;
 
-public record KelasTarifInacbgType : StringLookupValueObject<KelasTarifInacbgType>
+public record KelasTarifInacbgValType : StringLookupValueObject<KelasTarifInacbgValType>
 {
-    public KelasTarifInacbgType(string value) : base(value)
+    public KelasTarifInacbgValType(string value) : base(value)
     {
     }
 

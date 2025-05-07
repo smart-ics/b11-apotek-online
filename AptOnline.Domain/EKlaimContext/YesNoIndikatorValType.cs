@@ -2,9 +2,9 @@
 
 namespace AptOnline.Domain.EKlaimContext;
 
-public record YesNoIndikatorType : StringLookupValueObject<YesNoIndikatorType>
+public record YesNoIndikatorValType : StringLookupValueObject<YesNoIndikatorValType>
 {
-    public YesNoIndikatorType(string value) : base(value) { }
+    public YesNoIndikatorValType(string value) : base(value) { }
 
     protected override string[] ValidValues => new[]
     {

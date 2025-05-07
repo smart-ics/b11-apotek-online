@@ -2,9 +2,9 @@
 
 namespace AptOnline.Domain.EKlaimContext;
 
-public record JenisRawatType : StringLookupValueObject<JenisRawatType>
+public record JenisRawatValType : StringLookupValueObject<JenisRawatValType>
 {
-    public JenisRawatType(string value) : base(value) { }
+    public JenisRawatValType(string value) : base(value) { }
 
     protected override string[] ValidValues => new[]
     {

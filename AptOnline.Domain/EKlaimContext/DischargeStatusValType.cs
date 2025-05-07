@@ -2,9 +2,9 @@
 
 namespace AptOnline.Domain.EKlaimContext;
 
-public record DischartStatusType : StringLookupValueObject<DischartStatusType>
+public record DischargeStatusValType : StringLookupValueObject<DischargeStatusValType>
 {
-    public DischartStatusType(string value) : base(value) { }
+    public DischargeStatusValType(string value) : base(value) { }
     protected override string[] ValidValues => new[]
     {
         "1", // Atas persetujuan dokter

@@ -2,7 +2,7 @@
 
 public record JenazahType
 {
-    public JenazahType(YesNoIndikatorType pemulasaraanJenazah, YesNoIndikatorType kantongJenazah, YesNoIndikatorType petiJenazah, YesNoIndikatorType plastikErat, YesNoIndikatorType desinfektanJenazah, YesNoIndikatorType mobilJenazah, YesNoIndikatorType desinfektanMobilJenazah)
+    public JenazahType(YesNoIndikatorValType pemulasaraanJenazah, YesNoIndikatorValType kantongJenazah, YesNoIndikatorValType petiJenazah, YesNoIndikatorValType plastikErat, YesNoIndikatorValType desinfektanJenazah, YesNoIndikatorValType mobilJenazah, YesNoIndikatorValType desinfektanMobilJenazah)
     {
         PemulasaraanJenazah = pemulasaraanJenazah;
         KantongJenazah = kantongJenazah;
@@ -13,21 +13,21 @@ public record JenazahType
         DesinfektanMobilJenazah = desinfektanMobilJenazah;
     }
 
-    public static JenisRawatType Default => new JenazahType(
-        YesNoIndikatorType.Default,
-        YesNoIndikatorType.Default,
-        YesNoIndikatorType.Default,
-        YesNoIndikatorType.Default,
-        YesNoIndikatorType.Default,
-        YesNoIndikatorType.Default,
-        YesNoIndikatorType.Default);
+    public static JenisRawatValType Default => new JenazahType(
+        YesNoIndikatorValType.Default,
+        YesNoIndikatorValType.Default,
+        YesNoIndikatorValType.Default,
+        YesNoIndikatorValType.Default,
+        YesNoIndikatorValType.Default,
+        YesNoIndikatorValType.Default,
+        YesNoIndikatorValType.Default);
 
-    public YesNoIndikatorType PemulasaraanJenazah { get; init; }
-    public YesNoIndikatorType KantongJenazah { get; init; }
-    public YesNoIndikatorType PetiJenazah { get; init; }
-    public YesNoIndikatorType PlastikErat { get; init; }
-    public YesNoIndikatorType DesinfektanJenazah { get; init; }
-    public YesNoIndikatorType MobilJenazah { get; init; }
-    public YesNoIndikatorType DesinfektanMobilJenazah { get; init; }
+    public YesNoIndikatorValType PemulasaraanJenazah { get; init; }
+    public YesNoIndikatorValType KantongJenazah { get; init; }
+    public YesNoIndikatorValType PetiJenazah { get; init; }
+    public YesNoIndikatorValType PlastikErat { get; init; }
+    public YesNoIndikatorValType DesinfektanJenazah { get; init; }
+    public YesNoIndikatorValType MobilJenazah { get; init; }
+    public YesNoIndikatorValType DesinfektanMobilJenazah { get; init; }
     
 }
