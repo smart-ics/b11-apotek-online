@@ -2,9 +2,9 @@
 
 namespace AptOnline.Domain.EKlaimContext;
 
-public record KelasRawatInapValType : StringLookupValueObject<KelasRawatInapValType>
+public record KelasRawatValType : StringLookupValueObject<KelasRawatValType>
 {
-    public KelasRawatInapValType(string value) : base(value) { }
+    public KelasRawatValType(string value) : base(value) { }
 
     protected override string[] ValidValues => new[]
     {

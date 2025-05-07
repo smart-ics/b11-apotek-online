@@ -1,9 +1,15 @@
-﻿namespace AptOnline.Domain.EKlaimContext;
+﻿using GuardNet;
+
+namespace AptOnline.Domain.EKlaimContext;
 
 public record EklaimAdmTarifRsType
 {
     public EklaimAdmTarifRsType(TarifRsJasaMedisType jasaMedis, TarifRsPelayananType pelayanan, TarifRsObatType obat)
     {
+        Guard.NotNull(jasaMedis, nameof(jasaMedis), "Jasa Medis Tidak boleh kosong");
+        Guard.NotNull(pelayanan, nameof(pelayanan), "Pelayanan Tidak boleh kosong");
+        Guard.NotNull(obat, nameof(obat), "Obat Tidak boleh kosong");
+        
         JasaMedis = jasaMedis;
         Pelayanan = pelayanan;
         Obat = obat;
@@ -13,6 +19,7 @@ public record EklaimAdmTarifRsType
         TarifRsJasaMedisType.Default,
         TarifRsPelayananType.Default,
         TarifRsObatType.Default);
+
     public TarifRsJasaMedisType JasaMedis { get; init; }
     public TarifRsPelayananType Pelayanan { get; init; }
     public TarifRsObatType Obat { get; init; }
@@ -41,7 +48,8 @@ public record TarifRsJasaMedisType
 
 public record TarifRsPelayananType
 {
-    public TarifRsPelayananType(decimal penunjang, decimal radiologi, decimal laboratorium, decimal pelayananDarah, decimal rehabilitasi, decimal rawatIntensif)
+    public TarifRsPelayananType(decimal penunjang, decimal radiologi, decimal laboratorium, 
+        decimal pelayananDarah, decimal rehabilitasi, decimal rawatIntensif)
     {
         Penunjang = penunjang;
         Radiologi = radiologi;
@@ -64,7 +72,8 @@ public record TarifRsPelayananType
 
 public record TarifRsObatType
 {
-    public TarifRsObatType(decimal obat, decimal obatKronis, decimal obatKemoterapi, decimal alkes, decimal bmhp, decimal sewaAlat)
+    public TarifRsObatType(decimal obat, decimal obatKronis, decimal obatKemoterapi, 
+        decimal alkes, decimal bmhp, decimal sewaAlat)
     {
         Obat = obat;
         ObatKronis = obatKronis;

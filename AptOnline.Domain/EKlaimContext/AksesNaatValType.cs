@@ -8,4 +8,5 @@ public record AksesNaatValType : StringLookupValueObject<AksesNaatValType>
     {
     }
 
-    protected override string[] ValidValues => new [] { "A", "B", "C"};
+    protected override string[] ValidValues => new[] { "A", "B", "C" };
+};

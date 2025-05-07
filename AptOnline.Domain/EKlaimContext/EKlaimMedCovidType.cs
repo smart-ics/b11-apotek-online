@@ -1,7 +1,32 @@
-﻿namespace AptOnline.Domain.EKlaimContext;
+﻿using GuardNet;
 
-public record EKlaimMedCovidType(
-    Covid19StatusCodeValType Covid19StatusCodeVal,
-    EpisodeValType EpisodesVal,
-    AksesNaatValType AksesNaatVal,
-    YesNoIndikatorValType IsomanIndikatorVal);
+namespace AptOnline.Domain.EKlaimContext;
+
+public record EKlaimMedCovidType
+{
+    public EKlaimMedCovidType(Covid19StatusCodeValType covid19StatusCodeVal, EpisodeValType episodesVal, 
+        AksesNaatValType aksesNaatVal, YesNoIndikatorValType isomanIndikatorVal)
+    {
+        Guard.NotNull(covid19StatusCodeVal, nameof(covid19StatusCodeVal), "Covid19 Status Tidak boleh kosong");
+        Guard.NotNull(episodesVal, nameof(episodesVal), "Episode Tidak boleh kosong");
+        Guard.NotNull(aksesNaatVal, nameof(aksesNaatVal), "Akses Naat Tidak boleh kosong");
+        Guard.NotNull(isomanIndikatorVal, nameof(isomanIndikatorVal), "Isoman Indikator Tidak boleh kosong");
+        
+        Covid19StatusCodeVal = covid19StatusCodeVal;
+        EpisodesVal = episodesVal;
+        AksesNaatVal = aksesNaatVal;
+        IsomanIndikatorVal = isomanIndikatorVal;
+    }
+    
+    public static EKlaimMedCovidType Default
+        => new EKlaimMedCovidType(Covid19StatusCodeValType.Default,
+            EpisodeValType.Default, AksesNaatValType.Default, 
+            YesNoIndikatorValType.Default);
+    
+    
+    public Covid19StatusCodeValType Covid19StatusCodeVal { get; init; }
+    public EpisodeValType EpisodesVal { get; init; }
+    public AksesNaatValType AksesNaatVal { get; init; }
+    public YesNoIndikatorValType IsomanIndikatorVal { get; init; }
+}
+
