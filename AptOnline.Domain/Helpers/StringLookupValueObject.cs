@@ -17,8 +17,7 @@ public abstract record StringLookupValueObject<T> where T : StringLookupValueObj
     {
         var normalized = Normalize(value);
 
-        var instance = Activator.CreateInstance(typeof(T), true) as T;
-        if (instance == null)
+        if (Activator.CreateInstance(typeof(T), true) is not T instance)
             throw new InvalidOperationException($"Cannot create instance of {typeof(T).Name}");
 
         if (!instance.ValidValues.Contains(normalized))
