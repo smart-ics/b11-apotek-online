@@ -10,16 +10,16 @@ public record CaraMasukValType : StringLookupValueObject<CaraMasukValType>
 
     protected override string[] ValidValues => new[]
     {
-        "gp", // = Rujukan FKTP, 
-        "hosp", //-trans = Rujukan FKRTL,
-        "mp", // = Rujukan Spesialis, 
-        "outp", // = Dari Rawat Jalan,
-        "inp", // = Dari Rawat Inap, 
-        "emd", // = Dari Rawat Darurat,
-        "born", // = Lahir di RS, 
+        "gp",   //  Rujukan FKTP, 
+        "hosp", //  trans = Rujukan FKRTL,
+        "mp",   //  Rujukan Spesialis, 
+        "outp", //  Dari Rawat Jalan,
+        "inp",  //  Dari Rawat Inap, 
+        "emd",  //  Dari Rawat Darurat,
+        "born", //  Lahir di RS, 
         "nursing", // = Rujukan Panti Jompo,
-        "psych", // = Rujukan dari RS Jiwa, 
-        "rehab", // = Rujukan Fasilitas Rehab, 
-        "other", // = Lain-lain        
+        "psych",//  Rujukan dari RS Jiwa, 
+        "rehab",//  Rujukan Fasilitas Rehab, 
+        "other",//  Lain-lain        
     };
 }

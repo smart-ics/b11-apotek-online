@@ -10,7 +10,7 @@ public record PeriodeRawatType
         TglKeluar = tglKeluar;
     }
 
-    public static PeriodeRawatType Crete(DateTime tglMasuk, DateTime tglKeluar)
+    public static PeriodeRawatType Create(DateTime tglMasuk, DateTime tglKeluar)
     {
         if (tglMasuk > tglKeluar)
             throw new ArgumentException("Periode Rawat invalid");

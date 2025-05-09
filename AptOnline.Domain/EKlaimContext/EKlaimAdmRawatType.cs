@@ -2,9 +2,9 @@
 
 namespace AptOnline.Domain.EKlaimContext;
 
-public record EKlaimAdmRegType
+public record EKlaimAdmRawatType
 {
-    private EKlaimAdmRegType(PeriodeRawatType periodeRawat, CaraMasukValType caraMasuk, 
+    private EKlaimAdmRawatType(PeriodeRawatType periodeRawat, CaraMasukValType caraMasuk, 
         JenisRawatValType jenisRawat, KelasRawatValType kelasRawat)
     {
         Guard.NotNull(periodeRawat, nameof(periodeRawat), "Periode Rawat Tidak boleh kosong");
@@ -18,7 +18,7 @@ public record EKlaimAdmRegType
         KelasRawat = kelasRawat;
     }
 
-    public static EKlaimAdmRegType Create(PeriodeRawatType periodeRawat, CaraMasukValType caraMasuk, 
+    public static EKlaimAdmRawatType Create(PeriodeRawatType periodeRawat, CaraMasukValType caraMasuk, 
         JenisRawatValType jenisRawat, KelasRawatValType kelasRawat)
     {
         Guard.NotNull(jenisRawat, nameof(jenisRawat), "Jenis Rawat Tidak boleh kosong");
@@ -28,15 +28,15 @@ public record EKlaimAdmRegType
             if (kelasRawat.Value == "2")
                 throw new ArgumentException("KelasRawat Pasien R.Jalan adalah 1 (Reguler) atau 3 (Eksekutif)");
         
-        return new EKlaimAdmRegType(periodeRawat, caraMasuk, jenisRawat, kelasRawat);
+        return new EKlaimAdmRawatType(periodeRawat, caraMasuk, jenisRawat, kelasRawat);
     }
     
-    public static EKlaimAdmRegType Load(PeriodeRawatType periodeRawat, CaraMasukValType caraMasuk, 
+    public static EKlaimAdmRawatType Load(PeriodeRawatType periodeRawat, CaraMasukValType caraMasuk, 
         JenisRawatValType jenisRawat, KelasRawatValType kelasRawat)
-        => new EKlaimAdmRegType(periodeRawat, caraMasuk, jenisRawat, kelasRawat);
+        => new EKlaimAdmRawatType(periodeRawat, caraMasuk, jenisRawat, kelasRawat);
     
-    public static EKlaimAdmRegType Default
-        => new EKlaimAdmRegType(PeriodeRawatType.Default, CaraMasukValType.Default, 
+    public static EKlaimAdmRawatType Default
+        => new EKlaimAdmRawatType(PeriodeRawatType.Default, CaraMasukValType.Default, 
             JenisRawatValType.Default, KelasRawatValType.Default);
     
     

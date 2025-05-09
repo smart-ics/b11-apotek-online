@@ -30,7 +30,7 @@ public class SepGetByRegResponseData
     public SepType ToSepType() => 
         new SepType(SepId, DateTime.Parse(SepDateTime), 
             SepNo, PesertaJaminanId, 
-            new RegType(RegId, DateTime.Parse(SepDateTime), PasienId, PasienName), 
+            RegType.Load(RegId, DateTime.Parse(SepDateTime), new DateTime(3000, 1, 1), PasienId, PasienName, JenisRegEnum.Unknown), 
             new DokterType(DpjpId, DpjpName), 
             bool.Parse(IsPrb), Prb.Trim());
 }

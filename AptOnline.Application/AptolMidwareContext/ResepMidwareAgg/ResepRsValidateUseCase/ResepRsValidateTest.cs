@@ -69,7 +69,7 @@ public class ResepRsValidateTest
     private static SepType SepFaker()
         => new SepType(
             "SEP-ID-1", new DateTime(2025,4,1), "SEP-NO-1", "PESERTA-1", 
-            new RegType("REG-1", new DateTime(2025,4,1), "PASIEN-1", "PASIEN-NAME-1"),
+            RegType.Load("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), "PASIEN-1", "PASIEN-NAME-1", JenisRegEnum.Unknown),
             new DokterType("DOKTER-ID-1", "DOKTER-NAME-1"),
             false, "-");
     private static PpkType PpkFaker()

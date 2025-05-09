@@ -6,9 +6,9 @@ using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
+using Farpu.Domain.Helpers;
 using GuardNet;
 using Nuna.Lib.PatternHelper;
-using Ulid = AptOnline.Domain.Helpers.Ulid;
 
 namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 
@@ -22,7 +22,7 @@ public class ResepMidwareModel : IResepMidwareKey
         Guard.NotNull(ppk, nameof(ppk));
         Guard.NotNull(poliBpjs, nameof(poliBpjs));
 
-        ResepMidwareId = Ulid.NewUlid();
+        ResepMidwareId = UlidHelper.NewUlid();
         ResepMidwareDate = resepDate;
         CreateTimestamp = DateTime.Now;
         SyncTimestamp = AppConst.DEF_DATE;
@@ -57,7 +57,9 @@ public class ResepMidwareModel : IResepMidwareKey
         string bridgeState, DateTime createTimestamp, 
         DateTime syncTimestamp, DateTime uploadTimestamp)
     {
-        var reg = new RegType(regId, regDate, pasienId, pasienName);
+        var reg = RegType.Load(regId, regDate,
+            new DateTime(3000, 1, 1), pasienId, pasienName,
+            JenisRegEnum.Unknown);
         var dokter = new DokterType(dokterId, dokterName);
         return new ResepMidwareModel
         {

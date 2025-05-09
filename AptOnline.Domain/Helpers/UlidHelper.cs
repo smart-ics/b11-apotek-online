@@ -1,9 +1,11 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using Xunit;
+﻿namespace Farpu.Domain.Helpers;
 
-namespace AptOnline.Domain.Helpers;
-public struct Ulid
+using System;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
+
+public struct UlidHelper
 {
     private static readonly char[] EncodingChars = "0123456789ABCDEFGHJKMNPQRSTVWXYZ".ToCharArray();
     private static readonly RandomNumberGenerator Rng = RandomNumberGenerator.Create();
@@ -35,15 +37,5 @@ public struct Ulid
         }
 
         return sb.ToString();
-    }
-}
-
-public class UlidGeneratorTest
-{
-    [Fact]
-    public void UT1_GivenValidInput_ThenSuccess()
-    {
-        var actual = Ulid.NewUlid();
-        Assert.True(true);
     }
 }

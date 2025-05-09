@@ -25,6 +25,9 @@ public record EKlaimMedDarahType
         YesNoIndikatorValType alteplaseIndikator) 
         => new(dializerSingleUse, kantongDarah, alteplaseIndikator);
     
+    public static EKlaimMedDarahType Default
+    => new EKlaimMedDarahType(YesNoIndikatorValType.Default, 0, YesNoIndikatorValType.Default);
+    
     public YesNoIndikatorValType DializerSingleUse { get; init; } 
     public int KantongDarah { get; init; }
     public YesNoIndikatorValType AlteplaseIndikator { get; init; }
