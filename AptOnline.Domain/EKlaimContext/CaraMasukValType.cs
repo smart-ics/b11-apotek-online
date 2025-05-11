@@ -31,7 +31,7 @@ public record CaraMasukValType : StringLookupValueObject<CaraMasukValType>
         string ppkPerujuk, string ppkRs,
         string tipeLynDk)
     {
-        //  NORMALIZE
+        #region CLEAN-UP
         jnsPlyn = jnsPlyn switch
         {
             "rawat jalan" => "2",
@@ -51,65 +51,31 @@ public record CaraMasukValType : StringLookupValueObject<CaraMasukValType>
             _ => "2"
         };
         noSkdp = noSkdp.Trim();
+        #endregion
 
-        //  BUILD
-        var result =  (jnsPlyn, assPlyn, tipePpk, noSkdp, ppkPerujuk, ppkRs, tipeLynDk) switch
+        /*  THE-RULES:
+        1. [jenisPelayanan] = "2"
+	        1.1 [assesmentPelayanan] kosong, [tipePpk] = 1 ..... 	=> "gp" 		
+	        1.2 [assesmentPelayanan] kosong, [tipePpk] = 2 ..... 	=> "hosp-trans" 
+	        1.3 [noSkdp] isi.................................... 	=> "outp"		
+	        1.4 [noSkdp] kosong, [assesmentPelayanan] isi.......	=> "mp"		
+	        1.5 [noSkdp] isi, [ppkRujukan] = ppkRs...............	=> "inp"		
+
+        2. [jenisPelayanan] = 1 (ranap)
+	        2.1 [tipeLayananDk] =  2 ............... => "emd"		
+	        2.2 [tipeLayananDk] <> 2 ............... => "outp" */
+
+        var result = (jnsPlyn, assPlyn, tipePpk, noSkdp, ppkPerujuk, ppkRs, tipeLynDk) switch
         {
-            ("2", "", "1", "", _, _, _) => RUJUKAN_FKTP,
-            ("2", "", "1", _, _, _, _) => DARI_RAWAT_JALAN,
-            ("2", "", _, "", _, _, _) => RUJUKAN_FKRTL,
-            ("2", "", _, _, _, _, _) => DARI_RAWAT_JALAN,
-            ("2", _, _, "", _, _, _) => RUJUKAN_SPESIALIS,
-            ("2", _, _, _, var x1, var x2, _) when x1 == x2 => DARI_RAWAT_INAP,
-            ("2", _, _, _, _, _, _) => DARI_RAWAT_JALAN,
-            (_, _, _, _, _, _, "2") => DARI_RAWAT_DARURAT,
-            _ => DARI_RAWAT_JALAN
+            ("2", "", "1", "", _, _, _)     => RUJUKAN_FKTP,        // 1.1
+            ("2", "", "2", "", _, _, _)     => RUJUKAN_FKRTL,       // 1.2
+            ("2", _, _, not "", var r, var rs, _) when r == rs && r != "" => DARI_RAWAT_INAP, // 1.5
+            ("2", _, _, not "", _, _, _)    => DARI_RAWAT_JALAN,    // 1.3
+            ("2", not "", _, "", _, _, _)   => RUJUKAN_SPESIALIS,   // 1.4
+            ("1", _, _, _, _, _, "2")       => DARI_RAWAT_DARURAT,  // 2.1
+            ("1", _, _, _, _, _, _)         => DARI_RAWAT_JALAN,    // 2.2
+            _                               => DARI_RAWAT_JALAN
         };
-        /*
-        // tradisional-if-else 
-        var result2 = string.Empty;
-        if (jnsPlyn == "2")
-        {
-            if (assPlyn == string.Empty)
-            {
-                if (tipePpk == "1")
-                {
-                    if (noSkdp == string.Empty)
-                        result2 = "gp";
-                    else
-                        result2 = "outp";
-                }
-                else
-                {
-                    if (noSkdp == string.Empty)
-                        result2 = "hosp-trans";
-                    else
-                        result2 = "outp";
-                }
-            }
-            else
-            {
-                if (noSkdp == string.Empty)
-                {
-                    result2 = "mp";
-                }
-                else
-                {
-                    if (ppkPerujuk == ppkRs)
-                        result2 = "inp";
-                    else
-                        result2 = "outp";
-                }
-            }
-        }
-        else
-        {
-            if (tipeLynDk == "2")
-                result2 = "emd";
-            else
-                result2 = "outp";
-        }
-        */
         return Create(result);
     }
     protected override string[] ValidValues => new[]
@@ -131,18 +97,25 @@ public record CaraMasukValType : StringLookupValueObject<CaraMasukValType>
 public class CaraMasukValTypeTest
 {
     [Theory]
-    [InlineData("2", "", "1", "", "", "", "", "gp")]
-    [InlineData("2", "", "1", "x", "", "", "", "outp")]
-    public void UT1_GivenValidArg_WhenResolve_ThenAsExpected(
-        string jnsPlyn, string assPlyn, 
-        string tipePpk, string noSkdp, 
-        string ppkPerujuk,string ppkRs, 
-        string tipeLynDk, string caraMasuk)
+    [InlineData("2", "", "1", "", "", "", "", "gp")]            // 1.1
+    [InlineData("2", "", "2", "", "", "", "", "hosp-trans")]    // 1.2
+    [InlineData("2", "", "1", "skdp1", "", "", "", "outp")]     // 1.3
+    [InlineData("2", "ass", "", "", "", "", "", "mp")]          // 1.4
+    [InlineData("2", "ass", "", "skdp1", "rspkl", "rspkl", "", "inp")]  // 1.5
+    [InlineData("1", "", "", "", "", "", "2", "emd")]           // 2.1
+    [InlineData("1", "", "", "", "", "", "1", "outp")]          // 2.2
+    [InlineData("2", "ass", "", "skdp1", "", "", "", "outp")]   // fallback
+    public void Resolve_ShouldReturnExpectedValue(
+        string jnsPlyn, string assPlyn,
+        string tipePpk, string noSkdp,
+        string ppkPerujuk, string ppkRs,
+        string tipeLayananDk, string expected)
     {
-        var expected = CaraMasukValType.Create(caraMasuk);
-        var actual = CaraMasukValType.Resolve(jnsPlyn, assPlyn, tipePpk, noSkdp, ppkPerujuk, ppkRs, tipeLynDk);
-        var exptectedValue = expected.Value;
-        var actualValue = actual.Value;
-        exptectedValue.Should().Be(actualValue);
+        // Act
+        var result = CaraMasukValType.Resolve(jnsPlyn, assPlyn,
+            tipePpk, noSkdp, ppkPerujuk, ppkRs, tipeLayananDk);
+
+        // Assert
+        result.Value.Should().Be(expected);
     }
 }
