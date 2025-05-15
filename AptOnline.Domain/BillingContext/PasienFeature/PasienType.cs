@@ -10,7 +10,7 @@ using Xunit;
 
 namespace AptOnline.Domain.BillingContext.PasienFeature;
 
-public record PasienType
+public record PasienType : IPasienKey
 {
     private PasienType(string pasienId, string pasienName, 
         DateTime birthDate, GenderValType gender)
@@ -38,6 +38,8 @@ public record PasienType
     public static PasienType Default => new PasienType(
         "-", "-", new DateTime(3000,1,1), GenderValType.Default);
 
+    public static IPasienKey Key(string id) => 
+        Default with { PasienId = id };
     public string PasienId { get; init; }
 
     public string PasienName { get; init; }
