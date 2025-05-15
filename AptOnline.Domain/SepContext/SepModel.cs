@@ -1,10 +1,13 @@
 ﻿using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.SepContext.ReferensiFeature;
 
 namespace AptOnline.Domain.SepContext;
 
 public record PembiayaanNaikKelasType(string Code, string Name, string Penanggungjawab);
-public record KelasRawatInfoType(KelasRawatType KelasHak, KelasRawatType KelasNaik,
+public record KelasRawatInfoType(
+    KelasRawatType KelasHak, 
+    KelasRawatType KelasNaik,
     PembiayaanNaikKelasType Pembiayaan);
 public record JaminanLakaInfoType(StatusLakaType StatusLaka, 
     string NoLaporanPolisi,PenjaminLakaType Penjamin);
@@ -15,12 +18,12 @@ public record JenisPelayananType(string Code, string Name);
 
 public record RujukanInfoType(FaskesType FaskesPerujuk, DateTime TglRujukan, string NomorRujukan);
 public record PoliTujuanInfoType(PoliType Poli, bool IsPoliEksekutif);
-public class SepModel
+public class SepModel : IRegKey
 {
     public string SepId { get; set; }   
     public DateTime SepDate { get; set; }   
     public string NomorSep { get; set; }    
-    
+    public string RegId { get; set; }
     public FaskesType Faskes { get; set; }
     public JenisPelayananType JenisPelayanan { get; set; }
     

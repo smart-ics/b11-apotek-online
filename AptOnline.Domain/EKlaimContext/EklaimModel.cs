@@ -1,18 +1,19 @@
 ﻿using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
+using AptOnline.Domain.SepContext;
 using Farpu.Domain.Helpers;
 using GuardNet;
 
 namespace AptOnline.Domain.EKlaimContext;
 
-public class EKlaimModel
+public class EklaimModel : IEklaimKey
 {
     #region CONSTRUCTORS
-    private EKlaimModel(
+    private EklaimModel(
         //
         string eklaimId, DateTime eklaimDate, string nomorSep, string nomorKartu, 
-        string coderNik,  EKlaimAdmPasienType eKlaimAdmPasien,
+        string coderNik, PasienType pasien,
         //
         NomorKartuTValType nomorKartuT, EKlaimAdmRawatType admRawatType, 
         DischargeStatusValType dischargeStatus, string dokterName, 
@@ -52,7 +53,7 @@ public class EKlaimModel
         NomorSep = nomorSep;
         NomorKartu = nomorKartu;
         CoderNik = coderNik;
-        EKlaimAdmPasien = eKlaimAdmPasien;
+        Pasien = pasien;
         //
         NomorKartuT = nomorKartuT;
         AdmRawatType = admRawatType;
@@ -74,27 +75,30 @@ public class EKlaimModel
         BayiLahirStatusCode = bayiLahirStatusCode;
     }
 
-    public static EKlaimModel Create(DateTime eklaimDate)
+    public static EklaimModel Create(DateTime eklaimDate, SepModel sep, PasienType pasien)
     {
+        Guard.NotNull(sep, nameof(sep), "Sep tidak boleh kosong");
+        Guard.NotNull(pasien, nameof(pasien), "Pasien tidak boleh kosong");
         
         var eklaimId = UlidHelper.NewUlid();
-        var result = new EKlaimModel(
-            eklaimId, eklaimDate, "-", "-", "-", EKlaimAdmPasienType.Default,
+        var eklaimAdmPasien = PasienType.Create(pasien.PasienId, pasien.PasienName, pasien.BirthDate, pasien.Gender);
+        var result = new EklaimModel(
+            eklaimId, eklaimDate, sep.NomorSep, 
+            sep.Peserta.NomorKartu, "-", eklaimAdmPasien,
+            
             NomorKartuTValType.Default, EKlaimAdmRawatType.Default,
             DischargeStatusValType.Default, string.Empty,
-
             EklaimAdmTarifRsType.Default, 0, KelasTarifInacbgValType.Default,
             YesNoIndikatorValType.Default, 0, EKlaimAdmPaymentType.Default,
-
             EklaimMedVitalSignType.Default, EKlaimMedIcuType.Default,
             EKlaimMedCovidType.Default, EKlaimMedJenazahType.Default,
             EKlaimMedDarahType.Default, BayiLahirStatusCodeValType.Default);
         return result;
     }
     
-    public static EKlaimModel Default
-        => new EKlaimModel(
-            UlidHelper.NewUlid(), DateTime.Now, "-", "-", "-", EKlaimAdmPasienType.Default,
+    public static EklaimModel Default
+        => new EklaimModel(
+            UlidHelper.NewUlid(), DateTime.Now, "-", "-", "-", PasienType.Default,
             NomorKartuTValType.Default, EKlaimAdmRawatType.Default,
             DischargeStatusValType.Default, "-",
             EklaimAdmTarifRsType.Default, 0, KelasTarifInacbgValType.Default,
@@ -102,16 +106,23 @@ public class EKlaimModel
             EklaimMedVitalSignType.Default, EKlaimMedIcuType.Default,
             EKlaimMedCovidType.Default, EKlaimMedJenazahType.Default,
             EKlaimMedDarahType.Default, BayiLahirStatusCodeValType.Default);
+
+    public static IEklaimKey Key(string id)
+    {
+        var result = Default;
+        result.EklaimId = id;
+        return result;
+    } 
     #endregion
 
     #region PROPERTIES
     //  IDENTITY
-    public string EklaimId { get; init; }
+    public string EklaimId { get; private set; }
     public DateTime EklaimDate { get; init; }
     public string NomorSep { get; private set; }
     public string NomorKartu { get; private set; }
     public string CoderNik { get; private set; }
-    public EKlaimAdmPasienType EKlaimAdmPasien { get; private set; }
+    public PasienType Pasien { get; private set; }
 
     //  ADMINISTRATIF
     public NomorKartuTValType NomorKartuT { get; private set; }
@@ -137,49 +148,12 @@ public class EKlaimModel
     #endregion
 
     #region METHODS
-    public void MapFromSep(SepType sep)
+
+    public void SetAdministratif(NomorKartuTValType nomorKartuT, EKlaimAdmRawatType admRawatType,
+        DischargeStatusValType dischargeStatus, string dokterName)
     {
-        Guard.NotNull(sep, nameof(sep), "Sep tidak boleh kosong");
-        
-        NomorSep = sep.SepId;
-        NomorKartu = sep.NoPeserta;
-        DokterName = sep.Dpjp.DokterName;
     }
 
-    public void MapFromPasien(PasienType pasien)
-    {
-        Guard.NotNull(pasien, nameof(pasien), "Pasien tidak boleh kosong");
-
-        var eklaimPasien = EKlaimAdmPasienType.Create(pasien.PasienId, pasien.PasienName,
-            pasien.BirthDate, pasien.Gender);
-        EKlaimAdmPasien = eklaimPasien;
-    }
-
-    public void MapFromReg(RegType reg)
-    {
-        Guard.NotNull(reg, nameof(reg), "Reg tidak boleh kosong");
-
-        //  TODO: set 'cara-masuk'
-        //      terpending, bikin fitur get SEP dulu
-        //var jenisRawat = reg.JenisReg switch
-        //{
-        //    JenisRegEnum.RawatJalan => throw new NotImplementedException(),
-        //    JenisRegEnum.RawatInap => throw new NotImplementedException(),
-        //    JenisRegEnum.External => throw new NotImplementedException(),
-        //    JenisRegEnum.RawatDarurat => throw new NotImplementedException(),
-        //    JenisRegEnum.Meninggal => throw new NotImplementedException(),
-        //    JenisRegEnum.ExternalInap => throw new NotImplementedException(),
-        //    JenisRegEnum.Unknown => throw new NotImplementedException(),
-        //}
-
-        //var admRawat = EKlaimAdmRawatType.Create(
-        //    PeriodeRawatType.Load(reg.RegDate, ),
-        //    CaraMasukValType.Default),
-        //    JenisRawatValType.Create(reg.JenisRawat),
-        //    KelasRawatValType.Create(reg.KelasRawat));
-
-    }
     #endregion
-
 }
 

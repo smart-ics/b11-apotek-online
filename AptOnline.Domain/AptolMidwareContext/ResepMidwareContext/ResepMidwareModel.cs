@@ -6,6 +6,7 @@ using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
+using AptOnline.Domain.SepContext.ReferensiFeature;
 using Farpu.Domain.Helpers;
 using GuardNet;
 using Nuna.Lib.PatternHelper;
@@ -59,7 +60,7 @@ public class ResepMidwareModel : IResepMidwareKey
     {
         var reg = RegType.Load(regId, regDate,
             new DateTime(3000, 1, 1), pasienId, pasienName,
-            JenisRegEnum.Unknown);
+            JenisRegEnum.Unknown, KelasRawatType.Default);
         var dokter = new DokterType(dokterId, dokterName);
         return new ResepMidwareModel
         {

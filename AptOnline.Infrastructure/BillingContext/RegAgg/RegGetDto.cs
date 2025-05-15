@@ -1,4 +1,5 @@
 ﻿using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.SepContext.ReferensiFeature;
 
 namespace AptOnline.Infrastructure.BillingContext.RegAgg;
 
@@ -31,6 +32,6 @@ public class RegGetDto
             DateTime.Parse($"{RegOutDate}"),
             PasienId ?? string.Empty,
             PasienName ?? string.Empty,
-            jenisReg);
+            jenisReg, KelasRawatType.Default);
     }
 }

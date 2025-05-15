@@ -38,8 +38,6 @@ public record EKlaimAdmRawatType
     public static EKlaimAdmRawatType Default
         => new EKlaimAdmRawatType(PeriodeRawatType.Default, CaraMasukValType.Default, 
             JenisRawatValType.Default, KelasRawatValType.Default);
-    
-    
 
     public PeriodeRawatType PeriodeRawat { get; init; }
     public CaraMasukValType CaraMasuk { get; set; }
