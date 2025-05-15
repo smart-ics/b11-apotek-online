@@ -2,6 +2,6 @@
 
 namespace AptOnline.Domain.SepContext;
 
-public record SuplesiInfoType(string Code, string Name, string NomorSuplesi, KecamatanType LokasiLaka);
+public record SuplesiInfoType(bool IsSuplesi, string NomorSepSuplesi, KecamatanType LokasiLaka);
 public record StatusLakaType(string Code, string Name);
     
