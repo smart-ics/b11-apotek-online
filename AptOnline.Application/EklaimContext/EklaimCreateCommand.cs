@@ -34,16 +34,17 @@ public class EKlaimCreateHandler : IRequestHandler<EklaimCreateCommand, EKlaimCr
 
     public Task<EKlaimCreateResponse> Handle(EklaimCreateCommand request, CancellationToken cancellationToken)
     {
-        var sep = _sepGetByNoSepService.Execute(request.NoSep);
-        var reg = _regGetService.Execute(sep);
-        var pasien = _pasienGetSerivce.Execute(reg);
-
-        var eklaim = EklaimModel.Create(DateTime.Now, sep, pasien);
-        _eklaimRepo.Insert(eklaim);
-        _eKlaimNewClaimService.Execute(eklaim);    
-
-        var result = new EKlaimCreateResponse(
-            eklaim.EklaimId, eklaim.NomorSep, eklaim.Pasien);
-        return Task.FromResult(result);
+        // var sep = _sepGetByNoSepService.Execute(request.NoSep);
+        // var reg = _regGetService.Execute(sep);
+        // var pasien = _pasienGetSerivce.Execute(reg);
+        //
+        // var eklaim = EklaimModel.Create(DateTime.Now, sep, pasien);
+        // _eklaimRepo.Insert(eklaim);
+        // _eKlaimNewClaimService.Execute(eklaim);    
+        //
+        // var result = new EKlaimCreateResponse(
+        //     eklaim.EklaimId, eklaim.NomorSep, eklaim.Pasien);
+        // return Task.FromResult(result);
+        throw new NotImplementedException();
     }
 }

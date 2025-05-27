@@ -83,7 +83,7 @@ public class EklaimModel : IEklaimKey
         var eklaimId = UlidHelper.NewUlid();
         var eklaimAdmPasien = PasienType.Create(pasien.PasienId, pasien.PasienName, pasien.BirthDate, pasien.Gender);
         var result = new EklaimModel(
-            eklaimId, eklaimDate, sep.NomorSep, 
+            eklaimId, eklaimDate, sep.Sep.SepNo, 
             sep.Peserta.NomorKartu, "-", eklaimAdmPasien,
             
             NomorKartuTValType.Default, EKlaimAdmRawatType.Default,
