@@ -19,22 +19,26 @@ public record JenisPelayananType(string Code, string Name);
 
 public record RujukanInfoType(FaskesType FaskesPerujuk, DateTime TglRujukan, string NomorRujukan);
 public record PoliTujuanInfoType(PoliType Poli, bool IsPoliEksekutif);
-public record MrInfoType(string NoMR, string NoTelepon);
 public record StatusPulangType(string KodeStatusPulang, DateTime TglPulang, DateTime TglMeninggal,
     string NoSuratKematian, string NoLaporanPolisiManual);
 
 public class SepModel
 {
-    public SepType Sep { get; set; }
+    public string SepId { get; init; }
+    public string SepNo { get; private set; }
+    public DateTime  SepDate { get; private set; }
+    
+    public PesertaBpjsType Peserta { get; private set; }
+    public RegType Reg { get; private set; }
+    public RujukanInfoType Rujukan { get; private set; }
+        
     public FaskesType Faskes { get; set; }
     public JenisPelayananType JenisPelayanan { get; set; }
     
     public KelasRawatType KelasRawat { get; set; } 
     public KelasRawatInfoType KelasSaatRawat { get; set; } 
 
-    public MrInfoType MR { get; set; }
 
-    public RujukanInfoType Rujukan { get; set; }
     public string Catatan { get; set; }
     public DiagnosaType DiagnosaAwal { get; set; } 
     public PoliTujuanInfoType PoliTujuan { get; set; } 
@@ -50,7 +54,6 @@ public class SepModel
     public AssesmentPelayananType AssestmenPelayanan { get; set; }  
     public SkdpType Skdp { get; set; } 
     public DokterType DpjpLayan { get; set; } 
-    public PesertaBpjsType Peserta { get; set; } 
     public bool IsESep { get; set; }
     public string UserSep { get; set; }
     public string SepInternal { get; set; }
