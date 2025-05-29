@@ -1,5 +1,4 @@
-﻿using AptOnline.Domain.Helpers;
-using FluentAssertions;
+﻿using FluentAssertions;
 using GuardNet;
 using Xunit;
 
@@ -15,13 +14,13 @@ public record AksesNaatType
 
     public static AksesNaatType Create(string value)
     {
-        var _validValues = new string[] { "A", "B", "C"};
-        Guard.For(() => !_validValues.Contains(value), 
+        var validValues = new[] { "A", "B", "C"};
+        Guard.For(() => !validValues.Contains(value), 
             new ArgumentException("Invalid Akses NAAT"));
         return new AksesNaatType(value); 
     }
     public static AksesNaatType Load(string value) => new(value);
-    public static AksesNaatType Default => new("");
+    public static AksesNaatType Default => new(string.Empty);
     public string Value { get; init; }
 };
 

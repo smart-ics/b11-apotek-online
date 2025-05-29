@@ -24,7 +24,7 @@ public class EklaimModel : IEklaimKey
         //
         EklaimMedVitalSignType vitalSign, EKlaimMedIcuType icu, 
         EKlaimMedCovidType covid, EKlaimMedJenazahType jenazah, 
-        EKlaimMedDarahType darah, BayiLahirStatusCodeValType bayiLahirStatusCode)
+        EKlaimMedDarahType darah, BayiLahirStatusCodeType bayiLahirStatusCode)
     {
         Guard.NotNullOrWhitespace(eklaimId, nameof(eklaimId), "EKlaim-ID harus terisi");
         Guard.NotNullOrWhitespace(nomorSep, nameof(nomorSep), "Nomor-SEP harus terisi");
@@ -106,7 +106,7 @@ public class EklaimModel : IEklaimKey
             YesNoIndikatorValType.Default, 0, EKlaimAdmPaymentType.Default,
             EklaimMedVitalSignType.Default, EKlaimMedIcuType.Default,
             EKlaimMedCovidType.Default, EKlaimMedJenazahType.Default,
-            EKlaimMedDarahType.Default, BayiLahirStatusCodeValType.Default);
+            EKlaimMedDarahType.Default, BayiLahirStatusCodeType.Default);
 
     public static IEklaimKey Key(string id)
     {
@@ -145,7 +145,7 @@ public class EklaimModel : IEklaimKey
     public EKlaimMedCovidType Covid { get; set; }
     public EKlaimMedJenazahType Jenazah { get; private set; }
     public EKlaimMedDarahType Darah { get; private set; }
-    public BayiLahirStatusCodeValType BayiLahirStatusCode { get; private set; }
+    public BayiLahirStatusCodeType BayiLahirStatusCode { get; private set; }
     #endregion
 
     #region METHODS
