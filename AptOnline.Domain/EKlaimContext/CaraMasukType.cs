@@ -1,10 +1,11 @@
 ﻿using AptOnline.Domain.Helpers;
 using FluentAssertions;
 using Xunit;
+using GuardNet;
 
 namespace AptOnline.Domain.EKlaimContext;
 
-public record CaraMasukValType : StringLookupValueObject<CaraMasukValType>
+public record CaraMasukType 
 {
     private const string RUJUKAN_FKTP = "gp";
     private const string RUJUKAN_FKRTL = "hosp-trans";
@@ -18,14 +19,28 @@ public record CaraMasukValType : StringLookupValueObject<CaraMasukValType>
     private const string RUJUKAN_FASILITAS_REHAB = "rehab";
     private const string LAIN_LAIN = "other";
 
-    public CaraMasukValType() : base("")
+    private CaraMasukType(string value) => Value = value;
+
+    public static CaraMasukType Create(string value)
     {
-    }
-    public CaraMasukValType(string value) : base(value)
-    {
+        var validValues = new[]
+        {
+            RUJUKAN_FKTP, RUJUKAN_FKRTL,
+            RUJUKAN_SPESIALIS, DARI_RAWAT_JALAN,
+            DARI_RAWAT_INAP, DARI_RAWAT_DARURAT,
+            LAHIR_DI_RS, RUJUKAN_PANTI_JOMPO,
+            RUJUKAN_RS_JIWA, RUJUKAN_FASILITAS_REHAB,
+            LAIN_LAIN
+        };
+        Guard.For(() => !validValues.Contains(value), 
+            new ArgumentException("Invalid Cara Masuk"));
+        var result = new CaraMasukType(value); 
+        return result;  
     }
 
-    public static CaraMasukValType Resolve(
+    public static CaraMasukType Load(string value) => new(value);
+
+    public static CaraMasukType Resolve(
         string jnsPlyn, string assPlyn, 
         string tipePpk, string noSkdp, 
         string ppkPerujuk, string ppkRs,
@@ -78,23 +93,13 @@ public record CaraMasukValType : StringLookupValueObject<CaraMasukValType>
         };
         return Create(result);
     }
-    protected override string[] ValidValues => new[]
-    {
-        RUJUKAN_FKTP,    
-        RUJUKAN_FKRTL, 
-        RUJUKAN_SPESIALIS,    
-        DARI_RAWAT_JALAN, 
-        DARI_RAWAT_INAP,   
-        DARI_RAWAT_DARURAT,  
-        LAHIR_DI_RS,  
-        RUJUKAN_PANTI_JOMPO, 
-        RUJUKAN_RS_JIWA, 
-        RUJUKAN_FASILITAS_REHAB, 
-        LAIN_LAIN,       
-    };
+
+    public static CaraMasukType Default => new CaraMasukType(string.Empty);
+    
+    public string Value { get; private set; }
 }
 
-public class CaraMasukValTypeTest
+public class CaraMasukTypeTest
 {
     [Theory]
     [InlineData("2", "", "1", "", "", "", "", "gp")]            // 1.1
@@ -112,7 +117,7 @@ public class CaraMasukValTypeTest
         string tipeLayananDk, string expected)
     {
         // Act
-        var result = CaraMasukValType.Resolve(jnsPlyn, assPlyn,
+        var result = CaraMasukType.Resolve(jnsPlyn, assPlyn,
             tipePpk, noSkdp, ppkPerujuk, ppkRs, tipeLayananDk);
 
         // Assert
