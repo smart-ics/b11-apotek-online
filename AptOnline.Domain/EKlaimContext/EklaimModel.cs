@@ -77,23 +77,24 @@ public class EklaimModel : IEklaimKey
 
     public static EklaimModel Create(DateTime eklaimDate, SepModel sep, PasienType pasien)
     {
-        Guard.NotNull(sep, nameof(sep), "Sep tidak boleh kosong");
-        Guard.NotNull(pasien, nameof(pasien), "Pasien tidak boleh kosong");
-        
-        var eklaimId = UlidHelper.NewUlid();
-        var eklaimAdmPasien = PasienType.Create(pasien.PasienId, pasien.PasienName, pasien.BirthDate, pasien.Gender);
-        var result = new EklaimModel(
-            eklaimId, eklaimDate, sep.Sep.SepNo, 
-            sep.Peserta.NomorKartu, "-", eklaimAdmPasien,
-            
-            NomorKartuTValType.Default, EKlaimAdmRawatType.Default,
-            DischargeStatusValType.Default, string.Empty,
-            EklaimAdmTarifRsType.Default, 0, KelasTarifInacbgValType.Default,
-            YesNoIndikatorValType.Default, 0, EKlaimAdmPaymentType.Default,
-            EklaimMedVitalSignType.Default, EKlaimMedIcuType.Default,
-            EKlaimMedCovidType.Default, EKlaimMedJenazahType.Default,
-            EKlaimMedDarahType.Default, BayiLahirStatusCodeValType.Default);
-        return result;
+        //Guard.NotNull(sep, nameof(sep), "Sep tidak boleh kosong");
+        //Guard.NotNull(pasien, nameof(pasien), "Pasien tidak boleh kosong");
+
+        //var eklaimId = UlidHelper.NewUlid();
+        //var eklaimAdmPasien = PasienType.Create(pasien.PasienId, pasien.PasienName, pasien.BirthDate, pasien.Gender);
+        //var result = new EklaimModel(
+        //    eklaimId, eklaimDate, sep.Sep.SepNo, 
+        //    sep.Peserta.NomorKartu, "-", eklaimAdmPasien,
+
+        //    NomorKartuTValType.Default, EKlaimAdmRawatType.Default,
+        //    DischargeStatusValType.Default, string.Empty,
+        //    EklaimAdmTarifRsType.Default, 0, KelasTarifInacbgValType.Default,
+        //    YesNoIndikatorValType.Default, 0, EKlaimAdmPaymentType.Default,
+        //    EklaimMedVitalSignType.Default, EKlaimMedIcuType.Default,
+        //    EKlaimMedCovidType.Default, EKlaimMedJenazahType.Default,
+        //    EKlaimMedDarahType.Default, BayiLahirStatusCodeValType.Default);
+        //return result;
+        throw new NotImplementedException();
     }
     
     public static EklaimModel Default

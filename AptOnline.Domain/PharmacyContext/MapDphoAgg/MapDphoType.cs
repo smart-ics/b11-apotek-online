@@ -26,13 +26,13 @@ public class MapDphoModelTest
 {
     [Theory]
     [InlineData("A", "B", "C", "D")]
-    [InlineData("", "", "", "")]
     public void UT1_GivenAllValidInput_ShouldSuccess(string brgId, string brgName,
         string dphoId, string dphoName)
     {
         var brg = new BrgType(brgId, brgName);
         var dpho = new DphoRefference(dphoId, dphoName);
         var act = () => new MapDphoType(brg, dpho);
+        act.Should().NotThrow<ArgumentException>();
     }
     [Fact]
     public void UT2_GivenSomeEmpty_ShouldReturnException()

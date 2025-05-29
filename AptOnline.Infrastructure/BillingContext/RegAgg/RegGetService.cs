@@ -1,5 +1,7 @@
 ﻿using AptOnline.Application.BillingContext.RegAgg;
+using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.EKlaimContext;
 using AptOnline.Domain.SepContext.ReferensiFeature;
 using AptOnline.Infrastructure.Helpers;
 using FluentAssertions;
@@ -62,7 +64,8 @@ public class RegGetServiceTest
     {
         var expected = RegType.Load(
             "RG01376274", DateTime.Parse("2024-06-05"), DateTime.Parse("2024-06-05"),
-            "337502200259454", "HAYDAR RAFA SATYA PUTRA,SDR", JenisRegEnum.RawatJalan, KelasRawatType.Default);
+            PasienType.Load("337502200259454", "HAYDAR RAFA SATYA PUTRA,SDR", new DateTime(3000, 1, 1), GenderType.Default),
+            JenisRegEnum.RawatJalan, KelasRawatType.Default);
         var regId = "RG01376274";
         var req = RegType.Key(regId);
 

@@ -1,4 +1,6 @@
-﻿using AptOnline.Domain.BillingContext.RegAgg;
+﻿using AptOnline.Domain.BillingContext.PasienFeature;
+using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.EKlaimContext;
 using AptOnline.Domain.SepContext.ReferensiFeature;
 
 namespace AptOnline.Infrastructure.BillingContext.RegAgg;
@@ -30,8 +32,7 @@ public class RegGetDto
             RegId ?? string.Empty,
             DateTime.Parse($"{RegDate}"),
             DateTime.Parse($"{RegOutDate}"),
-            PasienId ?? string.Empty,
-            PasienName ?? string.Empty,
+            PasienType.Load(PasienId ?? string.Empty, PasienName ?? string.Empty, new DateTime(3000,1,1), GenderType.Default),
             jenisReg, KelasRawatType.Default);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
+using AptOnline.Domain.EKlaimContext;
 using AptOnline.Domain.SepContext.ReferensiFeature;
 using Nuna.Lib.DataTypeExtension;
 using Nuna.Lib.ValidationHelper;
@@ -31,7 +33,9 @@ public class SepGetByRegResponseData
     public SepType ToSepType() => 
         new SepType(SepId, DateTime.Parse(SepDateTime), 
             SepNo, PesertaJaminanId, 
-            RegType.Load(RegId, DateTime.Parse(SepDateTime), new DateTime(3000, 1, 1), PasienId, PasienName, JenisRegEnum.Unknown, KelasRawatType.Default), 
+            RegType.Load(RegId, DateTime.Parse(SepDateTime), new DateTime(3000, 1, 1), 
+                PasienType.Load(PasienId, PasienName, new DateTime(3000,1,1), GenderType.Default),
+                JenisRegEnum.Unknown, KelasRawatType.Default), 
             new DokterType(DpjpId, DpjpName), 
             bool.Parse(IsPrb), Prb.Trim());
 }

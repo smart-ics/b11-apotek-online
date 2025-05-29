@@ -7,6 +7,7 @@ using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
+using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.PharmacyContext.BrgAgg;
@@ -70,7 +71,7 @@ public class ResepRsValidateTest
     private static SepType SepFaker()
         => new SepType(
             "SEP-ID-1", new DateTime(2025,4,1), "SEP-NO-1", "PESERTA-1", 
-            RegType.Load("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), "PASIEN-1", "PASIEN-NAME-1", JenisRegEnum.Unknown, KelasRawatType.Default),
+            RegType.Load("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), PasienType.Default, JenisRegEnum.Unknown, KelasRawatType.Default),
             new DokterType("DOKTER-ID-1", "DOKTER-NAME-1"),
             false, "-");
     private static PpkType PpkFaker()

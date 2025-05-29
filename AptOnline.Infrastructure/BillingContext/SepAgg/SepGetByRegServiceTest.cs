@@ -1,6 +1,8 @@
 ﻿using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
+using AptOnline.Domain.EKlaimContext;
 using AptOnline.Domain.SepContext.ReferensiFeature;
 using AptOnline.Infrastructure.Helpers;
 using FluentAssertions;
@@ -26,7 +28,8 @@ public class SepGetByRegServiceTest
         var reg = RegType.Load("RG01376985",
             new DateTime(2024, 6, 6, 23, 26, 31), 
             new DateTime(3000,1,1, 0, 0, 0),
-            "337502200146916", "KEISHA KHALIQA RIZQI", JenisRegEnum.Unknown, KelasRawatType.Default);
+            PasienType.Load("337502200146916", "KEISHA KHALIQA RIZQI", new DateTime(3000,1,1), GenderType.Default),
+            JenisRegEnum.Unknown, KelasRawatType.Default);
         var dokter = new DokterType("226634", "dr. Dwi Riyanto, Sp.A");
         var expected = new SepType("JP00580127", 
             new DateTime(2024, 6, 6, 23, 26, 31), 

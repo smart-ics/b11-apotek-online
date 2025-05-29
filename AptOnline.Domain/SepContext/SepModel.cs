@@ -1,4 +1,5 @@
 ﻿using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.SepContext.FaskesFeature;
@@ -31,7 +32,8 @@ public class SepModel
     public PesertaBpjsType Peserta { get; private set; }
     public RegType Reg { get; private set; }
     public RujukanInfoType Rujukan { get; private set; }
-        
+    public DokterType DpjpLayan { get; set; }
+
     public FaskesType Faskes { get; set; }
     public JenisPelayananType JenisPelayanan { get; set; }
     
@@ -53,7 +55,6 @@ public class SepModel
     public PenunjangType Penunjang { get; set; } 
     public AssesmentPelayananType AssestmenPelayanan { get; set; }  
     public SkdpType Skdp { get; set; } 
-    public DokterType DpjpLayan { get; set; } 
     public bool IsESep { get; set; }
     public string UserSep { get; set; }
     public string SepInternal { get; set; }

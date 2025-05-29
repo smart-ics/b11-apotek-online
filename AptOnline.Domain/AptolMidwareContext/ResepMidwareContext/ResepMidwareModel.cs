@@ -2,8 +2,10 @@
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
+using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
+using AptOnline.Domain.EKlaimContext;
 using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using AptOnline.Domain.SepContext.ReferensiFeature;
@@ -58,8 +60,9 @@ public class ResepMidwareModel : IResepMidwareKey
         string bridgeState, DateTime createTimestamp, 
         DateTime syncTimestamp, DateTime uploadTimestamp)
     {
+        var pasien = PasienType.Create(pasienId, pasienName, new DateTime(3000, 1, 1), GenderType.Default);
         var reg = RegType.Load(regId, regDate,
-            new DateTime(3000, 1, 1), pasienId, pasienName,
+            new DateTime(3000, 1, 1), pasien,
             JenisRegEnum.Unknown, KelasRawatType.Default);
         var dokter = new DokterType(dokterId, dokterName);
         return new ResepMidwareModel
