@@ -8,13 +8,19 @@ namespace AptOnline.Domain.EKlaimContext;
 //  NAAT = Nucleic Acid Amplification Test (Tes Infeksi Covid-19)
 public record AksesNaatType 
 {
-    private readonly string[] _validValues = { "A", "B", "C", "" };
-    public AksesNaatType(string value)
+    private AksesNaatType(string value)
     {
-        Guard.For(() => !_validValues.Contains(value), 
-            new ArgumentException("Invalid Akses NAAT"));
         Value = value;
     }
+
+    public static AksesNaatType Create(string value)
+    {
+        var _validValues = new string[] { "A", "B", "C"};
+        Guard.For(() => !_validValues.Contains(value), 
+            new ArgumentException("Invalid Akses NAAT"));
+        return new AksesNaatType(value); 
+    }
+    public static AksesNaatType Load(string value) => new(value);
     public static AksesNaatType Default => new("");
     public string Value { get; init; }
 };
@@ -25,17 +31,25 @@ public class AksesNaatTypeTest
     [InlineData("A")]
     [InlineData("B")]
     [InlineData("C")]
-    [InlineData("")]
     public void UT1_GivenValidValue_WhenCreate_ThenOk(string value)
     {
-        var actual = new AksesNaatType(value);
+        var actual = AksesNaatType.Create(value);
         actual.Value.Should().Be(value);
     }
-    
+
     [Fact]
     public void UT2_GivenInvalidValue_WhenCreate_ThenThrowException()
     {
-        Action act = () => new AksesNaatType("D");
+        Action act = () => AksesNaatType.Create("D");
         act.Should().Throw<ArgumentException>().WithMessage("Invalid Akses NAAT");
     }
+
+    [Fact]
+    public void UT3_GivenEmptyValue_WhenLoad_ThenOk()
+    {
+        var actual = AksesNaatType.Load("");
+        actual.Value.Should().Be("");
+    }
+
+
 }
