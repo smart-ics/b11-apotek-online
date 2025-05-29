@@ -21,16 +21,27 @@ public record CaraMasukType
 
     private CaraMasukType(string value) => Value = value;
 
+    public string Value { get; private set; }
+
     public static CaraMasukType Create(string value)
     {
+        /*  Code Translation:
+            gp = Rawat Jalan (Rujukan FKTP)
+            hosp-trans = Rawat Jalan (Rujukan FKRTL)
+            mp = Rawat Jalan (Rujukan Spesialis)
+            outp = Rawat Jalan (Dari Rawat Jalan)
+            inp = Rawat Inap (Dari Rawat Inap)
+            emd = Rawat Inap (Dari Rawat Darurat)
+            born = Bayi Lahir Di RS
+            nursing = Rawat Jalan (Rujukan Panti Jompo)
+            psych = Rawat Jalan (Rujukan RS Jiwa)
+            rehab = Rawat Jalan (Rujukan Fasilitas Rehab)
+            other = Lain-lain */
         var validValues = new[]
         {
-            RUJUKAN_FKTP, RUJUKAN_FKRTL,
-            RUJUKAN_SPESIALIS, DARI_RAWAT_JALAN,
-            DARI_RAWAT_INAP, DARI_RAWAT_DARURAT,
-            LAHIR_DI_RS, RUJUKAN_PANTI_JOMPO,
-            RUJUKAN_RS_JIWA, RUJUKAN_FASILITAS_REHAB,
-            LAIN_LAIN
+            "gp", "hosp-trans", "mp", "outp",
+            "inp", "emd", "born", "nursing",
+            "psych", "rehab", "other"
         };
         Guard.For(() => !validValues.Contains(value), 
             new ArgumentException("Invalid Cara Masuk"));
@@ -82,21 +93,21 @@ public record CaraMasukType
 
         var result = (jnsPlyn, assPlyn, tipePpk, noSkdp, ppkPerujuk, ppkRs, tipeLynDk) switch
         {
-            ("2", "", "1", "", _, _, _)     => RUJUKAN_FKTP,        // 1.1
-            ("2", "", "2", "", _, _, _)     => RUJUKAN_FKRTL,       // 1.2
-            ("2", _, _, not "", var r, var rs, _) when r == rs && r != "" => DARI_RAWAT_INAP, // 1.5
-            ("2", _, _, not "", _, _, _)    => DARI_RAWAT_JALAN,    // 1.3
-            ("2", not "", _, "", _, _, _)   => RUJUKAN_SPESIALIS,   // 1.4
-            ("1", _, _, _, _, _, "2")       => DARI_RAWAT_DARURAT,  // 2.1
-            ("1", _, _, _, _, _, _)         => DARI_RAWAT_JALAN,    // 2.2
-            _                               => DARI_RAWAT_JALAN
+            ("2", "", "1", "", _, _, _)     => "gp",    // RUJUKAN_FKTP,        // 1.1
+            ("2", "", "2", "", _, _, _)     => "hosp-trans", // RUJUKAN_FKRTL,  // 1.2
+            ("2", _, _, not "", var r, var rs, _) 
+                when r == rs && r != ""                                 => "inp",  // DARI_RAWAT_DARURAT,   // 1.5
+            ("2", _, _, not "", _, _, _)                  => "outp", // DARI_RAWAT_JALAN,     // 1.3
+            ("2", not "", _, "", _, _, _)          => "mp",   // RUJUKAN_SPESIALIS,    // 1.4
+            ("1", _, _, _, _, _, "2")                   => "emd",  // DARI_RAWAT_DARURAT,   // 2.1
+            ("1", _, _, _, _, _, _)                              => "outp", // DARI_RAWAT_JALAN,     // 2.2
+            _                                                           => "outp"  // DARI_RAWAT_JALAN
         };
         return Create(result);
     }
 
     public static CaraMasukType Default => new CaraMasukType(string.Empty);
     
-    public string Value { get; private set; }
 }
 
 public class CaraMasukTypeTest

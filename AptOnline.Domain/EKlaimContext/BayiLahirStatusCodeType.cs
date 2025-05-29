@@ -9,16 +9,19 @@ public record BayiLahirStatusCodeType
 
     private BayiLahirStatusCodeType(string value) => Value = value;
 
+    public string Value { get; init; }
+
     public static BayiLahirStatusCodeType Create(string value)
     {
         var validValues = new[] { "1", "2" };
-        Guard.For(() => !validValues.Contains(value), new ArgumentException("Invalid Status Code Bayi Lahir"));
+        Guard.For(() => !validValues.Contains(value), 
+            new ArgumentException("Invalid Status Code Bayi Lahir"));
         return new BayiLahirStatusCodeType(value);
     }
     public static BayiLahirStatusCodeType Load(string value) => new(value);
+    
     public static BayiLahirStatusCodeType Default => new(string.Empty);
 
-    public string Value { get; init; }
 }
 
 public class BayuLahirStatusCodeValTypeTest

@@ -5,12 +5,11 @@ using Xunit;
 namespace AptOnline.Domain.EKlaimContext;
 
 //  NAAT = Nucleic Acid Amplification Test (Tes Infeksi Covid-19)
-public record AksesNaatType 
+public record AksesNaatType
 {
-    private AksesNaatType(string value)
-    {
-        Value = value;
-    }
+    private AksesNaatType(string value) => Value = value;
+
+    public string Value { get; init; }
 
     public static AksesNaatType Create(string value)
     {
@@ -19,9 +18,10 @@ public record AksesNaatType
             new ArgumentException("Invalid Akses NAAT"));
         return new AksesNaatType(value); 
     }
+    
     public static AksesNaatType Load(string value) => new(value);
+    
     public static AksesNaatType Default => new(string.Empty);
-    public string Value { get; init; }
 };
 
 public class AksesNaatTypeTest
