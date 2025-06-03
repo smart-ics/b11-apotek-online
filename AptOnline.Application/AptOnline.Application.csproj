@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <Folder Include="BillingContext\SepAgg\" />
-    <Folder Include="Helpers\" />
   </ItemGroup>
 
 </Project>

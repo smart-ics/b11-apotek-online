@@ -1,7 +1,6 @@
 ﻿using AptOnline.Application.SepContext;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
-using AptOnline.Domain.Helpers;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using RestSharp;

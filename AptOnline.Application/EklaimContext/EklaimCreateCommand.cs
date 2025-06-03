@@ -7,25 +7,25 @@ using MediatR;
 
 namespace AptOnline.Application.EKlaimContext;
 
-public record EklaimCreateCommand(string NomorSep) : IRequest<EKlaimCreateResponse>;
+public record EklaimCreateCommand(string RegId) : IRequest<EKlaimCreateResponse>;
 
 public record EKlaimCreateResponse(string EKlaimId, string NoSep, PasienType Pasien); 
 
 public class EKlaimCreateHandler : IRequestHandler<EklaimCreateCommand, EKlaimCreateResponse>
 {
-    private readonly ISepGetByNoSepService _sepGetByNoSepService;
+    private readonly ISepGetByRegService _sepGetByRegService;
     private readonly IRegGetService _regGetService;
     private readonly IPasienGetService _pasienGetSerivce;
     private readonly IEklaimRepo _eklaimRepo;
     private readonly IEklaimNewClaimService _eKlaimNewClaimService;
     
-    public EKlaimCreateHandler(ISepGetByNoSepService sepGetByNoSepService, 
+    public EKlaimCreateHandler(ISepGetByRegService sepGetByRegService, 
         IRegGetService regGetService, 
         IPasienGetService pasienGetSerivce, 
         IEklaimRepo eklaimRepo, 
         IEklaimNewClaimService eKlaimNewClaimService)
     {
-        _sepGetByNoSepService = sepGetByNoSepService;
+        _sepGetByRegService = sepGetByRegService;
         _regGetService = regGetService;
         _pasienGetSerivce = pasienGetSerivce;
         _eklaimRepo = eklaimRepo;
