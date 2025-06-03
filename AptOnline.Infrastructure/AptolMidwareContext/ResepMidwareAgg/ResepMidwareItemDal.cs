@@ -2,12 +2,15 @@
 using System.Data.SqlClient;
 using AptOnline.Application.AptolMidwareContext.ResepMidwareAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
+using AptOnline.Domain.PharmacyContext.BrgAgg;
+using AptOnline.Domain.PharmacyContext.DphoAgg;
+using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using AptOnline.Infrastructure.Helpers;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Nuna.Lib.DataAccessHelper;
 
-namespace AptOnline.Infrastructure.AptolMidwareContext.ResepRsAgg;
+namespace AptOnline.Infrastructure.AptolMidwareContext.ResepMidwareAgg;
 
 public class ResepMidwareItemDal : IResepMidwareItemDal
 {
@@ -22,7 +25,9 @@ public class ResepMidwareItemDal : IResepMidwareItemDal
         using var conn = new SqlConnection(ConnStringHelper.Get(_opt));
         using var bcp = new SqlBulkCopy(conn);
         
-        bcp.AddMap("ResepMidwareId", "KlaimBpjsId");
+        var listModelDto = listModel.Select(x => new ResepMidwareItemDto(x));
+        
+        bcp.AddMap("ResepMidwareId", "ResepMidwareId");
         bcp.AddMap("NoUrut", "NoUrut");
         bcp.AddMap("IsRacik", "IsRacik");
         bcp.AddMap("RacikId", "RacikId");
@@ -37,7 +42,7 @@ public class ResepMidwareItemDal : IResepMidwareItemDal
         bcp.AddMap("Jumlah", "Jumlah");
         bcp.AddMap("Note", "Note");
  
-        var fetched = listModel.ToList();
+        var fetched = listModelDto.ToList();
         bcp.BatchSize = fetched.Count;
         bcp.DestinationTableName = "APTOL_ResepMidwareItem";
 
@@ -77,6 +82,7 @@ public class ResepMidwareItemDal : IResepMidwareItemDal
         dp.AddParam("@resepMidwareId", filter.ResepMidwareId, SqlDbType.VarChar);
 
         using var conn = new SqlConnection(ConnStringHelper.Get(_opt));
-        return conn.Read<ResepMidwareItemModel>(sql, dp);
+        var result =  conn.Read<ResepMidwareItemDto>(sql, dp);
+        return result?.Select(x => x.ToModel());
     }
 }

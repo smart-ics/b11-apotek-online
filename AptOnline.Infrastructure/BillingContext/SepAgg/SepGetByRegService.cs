@@ -22,6 +22,7 @@ public class SepGetByRegService : ISepGetByRegService
     {
         var responseData = Task.Run(() => ExecuteAsync(req.RegId)).GetAwaiter().GetResult();
         var result = responseData?.data;
+        if (result is null) return null;
         return result.ToSepType();
     }
 

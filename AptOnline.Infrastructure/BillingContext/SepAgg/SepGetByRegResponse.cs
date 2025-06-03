@@ -1,9 +1,6 @@
 ﻿using AptOnline.Domain.BillingContext.DokterAgg;
-using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
-using AptOnline.Domain.EKlaimContext;
-using AptOnline.Domain.SepContext.ReferensiFeature;
 using Nuna.Lib.DataTypeExtension;
 using Nuna.Lib.ValidationHelper;
 
@@ -22,20 +19,22 @@ public class SepGetByRegResponseData
     public string SepDateTime {get;set;}
     public string SepNo {get;set;}
     public string PesertaJaminanId {get;set;}
+    public string JnsPelayananKode { get; set; }
     public string RegId {get;set;}
     public string PasienId {get;set;}
-    public string PasienName {get;set;}
-    public string DpjpId {get;set;}
+    public string PasienName { get; set; }
+    public string DpjpId { get; set; }
     public string DpjpName {get;set;}
+    public string DpjpLayananId {get;set;}
+    public string DpjpLayananName {get;set;}
     public string IsPrb {get;set;}
     public string Prb {get;set;}
-    
-    public SepType ToSepType() => 
-        new SepType(SepId, DateTime.Parse(SepDateTime), 
-            SepNo, PesertaJaminanId, 
-            RegType.Load(RegId, DateTime.Parse(SepDateTime), new DateTime(3000, 1, 1), 
-                PasienType.Load(PasienId, PasienName, new DateTime(3000,1,1), GenderType.Default),
-                JenisRegEnum.Unknown, KelasRawatType.Default), 
-            new DokterType(DpjpId, DpjpName), 
-            bool.Parse(IsPrb), Prb.Trim());
+
+    public SepType ToSepType() =>
+        new(SepId, DateTime.Parse(SepDateTime),
+            SepNo, PesertaJaminanId,
+            new RegType(RegId, DateTime.Parse(SepDateTime), PasienId, PasienName),
+            new DokterType(DpjpLayananId.Trim().Length > 0 ? DpjpLayananId : DpjpId,
+                DpjpLayananId.Trim().Length > 0 ? DpjpLayananName : DpjpName),
+            bool.Parse(IsPrb), Prb.Trim(), JnsPelayananKode);
 }

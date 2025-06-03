@@ -1,19 +1,17 @@
 ﻿using AptOnline.Application.AptolCloudContext.PpkAgg;
 using AptOnline.Application.BillingContext.LayananAgg;
+using AptOnline.Application.BillingContext.SepAgg;
 using AptOnline.Application.PharmacyContext.MapDphoAgg;
-using AptOnline.Application.SepContext;
 using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
-using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.PharmacyContext.BrgAgg;
 using AptOnline.Domain.PharmacyContext.DphoAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
-using AptOnline.Domain.SepContext.ReferensiFeature;
 using FluentAssertions;
 using Moq;
 using Nuna.Lib.ValidationHelper;
@@ -133,58 +131,93 @@ public class ResepRsValidateTest
     [Fact]
     public async Task T01_GivenSingleAllDpho_ThenSuccess_AndNoValidationNote()
     {
+        //  ARRANGE
         var cmd = Command();
         cmd.ListResep.First().ListItem.Add(
-            new ResepRsValidateCommandObat("BRG-ID-1",
-                "BRG-NAME-1", 1, "2dd1", "CaraPakai", 1,
+            new ResepRsValidateCommandObat("BRG-ID-1", "BRG-NAME-1", 1, "2dd1", "CaraPakai", 1,
                 new List<ResepRsValidateCommandKomponenRacik>()));
         HappyPathMocking();
+        var expected = new List<ResepRsValidateResponse>
+        {
+            new(1, "xxx", "SUCCESS", "")
+        };        
+        //  ACT
         var result = await _sut.Handle(cmd, CancellationToken.None);
+        //  ASSERT
         var resultFetched = result.ToList();
-        resultFetched.Should().NotBeNull();
-        resultFetched.First().ValidationNote.Should().BeNullOrEmpty();
-        resultFetched.First().ValidationResult.Should().Be("SUCCESS");
-        
+        resultFetched.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.ResepMidwareId));
     }
     
     [Fact]
     public async Task T02_GivenSingle1Dpho_And1NonDpho_ThenSuccess_AndGet1ValidationNote()
     {
+        //  ARRANGE
         var cmd = Command();
         cmd.ListResep.First().ListItem.Add(
-            new ResepRsValidateCommandObat("BRG-ID-1",
-                "BRG-NAME-1", 1, "2dd1", "CaraPakai", 1,
+            new ResepRsValidateCommandObat("BRG-ID-1", "BRG-NAME-1", 1, "2dd1", "CaraPakai", 1,
                 new List<ResepRsValidateCommandKomponenRacik>()));
         cmd.ListResep.First().ListItem.Add(
-            new ResepRsValidateCommandObat("BRG-ID-2",
-                "BRG-NAME-2", 1, "2dd1", "CaraPakai", 1,
+            new ResepRsValidateCommandObat("BRG-ID-2", "BRG-NAME-2", 1, "2dd1", "CaraPakai", 1,
                 new List<ResepRsValidateCommandKomponenRacik>()));
+        var expected = new List<ResepRsValidateResponse>
+        {
+            new(1, "xxx", "SUCCESS", "'BRG-NAME-2' tidak masuk dalam daftar DPHO")
+        };
         HappyPathMocking();
+        //  ACT
         var result = await _sut.Handle(cmd, CancellationToken.None);
+        //  ASSERT
         var resultFetched = result.ToList();
-        resultFetched.Should().NotBeNull();
-        resultFetched.First().ValidationNote.Should().NotBeEmpty();
-        resultFetched.First().ValidationResult.Should().Be("SUCCESS");
+        resultFetched.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.ResepMidwareId));
     }
 
     [Fact]
     public async Task T03_GivenRacikAllDpho_ThenSuccess_AndNoValidationNote()
     {
+        //  ARRANGE
         var cmd = Command();
         cmd.ListResep.First().ListItem.Add(
             new ResepRsValidateCommandObat("RACIK-ID-1",
                 "RACIK-NAME-1", 1, "2dd1", "CaraPakai", 1,
                 new List<ResepRsValidateCommandKomponenRacik>
                 {
-                    new ResepRsValidateCommandKomponenRacik("BRG-ID-1", 
-                        "BRG-NAME-1", 10, "3dd1", "diminum")                    
+                    new("BRG-ID-1", "BRG-NAME-1", 10, "3dd1", "diminum")                    
                 }));
-
+        var expected = new List<ResepRsValidateResponse>
+        {
+            new(1, "xxx", "SUCCESS", "")
+        };
         HappyPathMocking();
+        //  ACT
         var result = await _sut.Handle(cmd, CancellationToken.None);
+        //  ASSERT
         var resultFetched = result.ToList();
-        resultFetched.Should().NotBeNull();
-        resultFetched.First().ValidationNote.Should().BeEmpty();
-        resultFetched.First().ValidationResult.Should().Be("SUCCESS");
+        resultFetched.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.ResepMidwareId));
     }
-}
+    
+    [Fact]
+    public async Task T04_GivenRacikDpho_And1NonDpho_ThenSuccess_AndGet1ValidationNote()
+    {
+        //  ARRANGE
+        var cmd = Command();
+        cmd.ListResep.First().ListItem.Add(
+            new ResepRsValidateCommandObat("RACIK-ID-1",
+                "RACIK-NAME-1", 1, "2dd1", "CaraPakai", 1,
+                new List<ResepRsValidateCommandKomponenRacik>
+                {
+                    new("BRG-ID-1", "BRG-NAME-1", 10, "3dd1", "diminum"),
+                    new("BRG-ID-2", "BRG-NAME-2", 8, "2dd1", "diminum")
+                }));
+        HappyPathMocking();
+        var expected = new List<ResepRsValidateResponse>
+        {
+            new(1, "xxx", "SUCCESS", "'BRG-NAME-2' tidak masuk dalam daftar DPHO")
+        };
+
+        //  ACT
+        var result = await _sut.Handle(cmd, CancellationToken.None);
+        
+        //  ASSERT
+        var resultFetched = result.ToList();
+        resultFetched.Should().BeEquivalentTo(expected, opt => opt.Excluding(x => x.ResepMidwareId));
+    }}

@@ -20,12 +20,13 @@ public class MapDphoGetService : IMapDphoGetService
     public MapDphoType Execute(IBrgKey brgKey)
     {
         var response = Task.Run(() => GetData(brgKey.BrgId)).GetAwaiter().GetResult();
+        if (response is null) return null;
         var brg = new BrgType(
-            response?.data?.brgId ?? string.Empty, 
-            response?.data?.brgName ?? string.Empty);
+            response?.data?.BrgId ?? string.Empty, 
+            response?.data?.BrgName ?? string.Empty);
         var dpho = new DphoRefference(
-            response?.data?.dphoId ?? string.Empty,
-            response?.data?.dphoName ?? string.Empty);
+            response?.data?.DphoId ?? string.Empty,
+            response?.data?.DphoName ?? string.Empty);
         var result = new MapDphoType(brg, dpho);
         return result;
     }
@@ -33,14 +34,15 @@ public class MapDphoGetService : IMapDphoGetService
     private async Task<MapDphoGetResponse> GetData(string id)
     {
         if (id.Trim().Length == 0)
-            return null;
-
+            return null; 
+        
         // BUILD
         var endpoint = $"{_opt.BaseApiUrl}/api/Dpho/Map/{id}";
         var client = new RestClient(endpoint);
         var req = new RestRequest();
 
         //  EXECUTE
+        //  TODO: Mapping Result ke MapDphoDto masih gagal
         var response = await client.ExecuteGetAsync<MapDphoGetResponse>(req);
         if (response.StatusCode != System.Net.HttpStatusCode.OK)
             return null;

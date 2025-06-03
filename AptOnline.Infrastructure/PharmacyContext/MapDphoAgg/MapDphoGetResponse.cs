@@ -10,4 +10,21 @@ public class MapDphoGetResponse
     public MapDphoDto data { get; set; }
 }
 
-public record MapDphoDto(string brgId, string brgName, string dphoId, string dphoName);
+public class MapDphoDto
+{
+    public MapDphoDto(string brgId, string brgName, string dphoId, string dphoName)
+    {
+        BrgId = brgId;
+        BrgName = brgName;
+        DphoId = dphoId;
+        DphoName = dphoName;
+    }
+
+    public MapDphoDto()
+    {
+    }
+    public string BrgId { get; set; } 
+    public string BrgName { get; set; }
+    public string DphoId { get; set; }
+    public string DphoName  { get; set; }
+}

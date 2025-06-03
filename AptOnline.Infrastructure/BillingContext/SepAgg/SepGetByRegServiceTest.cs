@@ -31,11 +31,11 @@ public class SepGetByRegServiceTest
             PasienType.Load("337502200146916", "KEISHA KHALIQA RIZQI", new DateTime(3000,1,1), GenderType.Default),
             JenisRegEnum.Unknown, KelasRawatType.Default);
         var dokter = new DokterType("226634", "dr. Dwi Riyanto, Sp.A");
-        var expected = new SepType("JP00580127", 
-            new DateTime(2024, 6, 6, 23, 26, 31), 
+        var expected = new SepType("JP00580127",
+            new DateTime(2024, 6, 6, 23, 26, 31),
             "1104R0040624V002150",
-            "0002278745223", 
-            reg, dokter, true, string.Empty);
+            "0002278745223",
+            reg, dokter, true, string.Empty, "1");
         
         var act = _sut.Execute(RegType.Key("RG01376985"));
         act.Should().BeEquivalentTo(expected);

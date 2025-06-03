@@ -34,8 +34,9 @@
     PoliBpjsName VARCHAR(100) NOT NULL CONSTRAINT APTOL_ResepMidware_PoliBpjsName DEFAULT '',
 
     -- BRIDGING STATE
-    BridgeState VARCHAR(10) NOT NULL CONSTRAINT APTOL_ResepMidware_ResepMidwareState DEFAULT '', -- CREATED, SYNCED, UPLOADED
+    BridgeState VARCHAR(10) NOT NULL CONSTRAINT APTOL_ResepMidware_ResepMidwareState DEFAULT '', -- CREATED, CONFIRMED, SYNCED, UPLOADED
     CreateTimestamp DATETIME NOT NULL CONSTRAINT APTOL_ResepMidware_CreateTimestamp DEFAULT '3000-01-01',
+    ConfirmTimestamp DATETIME NOT NULL CONSTRAINT APTOL_ResepMidware_ConfirmTimestamp DEFAULT '3000-01-01',
     SyncTimestamp DATETIME NOT NULL CONSTRAINT APTOL_ResepMidware_SyncTimestamp DEFAULT '3000-01-01',
     UploadTimestamp DATETIME NOT NULL CONSTRAINT APTOL_ResepMidware_UploadTimestamp DEFAULT '3000-01-01',
 

@@ -1,7 +1,8 @@
 ﻿using AptOnline.Application.AptolCloudContext.PpkAgg;
 using AptOnline.Application.BillingContext.LayananAgg;
+using AptOnline.Application.BillingContext.SepAgg;
 using AptOnline.Application.PharmacyContext.MapDphoAgg;
-using AptOnline.Application.SepContext;
+using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 using AptOnline.Domain.BillingContext.LayananAgg;
@@ -47,8 +48,12 @@ public class ResepRsValidateHandler :
             ?? throw new KeyNotFoundException($"SEP for register {request.RegId} not found");
         var ppk = _ppkGetService.Execute()
             ?? throw new KeyNotFoundException($"Setting Faskes not found");
-        var layanan = _layananGetService.Execute(request)
-            ?? throw new KeyNotFoundException($"Layanan {request.LayananId} not found");
+        var layanan = sep.JenisPelayananId switch
+        {
+            "1" => new LayananType("IGD", "IGD", true, new PoliBpjsType("IGD", "IGD")),
+            "2" => _layananGetService.Execute(request),
+            _ => throw new KeyNotFoundException("Jenis Pelayanan SEP invalid"),
+        } ?? throw new KeyNotFoundException($"Layanan {request.LayananId} not found");
 
         //  BUILD
         var listResult = new List<ResepRsValidateResponseDto>();
@@ -143,6 +148,11 @@ public class ResepRsValidateHandler :
     {
         itemCount++;
         var mapDpho = _mapDphoGetService.Execute(itemRacik);
+        if (mapDpho is null)
+        {
+            listValidationNote.Add($"'{itemRacik.BrgName}' tidak masuk dalam daftar DPHO");
+            return resepMidware;
+        }        
         var resultType = resepMidware.AddRacik(mapDpho, signa, itemRacik.Qty, jenisRacik);
         if (resultType.IsFailed)
             listValidationNote.Add(resultType.ErrorMessage);
