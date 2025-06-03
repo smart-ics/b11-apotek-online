@@ -1,7 +1,7 @@
 ﻿using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.Helpers;
-using GuardNet;
+using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.BillingContext.SepAgg;
 
@@ -11,10 +11,10 @@ public record SepType : ISepKey
         string pesertaJaminanId, RegType reg, DokterType dpjp, 
         bool isPrb, string prb, string jnsPelayananId)
     {
-        Guard.NotNullOrWhitespace(sepId, nameof(sepId));
-        Guard.NotNullOrWhitespace(pesertaJaminanId, nameof(pesertaJaminanId));
-        Guard.NotNull(reg, nameof(reg));
-        Guard.NotNull(dpjp, nameof(dpjp));
+        Guard.Against.NullOrWhiteSpace(sepId, nameof(sepId));
+        Guard.Against.NullOrWhiteSpace(pesertaJaminanId, nameof(pesertaJaminanId));
+        Guard.Against.Null(reg, nameof(reg));
+        Guard.Against.Null(dpjp, nameof(dpjp));
         
         SepId = sepId;
         SepDateTime = sepDateTime;

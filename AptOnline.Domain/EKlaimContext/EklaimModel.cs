@@ -1,9 +1,7 @@
 ﻿using AptOnline.Domain.BillingContext.PasienFeature;
-using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.SepContext;
 using Farpu.Domain.Helpers;
-using GuardNet;
+using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext;
 
@@ -26,26 +24,26 @@ public class EklaimModel : IEklaimKey
         EKlaimMedCovidType covid, EKlaimMedJenazahType jenazah, 
         EKlaimMedDarahType darah, BayiLahirStatusCodeType bayiLahirStatusCode)
     {
-        Guard.NotNullOrWhitespace(eklaimId, nameof(eklaimId), "EKlaim-ID harus terisi");
-        Guard.NotNullOrWhitespace(nomorSep, nameof(nomorSep), "Nomor-SEP harus terisi");
-        Guard.NotNullOrWhitespace(coderNik, nameof(coderNik), "Coder-Nik harus terisi");
-        Guard.NotNullOrWhitespace(dokterName, nameof(dokterName), "Dokter-Name harus terisi");
+        Guard.Against.NullOrWhiteSpace(eklaimId, nameof(eklaimId), "EKlaim-ID harus terisi");
+        Guard.Against.NullOrWhiteSpace(nomorSep, nameof(nomorSep), "Nomor-SEP harus terisi");
+        Guard.Against.NullOrWhiteSpace(coderNik, nameof(coderNik), "Coder-Nik harus terisi");
+        Guard.Against.NullOrWhiteSpace(dokterName, nameof(dokterName), "Dokter-Name harus terisi");
 
-        Guard.NotNull(nomorKartuT, nameof(nomorKartuT));
-        Guard.NotNull(admRawatType, nameof(admRawatType));
-        Guard.NotNull(dischargeStatus, nameof(dischargeStatus));
+        Guard.Against.Null(nomorKartuT, nameof(nomorKartuT));
+        Guard.Against.Null(admRawatType, nameof(admRawatType));
+        Guard.Against.Null(dischargeStatus, nameof(dischargeStatus));
 
-        Guard.NotNull(eklaimAdmTarifRs, nameof(eklaimAdmTarifRs));
-        Guard.NotNull(kodeTarifInacbg, nameof(kodeTarifInacbg));
-        Guard.NotNull(upgradeClassIndikator, nameof(upgradeClassIndikator));
-        Guard.NotNull(admPayment, nameof(admPayment));
+        Guard.Against.Null(eklaimAdmTarifRs, nameof(eklaimAdmTarifRs));
+        Guard.Against.Null(kodeTarifInacbg, nameof(kodeTarifInacbg));
+        Guard.Against.Null(upgradeClassIndikator, nameof(upgradeClassIndikator));
+        Guard.Against.Null(admPayment, nameof(admPayment));
 
-        Guard.NotNull(vitalSign, nameof(vitalSign));
-        Guard.NotNull(icu, nameof(icu));
-        Guard.NotNull(covid, nameof(covid));
-        Guard.NotNull(jenazah, nameof(jenazah));
-        Guard.NotNull(darah, nameof(darah));
-        Guard.NotNull(bayiLahirStatusCode, nameof(bayiLahirStatusCode));
+        Guard.Against.Null(vitalSign, nameof(vitalSign));
+        Guard.Against.Null(icu, nameof(icu));
+        Guard.Against.Null(covid, nameof(covid));
+        Guard.Against.Null(jenazah, nameof(jenazah));
+        Guard.Against.Null(darah, nameof(darah));
+        Guard.Against.Null(bayiLahirStatusCode, nameof(bayiLahirStatusCode));
 
         //
         EklaimId = eklaimId;

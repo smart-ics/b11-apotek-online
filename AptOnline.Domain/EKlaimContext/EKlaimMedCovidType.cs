@@ -1,4 +1,4 @@
-﻿using GuardNet;
+﻿using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext;
 
@@ -7,10 +7,10 @@ public record EKlaimMedCovidType
     public EKlaimMedCovidType(Covid19StatusCodeType covid19StatusCodeVal, EpisodeValType episodesVal, 
         AksesNaatType aksesNaatVal, YesNoIndikatorValType isomanIndikatorVal)
     {
-        Guard.NotNull(covid19StatusCodeVal, nameof(covid19StatusCodeVal), "Covid19 Status Tidak boleh kosong");
-        Guard.NotNull(episodesVal, nameof(episodesVal), "Episode Tidak boleh kosong");
-        Guard.NotNull(aksesNaatVal, nameof(aksesNaatVal), "Akses Naat Tidak boleh kosong");
-        Guard.NotNull(isomanIndikatorVal, nameof(isomanIndikatorVal), "Isoman Indikator Tidak boleh kosong");
+        Guard.Against.Null(covid19StatusCodeVal, nameof(covid19StatusCodeVal), "Covid19 Status Tidak boleh kosong");
+        Guard.Against.Null(episodesVal, nameof(episodesVal), "Episode Tidak boleh kosong");
+        Guard.Against.Null(aksesNaatVal, nameof(aksesNaatVal), "Akses Naat Tidak boleh kosong");
+        Guard.Against.Null(isomanIndikatorVal, nameof(isomanIndikatorVal), "Isoman Indikator Tidak boleh kosong");
         
         Covid19StatusCodeVal = covid19StatusCodeVal;
         EpisodesVal = episodesVal;

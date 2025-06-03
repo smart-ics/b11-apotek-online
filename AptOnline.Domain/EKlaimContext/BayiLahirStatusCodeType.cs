@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using GuardNet;
+﻿using Ardalis.GuardClauses;
+using FluentAssertions;
 using Xunit;
 
 namespace AptOnline.Domain.EKlaimContext;
@@ -19,8 +19,8 @@ public record BayiLahirStatusCodeType
         if (string.IsNullOrEmpty(value))
             return Default;
         
-        Guard.For(() => !ValidValues.Contains(value),
-            new ArgumentException("Status Code Bayi Lahir invalid"));
+        Guard.Against.InvalidInput(value, nameof(value), x => !ValidValues.Contains(x),
+            "Status Code Bayi Lahir invalid");
         
         return new BayiLahirStatusCodeType(value);
     }

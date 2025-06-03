@@ -1,4 +1,4 @@
-﻿using GuardNet;
+﻿using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.SepContext.ReferensiFeature;
 
@@ -6,8 +6,8 @@ public record KelasRawatType
 {
     public KelasRawatType(string code, string name)
     {
-        Guard.NotNullOrWhitespace(code, nameof(code));
-        Guard.NotNullOrWhitespace(name, nameof(name));
+        Guard.Against.NullOrWhiteSpace(code, nameof(code));
+        Guard.Against.NullOrWhiteSpace(name, nameof(name));
 
         Code = code;
         Name = name;

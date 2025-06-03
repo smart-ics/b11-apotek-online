@@ -1,4 +1,4 @@
-﻿using GuardNet;
+﻿using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext;
 
@@ -8,13 +8,13 @@ public record EKlaimMedJenazahType
         YesNoIndikatorValType petiJenazah, YesNoIndikatorValType plastikErat, YesNoIndikatorValType desinfektanJenazah, 
         YesNoIndikatorValType mobilJenazah, YesNoIndikatorValType desinfektanMobilJenazah)
     {
-        Guard.NotNull(pemulasaraanJenazah, nameof(pemulasaraanJenazah), "Pemulasaraan Jenazah Tidak boleh kosong");
-        Guard.NotNull(kantongJenazah, nameof(kantongJenazah), "Kantong Jenazah Tidak boleh kosong");
-        Guard.NotNull(petiJenazah, nameof(petiJenazah), "Peti Jenazah Tidak boleh kosong");
-        Guard.NotNull(plastikErat, nameof(plastikErat), "Plastik Erat Tidak boleh kosong");
-        Guard.NotNull(desinfektanJenazah, nameof(desinfektanJenazah), "Desinfektan Jenazah Tidak boleh kosong");
-        Guard.NotNull(mobilJenazah, nameof(mobilJenazah), "Mobil Jenazah Tidak boleh kosong");
-        Guard.NotNull(desinfektanMobilJenazah, nameof(desinfektanMobilJenazah), "Desinfektan Mobil Jenazah Tidak boleh kosong");
+        Guard.Against.Null(pemulasaraanJenazah, nameof(pemulasaraanJenazah), "Pemulasaraan Jenazah Tidak boleh kosong");
+        Guard.Against.Null(kantongJenazah, nameof(kantongJenazah), "Kantong Jenazah Tidak boleh kosong");
+        Guard.Against.Null(petiJenazah, nameof(petiJenazah), "Peti Jenazah Tidak boleh kosong");
+        Guard.Against.Null(plastikErat, nameof(plastikErat), "Plastik Erat Tidak boleh kosong");
+        Guard.Against.Null(desinfektanJenazah, nameof(desinfektanJenazah), "Desinfektan Jenazah Tidak boleh kosong");
+        Guard.Against.Null(mobilJenazah, nameof(mobilJenazah), "Mobil Jenazah Tidak boleh kosong");
+        Guard.Against.Null(desinfektanMobilJenazah, nameof(desinfektanMobilJenazah), "Desinfektan Mobil Jenazah Tidak boleh kosong");
         
         PemulasaraanJenazah = pemulasaraanJenazah;
         KantongJenazah = kantongJenazah;

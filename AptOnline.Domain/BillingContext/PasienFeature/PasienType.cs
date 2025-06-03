@@ -1,11 +1,6 @@
 ﻿using AptOnline.Domain.EKlaimContext;
+using Ardalis.GuardClauses;
 using FluentAssertions;
-using GuardNet;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace AptOnline.Domain.BillingContext.PasienFeature;
@@ -20,17 +15,21 @@ public record PasienType : IPasienKey
         BirthDate = birthDate;
         Gender = gender;
     }
+    public string PasienId { get; init; }
+    public string PasienName { get; init; }
+    public DateTime BirthDate { get; init; }
+    public GenderType Gender { get; init; }
+
 
     public static PasienType Create(string pasienId, string pasienName,
         DateTime birthDate, GenderType gender)
     {
-        Guard.NotNullOrWhitespace(pasienId, nameof(pasienId));
-        Guard.NotNullOrWhitespace(pasienName, nameof(pasienName));
-        Guard.NotNull(gender, nameof(birthDate));
+        Guard.Against.NullOrWhiteSpace(pasienId, nameof(pasienId));
+        Guard.Against.NullOrWhiteSpace(pasienName, nameof(pasienName));
+        Guard.Against.Null(gender, nameof(birthDate));
 
         return new PasienType(pasienId, pasienName, birthDate, gender);
     }
-
     public static PasienType Load(string pasienId, string pasienName,
         DateTime birthDate, GenderType gender) 
     => new PasienType(pasienId, pasienName, birthDate, gender);
@@ -40,11 +39,6 @@ public record PasienType : IPasienKey
 
     public static IPasienKey Key(string id) => 
         Default with { PasienId = id };
-    public string PasienId { get; init; }
-
-    public string PasienName { get; init; }
-    public DateTime BirthDate { get; init; }
-    public GenderType Gender { get; init; }
 }
 
 public class PasientTypeTest

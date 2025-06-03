@@ -1,4 +1,4 @@
-﻿using GuardNet;
+﻿using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext;
 
@@ -13,9 +13,9 @@ public record EklaimMedVitalSignType
 
     public static EklaimMedVitalSignType Create(decimal birthWeight, int sistole, int diastole)
     {
-        Guard.NotLessThan(birthWeight, 0, nameof(birthWeight), "Berat lahir minimal 0");
-        Guard.NotLessThan(sistole, 0, nameof(sistole), "Sistol minimal 0"); 
-        Guard.NotLessThan(diastole, 0, nameof(diastole), "Diastol minimal 0");
+        Guard.Against.Negative(birthWeight,  nameof(birthWeight), "Berat lahir minimal 0");
+        Guard.Against.Negative(sistole, nameof(sistole), "Sistol minimal 0"); 
+        Guard.Against.Negative(diastole,  nameof(diastole), "Diastol minimal 0");
         
         return new EklaimMedVitalSignType(birthWeight, sistole, diastole);
     }

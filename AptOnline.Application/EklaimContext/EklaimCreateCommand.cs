@@ -7,7 +7,7 @@ using MediatR;
 
 namespace AptOnline.Application.EKlaimContext;
 
-public record EklaimCreateCommand(string NoSep) : IRequest<EKlaimCreateResponse>;
+public record EklaimCreateCommand(string NomorSep) : IRequest<EKlaimCreateResponse>;
 
 public record EKlaimCreateResponse(string EKlaimId, string NoSep, PasienType Pasien); 
 

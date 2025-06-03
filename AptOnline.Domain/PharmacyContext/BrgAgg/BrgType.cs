@@ -1,8 +1,7 @@
 ﻿using AptOnline.Domain.Helpers;
-using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using FluentAssertions;
-using GuardNet;
 using Xunit;
+using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.PharmacyContext.BrgAgg;
 
@@ -10,8 +9,8 @@ public record BrgType : IBrgKey
 {
     public BrgType(string id, string name)
     {
-        Guard.NotNullOrWhitespace(id, nameof(id));
-        Guard.NotNullOrWhitespace(name, nameof(name));
+        Guard.Against.NullOrWhiteSpace(id, nameof(id));
+        Guard.Against.NullOrWhiteSpace(name, nameof(name));
         
         BrgId = id;
         BrgName = name;

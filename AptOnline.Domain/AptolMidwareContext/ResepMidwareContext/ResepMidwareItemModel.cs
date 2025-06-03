@@ -1,7 +1,7 @@
 ﻿using AptOnline.Domain.PharmacyContext.BrgAgg;
 using AptOnline.Domain.PharmacyContext.DphoAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
-using GuardNet;
+using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 
@@ -70,7 +70,7 @@ public class ResepMidwareItemModel : IResepMidwareKey
 
     private void SetBrg(MapDphoType mapDpho)
     {
-        Guard.NotNull(mapDpho, nameof(mapDpho));
+        Guard.Against.Null(mapDpho, nameof(mapDpho));
         Brg = mapDpho.Brg;
         Dpho = mapDpho.Dpho;
     }

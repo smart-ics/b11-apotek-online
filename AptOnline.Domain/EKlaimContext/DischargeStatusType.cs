@@ -1,4 +1,5 @@
-﻿using GuardNet;
+﻿
+using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext;
 
@@ -20,7 +21,7 @@ public record DischargeStatusType
          */
 
         var validValues = new[] { "1", "2", "3", "4", "5" };
-        Guard.For(() => !validValues.Contains(value), new ArgumentException("Invalid Discharge Status"));
+        Guard.Against.InvalidInput(value, nameof(value),x => !validValues.Contains(x), "Invalid Discharge Status");
         return new DischargeStatusType(value);
     }
     public static DischargeStatusType Load(string value) => new(value);

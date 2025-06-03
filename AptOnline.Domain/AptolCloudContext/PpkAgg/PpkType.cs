@@ -1,5 +1,5 @@
 ﻿using AptOnline.Domain.Helpers;
-using GuardNet;
+using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.AptolCloudContext.PpkAgg;
 
@@ -8,9 +8,9 @@ public record PpkType
     public PpkType(string ppkId, string ppkName, string siup, string alamat, string kota, 
         KepalaType kepala, VerifikatorType verifikator, ApotekType apotek)
     {
-        Guard.NotNullOrWhitespace(ppkId, nameof(ppkId));
-        Guard.NotNullOrWhitespace(ppkName, nameof(ppkName));
-            
+        Guard.Against.NullOrWhiteSpace(ppkId, nameof(ppkId), "PPK ID harus terisi");
+        Guard.Against.NullOrWhiteSpace(ppkName, nameof(ppkName), "PPK Name harus terisi");
+
         PpkId = ppkId;
         PpkName = ppkName;
         Siup = siup;

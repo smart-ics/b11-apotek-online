@@ -1,4 +1,4 @@
-﻿using GuardNet;
+﻿using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext;
 
@@ -6,9 +6,9 @@ public record EklaimAdmTarifRsType
 {
     public EklaimAdmTarifRsType(TarifRsJasaMedisType jasaMedis, TarifRsPelayananType pelayanan, TarifRsObatType obat)
     {
-        Guard.NotNull(jasaMedis, nameof(jasaMedis), "Jasa Medis Tidak boleh kosong");
-        Guard.NotNull(pelayanan, nameof(pelayanan), "Pelayanan Tidak boleh kosong");
-        Guard.NotNull(obat, nameof(obat), "Obat Tidak boleh kosong");
+        Guard.Against.Null(jasaMedis, nameof(jasaMedis), "Jasa Medis Tidak boleh kosong");
+        Guard.Against.Null(pelayanan, nameof(pelayanan), "Pelayanan Tidak boleh kosong");
+        Guard.Against.Null(obat, nameof(obat), "Obat Tidak boleh kosong");
         
         JasaMedis = jasaMedis;
         Pelayanan = pelayanan;

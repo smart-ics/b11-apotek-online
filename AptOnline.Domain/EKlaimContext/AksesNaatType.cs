@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using GuardNet;
+﻿using Ardalis.GuardClauses;
+using FluentAssertions;
 using Xunit;
 
 namespace AptOnline.Domain.EKlaimContext;
@@ -7,7 +7,7 @@ namespace AptOnline.Domain.EKlaimContext;
 //  NAAT = Nucleic Acid Amplification Test (Tes Infeksi Covid-19)
 public record AksesNaatType
 {
-    private static readonly string[] ValidValues = { "A", "B", "C"}; 
+    private static readonly string[] ValidValues = { "A", "B", "C" };
     private AksesNaatType(string value) => Value = value;
 
     public string Value { get; init; }
@@ -16,13 +16,12 @@ public record AksesNaatType
     {
         if (string.IsNullOrEmpty(value))
             return Default;
-        
-        Guard.For(() => !ValidValues.Contains(value), 
-            new ArgumentException("Akses NAAT invalid"));
-        
-        return new AksesNaatType(value); 
+
+        Guard.Against.InvalidInput(value, nameof(value), x => !ValidValues.Contains(x), "Akses NAAT invalid");
+
+        return new AksesNaatType(value);
     }
-    
+
     public static AksesNaatType Load(string value) => new(value);
     public static AksesNaatType Default => new(string.Empty);
 };

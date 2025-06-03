@@ -1,7 +1,6 @@
-﻿using AptOnline.Domain.Helpers;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
-using GuardNet;
+using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext;
 
@@ -39,8 +38,8 @@ public record CaraMasukType
             "inp", "emd", "born", "nursing",
             "psych", "rehab", "other"
         };
-        Guard.For(() => !validValues.Contains(value), 
-            new ArgumentException("Invalid Cara Masuk"));
+        Guard.Against.InvalidInput<string>(value, nameof(value), x =>!validValues.Contains(x), 
+            "Invalid Cara Masuk");
         var result = new CaraMasukType(value); 
         return result;  
     }

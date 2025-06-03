@@ -9,8 +9,8 @@ using AptOnline.Domain.EKlaimContext;
 using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using AptOnline.Domain.SepContext.ReferensiFeature;
+using Ardalis.GuardClauses;
 using Farpu.Domain.Helpers;
-using GuardNet;
 using Nuna.Lib.PatternHelper;
 
 namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
@@ -24,9 +24,9 @@ public class ResepMidwareModel : IResepMidwareKey
     
     public ResepMidwareModel(DateTime resepDate,int iterasi, SepType sep, PpkRefference ppk, PoliBpjsType poliBpjs)
     {
-        Guard.NotNull(sep, nameof(sep));
-        Guard.NotNull(ppk, nameof(ppk));
-        Guard.NotNull(poliBpjs, nameof(poliBpjs));
+        Guard.Against.Null(sep, nameof(sep));
+        Guard.Against.Null(ppk, nameof(ppk));
+        Guard.Against.Null(poliBpjs, nameof(poliBpjs));
 
         ResepMidwareId = UlidHelper.NewUlid();
         ResepMidwareDate = resepDate;

@@ -1,7 +1,6 @@
 ﻿using AptOnline.Domain.PharmacyContext.BrgAgg;
 using AptOnline.Domain.PharmacyContext.DphoAgg;
 using FluentAssertions;
-using GuardNet;
 using Xunit;
 
 namespace AptOnline.Domain.PharmacyContext.MapDphoAgg;

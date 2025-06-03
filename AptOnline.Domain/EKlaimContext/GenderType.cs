@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
-using GuardNet;
 using Xunit;
+using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext;
 
@@ -17,8 +17,7 @@ public record GenderType
         if (string.IsNullOrEmpty(value)) 
             return Default;
         
-        Guard.For(() => !ValidValues.Contains(value),
-            new ArgumentException("Gender invalid"));
+        Guard.Against.InvalidInput(value, nameof(value), x => !ValidValues.Contains(x), "Gender invalid");
         
         return new GenderType(value);
     }

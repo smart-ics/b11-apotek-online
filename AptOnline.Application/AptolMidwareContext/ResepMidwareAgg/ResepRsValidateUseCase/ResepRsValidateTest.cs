@@ -1,17 +1,19 @@
 ﻿using AptOnline.Application.AptolCloudContext.PpkAgg;
 using AptOnline.Application.BillingContext.LayananAgg;
-using AptOnline.Application.BillingContext.SepAgg;
 using AptOnline.Application.PharmacyContext.MapDphoAgg;
+using AptOnline.Application.SepContext;
 using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
+using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.PharmacyContext.BrgAgg;
 using AptOnline.Domain.PharmacyContext.DphoAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
+using AptOnline.Domain.SepContext.ReferensiFeature;
 using FluentAssertions;
 using Moq;
 using Nuna.Lib.ValidationHelper;
@@ -71,7 +73,7 @@ public class ResepRsValidateTest
             "SEP-ID-1", new DateTime(2025,4,1), "SEP-NO-1", "PESERTA-1", 
             RegType.Load("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), PasienType.Default, JenisRegEnum.Unknown, KelasRawatType.Default),
             new DokterType("DOKTER-ID-1", "DOKTER-NAME-1"),
-            false, "-");
+            false, "-", "1");
     private static PpkType PpkFaker()
         => new PpkType(
             "PPK-ID-1", "PPK-NAME-1","-","-","-",

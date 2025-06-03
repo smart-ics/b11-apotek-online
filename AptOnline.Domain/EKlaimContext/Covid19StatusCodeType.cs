@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using GuardNet;
+﻿using Ardalis.GuardClauses;
+using FluentAssertions;
 using Xunit;
 
 namespace AptOnline.Domain.EKlaimContext;
@@ -18,8 +18,8 @@ public record Covid19StatusCodeType
             4 = Suspek
             5 = Probabel */
         var validValue = new[] { "1", "2", "3", "4", "5" };
-        Guard.For(() => !validValue.Contains(value),
-            new ArgumentException("Covid-19 Status Code invalid"));
+        Guard.Against.InvalidInput(value, nameof(value), x => !validValue.Contains(x),
+            "Covid-19 Status Code invalid");
         return new Covid19StatusCodeType(value);
     }
 

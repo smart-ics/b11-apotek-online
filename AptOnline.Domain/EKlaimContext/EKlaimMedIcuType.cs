@@ -1,4 +1,4 @@
-﻿using GuardNet;
+﻿using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext;
 
@@ -7,9 +7,9 @@ public record EKlaimMedIcuType
     public EKlaimMedIcuType(AdlScoreType adlSubAcute, AdlScoreType adlChronic, 
         YesNoIndikatorValType icuIndikator, int icuLos)
     {
-        Guard.NotNull(adlSubAcute, nameof(adlSubAcute), "ADL Sub Acute Tidak boleh kosong");
-        Guard.NotNull(adlChronic, nameof(adlChronic), "ADL Chronic Tidak boleh kosong");
-        Guard.NotNull(icuIndikator, nameof(icuIndikator), "ICU Indikator Tidak boleh kosong");
+        Guard.Against.Null(adlSubAcute, nameof(adlSubAcute), "ADL Sub Acute Tidak boleh kosong");
+        Guard.Against.Null(adlChronic, nameof(adlChronic), "ADL Chronic Tidak boleh kosong");
+        Guard.Against.Null(icuIndikator, nameof(icuIndikator), "ICU Indikator Tidak boleh kosong");
         
         AdlSubAcute = adlSubAcute;
         AdlChronic = adlChronic;
@@ -20,7 +20,7 @@ public record EKlaimMedIcuType
     public static EKlaimMedIcuType Create(AdlScoreType adlSubAcute, AdlScoreType adlChronic,
         YesNoIndikatorValType icuIndikator, int icuLos)
     {
-        Guard.NotLessThan(icuLos, 0, nameof(icuLos), "ICU LOS minimal 0");
+        Guard.Against.Negative(icuLos, nameof(icuLos), "ICU LOS minimal 0");
         return new EKlaimMedIcuType(adlSubAcute, adlChronic, icuIndikator, icuLos);
     } 
     

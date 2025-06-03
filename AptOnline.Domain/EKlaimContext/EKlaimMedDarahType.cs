@@ -1,13 +1,13 @@
-﻿using GuardNet;
+﻿using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext;
 
 public record EKlaimMedDarahType
 {
-    public EKlaimMedDarahType(YesNoIndikatorValType dializerSingleUse, int kantongDarah, YesNoIndikatorValType alteplaseIndikator)
+    private EKlaimMedDarahType(YesNoIndikatorValType dializerSingleUse, int kantongDarah, YesNoIndikatorValType alteplaseIndikator)
     {
-        Guard.NotNull(dializerSingleUse, nameof(dializerSingleUse), "Dializer Single Use Tidak boleh kosong");
-        Guard.NotNull(alteplaseIndikator, nameof(alteplaseIndikator), "Alteplase Indikator Tidak boleh kosong");
+        Guard.Against.Null(dializerSingleUse, nameof(dializerSingleUse), "Dializer Single Use Tidak boleh kosong");
+        Guard.Against.Null(alteplaseIndikator, nameof(alteplaseIndikator), "Alteplase Indikator Tidak boleh kosong");
         
         DializerSingleUse = dializerSingleUse;
         KantongDarah = kantongDarah;
@@ -17,7 +17,7 @@ public record EKlaimMedDarahType
     public static EKlaimMedDarahType Create(YesNoIndikatorValType dializerSingleUse, int kantongDarah,
         YesNoIndikatorValType alteplaseIndikator)
     {
-        Guard.NotLessThan(kantongDarah, 0, nameof(kantongDarah), "Kantong Darah minimal 0");
+        Guard.Against.Negative(kantongDarah, nameof(kantongDarah), "Kantong Darah minimal 0");
         return new EKlaimMedDarahType(dializerSingleUse, kantongDarah, alteplaseIndikator);
     }
     

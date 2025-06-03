@@ -1,7 +1,7 @@
 ﻿using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.Helpers;
 using AptOnline.Domain.SepContext.ReferensiFeature;
-using GuardNet;
+using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.BillingContext.RegAgg;
 
@@ -25,9 +25,9 @@ public record RegType : IRegKey
         string regId, DateTime regDate, DateTime regOutDate,
         PasienType pasien, JenisRegEnum jenisReg, KelasRawatType kelasRawat)
     {
-        Guard.NotNullOrWhitespace(regId, nameof(regId));
-        Guard.NotNull(pasien, nameof(pasien));
-        Guard.NotNull(kelasRawat, nameof(kelasRawat));
+        Guard.Against.NullOrWhiteSpace(regId, nameof(regId));
+        Guard.Against.Null(pasien, nameof(pasien));
+        Guard.Against.Null(kelasRawat, nameof(kelasRawat));
 
         return new RegType(regId, regDate, regOutDate, pasien, jenisReg, kelasRawat);
     }

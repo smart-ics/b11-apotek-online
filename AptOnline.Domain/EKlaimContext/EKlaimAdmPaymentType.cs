@@ -1,4 +1,4 @@
-﻿using GuardNet;
+﻿using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext;
 
@@ -12,9 +12,9 @@ public record EKlaimAdmPaymentType
     }
     public static EKlaimAdmPaymentType Create(string payorId, string payorCode, string cobCode)
     {
-        Guard.NotNullOrWhitespace(payorId, nameof(payorId));
-        Guard.NotNullOrWhitespace(payorCode, nameof(payorCode));
-        Guard.NotNullOrWhitespace(cobCode, nameof(cobCode));
+        Guard.Against.NullOrWhiteSpace(payorId, nameof(payorId));
+        Guard.Against.NullOrWhiteSpace(payorCode, nameof(payorCode));
+        Guard.Against.NullOrWhiteSpace(cobCode, nameof(cobCode));
         
         return new EKlaimAdmPaymentType(payorId, payorCode, cobCode);
     }

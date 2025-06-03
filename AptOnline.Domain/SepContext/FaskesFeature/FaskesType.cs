@@ -1,13 +1,13 @@
-﻿using GuardNet;
+﻿using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.SepContext.FaskesFeature;
 
 public record FaskesType : IFaskesKey
 {
-    public FaskesType(string faskesId, string faskesName, string tipeFaskes)
+    private FaskesType(string faskesId, string faskesName, string tipeFaskes)
     {
-        Guard.NotNullOrWhitespace(faskesId, nameof(faskesId), "Faskes-Code harus terisi");
-        Guard.NotNullOrWhitespace(faskesName, nameof(faskesName), "Faskes-Name harus terisi");
+        Guard.Against.NullOrWhiteSpace(faskesId, nameof(faskesId), "Faskes-Code harus terisi");
+        Guard.Against.NullOrWhiteSpace(faskesName, nameof(faskesName), "Faskes-Name harus terisi");
 
         FaskesId = faskesId;
         FaskesName = faskesName;
