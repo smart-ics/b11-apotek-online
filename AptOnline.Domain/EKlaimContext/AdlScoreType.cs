@@ -15,8 +15,8 @@ public record AdlScoreType // Activity Daily Living Score
             throw new ArgumentException("ADL Score invalid. Harus berada antara 12 s/d 60");
         return new AdlScoreType(value);
     }
-    public static AdlScoreType Load(int value) => new AdlScoreType(value);
-    public static AdlScoreType Default => new AdlScoreType(60);
+    public static AdlScoreType Load(int value) => new(value);
+    public static AdlScoreType Default => new(60);
 }
 
 public class AdlScoreTypeTest

@@ -16,7 +16,7 @@ public class EklaimModel : IEklaimKey
         string coderNik, PasienType pasien,
         //
         NomorKartuTValType nomorKartuT, EKlaimAdmRawatType admRawatType, 
-        DischargeStatusValType dischargeStatus, string dokterName, 
+        DischargeStatusType dischargeStatus, string dokterName, 
         //
         EklaimAdmTarifRsType eklaimAdmTarifRs, decimal tarifPoliEksekutif,  
         KelasTarifInacbgValType kodeTarifInacbg, YesNoIndikatorValType upgradeClassIndikator, 
@@ -101,7 +101,7 @@ public class EklaimModel : IEklaimKey
         => new EklaimModel(
             UlidHelper.NewUlid(), DateTime.Now, "-", "-", "-", PasienType.Default,
             NomorKartuTValType.Default, EKlaimAdmRawatType.Default,
-            DischargeStatusValType.Default, "-",
+            DischargeStatusType.Default, "-",
             EklaimAdmTarifRsType.Default, 0, KelasTarifInacbgValType.Default,
             YesNoIndikatorValType.Default, 0, EKlaimAdmPaymentType.Default,
             EklaimMedVitalSignType.Default, EKlaimMedIcuType.Default,
@@ -128,7 +128,7 @@ public class EklaimModel : IEklaimKey
     //  ADMINISTRATIF
     public NomorKartuTValType NomorKartuT { get; private set; }
     public EKlaimAdmRawatType AdmRawatType { get; private set; }
-    public DischargeStatusValType DischargeStatus { get; private set; }
+    public DischargeStatusType DischargeStatus { get; private set; }
     public string DokterName { get; private set; }
 
     //  TARIF-PAYMENT
@@ -151,7 +151,7 @@ public class EklaimModel : IEklaimKey
     #region METHODS
 
     public void SetAdministratif(NomorKartuTValType nomorKartuT, EKlaimAdmRawatType admRawatType,
-        DischargeStatusValType dischargeStatus, string dokterName)
+        DischargeStatusType dischargeStatus, string dokterName)
     {
     }
 

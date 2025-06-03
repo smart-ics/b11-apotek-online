@@ -7,18 +7,13 @@ namespace AptOnline.Domain.EKlaimContext;
 
 public record CaraMasukType 
 {
-    private const string RUJUKAN_FKTP = "gp";
-    private const string RUJUKAN_FKRTL = "hosp-trans";
-    private const string RUJUKAN_SPESIALIS = "mp";
-    private const string DARI_RAWAT_JALAN = "outp";
-    private const string DARI_RAWAT_INAP = "inp";
-    private const string DARI_RAWAT_DARURAT = "emd";
-    private const string LAHIR_DI_RS = "born";
-    private const string RUJUKAN_PANTI_JOMPO = "nursing";
-    private const string RUJUKAN_RS_JIWA = "psych";
-    private const string RUJUKAN_FASILITAS_REHAB = "rehab";
-    private const string LAIN_LAIN = "other";
-
+    private static readonly HashSet<string> ValidValues = new()
+    {
+        "gp", "hosp-trans", "mp", "outp",
+        "inp", "emd", "born", "nursing",
+        "psych", "rehab", "other",
+    };
+        
     private CaraMasukType(string value) => Value = value;
 
     public string Value { get; private set; }
@@ -26,14 +21,15 @@ public record CaraMasukType
     public static CaraMasukType Create(string value)
     {
         /*  Code Translation:
-            gp = Rawat Jalan (Rujukan FKTP)
-            hosp-trans = Rawat Jalan (Rujukan FKRTL)
-            mp = Rawat Jalan (Rujukan Spesialis)
-            outp = Rawat Jalan (Dari Rawat Jalan)
-            inp = Rawat Inap (Dari Rawat Inap)
-            emd = Rawat Inap (Dari Rawat Darurat)
-            born = Bayi Lahir Di RS
-            nursing = Rawat Jalan (Rujukan Panti Jompo)
+                - gp = Rawat Jalan (Rujukan FKTP)
+                - hosp-trans = Rawat Jalan (Rujukan FKRTL)
+                - mp = Rawat Jalan (Rujukan Spesialis)
+                - outp = Rawat Jalan (Dari Rawat Jalan)
+                - inp = Rawat Inap (Dari Rawat Inap)
+                - emd = Rawat Inap (Dari Rawat Darurat)
+                - born = Bayi Lahir Di RS
+                - nursing = Rawat Jalan (Rujukan Panti Jompo),
+                
             psych = Rawat Jalan (Rujukan RS Jiwa)
             rehab = Rawat Jalan (Rujukan Fasilitas Rehab)
             other = Lain-lain */
