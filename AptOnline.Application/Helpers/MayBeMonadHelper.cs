@@ -56,6 +56,12 @@ public readonly struct MayBe<T>
         else
             onNone();
     }
-
+    
     public override string ToString() => HasValue ? $"Some({_value})" : "None";
+}
+
+public static class MayBe
+{
+    public static MayBe<T> From<T>(T? value) where T : class =>
+        value is null ? MayBe<T>.None : MayBe<T>.Some(value);
 }

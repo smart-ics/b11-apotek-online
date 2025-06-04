@@ -1,4 +1,5 @@
-﻿using AptOnline.Application.SepContext;
+﻿using AptOnline.Application.Helpers;
+using AptOnline.Application.SepContext;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Infrastructure.Helpers;
@@ -17,12 +18,12 @@ public class SepGetByRegService : ISepGetByRegService
         _opt = opt.Value;
     }
 
-    public SepType Execute(IRegKey req)
+    public MayBe<SepType> Execute(IRegKey req)
     {
         var responseData = Task.Run(() => ExecuteAsync(req.RegId)).GetAwaiter().GetResult();
-        var result = responseData?.data;
-        if (result is null) return null;
-        return result.ToSepType();
+        return MayBe
+            .From(responseData?.data)
+            .Map(x => x.ToSepType());
     }
 
     private async Task<SepGetByRegResponse?> ExecuteAsync(string regId)

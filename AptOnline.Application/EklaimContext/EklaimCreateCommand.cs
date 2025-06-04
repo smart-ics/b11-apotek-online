@@ -2,6 +2,7 @@
 using AptOnline.Application.EklaimContext;
 using AptOnline.Application.SepContext;
 using AptOnline.Domain.BillingContext.PasienFeature;
+using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.EKlaimContext;
 using MediatR;
 
@@ -34,7 +35,18 @@ public class EKlaimCreateHandler : IRequestHandler<EklaimCreateCommand, EKlaimCr
 
     public Task<EKlaimCreateResponse> Handle(EklaimCreateCommand request, CancellationToken cancellationToken)
     {
-        // var sep = _sepGetByNoSepService.Execute(request.NoSep);
+        var sep = _sepGetByRegService.Execute(RegType.Key(request.RegId))
+            .GetValueOrThrow($"SEP for register {request.RegId} not found");
+        
+        var eklaim = EklaimModel.CreateFromSep(sep, DateTime.Now);
+        _eklaimRepo.Insert(eklaim);
+        _eKlaimNewClaimService.Execute(eklaim);    
+        
+        var result = new EKlaimCreateResponse(
+            eklaim.EklaimId, eklaim.NomorSep, eklaim.Pasien);
+        return Task.FromResult(result);
+        
+        // var sep = _sepGetByRegService.Execute(RegType.Key(request.RegId));
         // var reg = _regGetService.Execute(sep);
         // var pasien = _pasienGetSerivce.Execute(reg);
         //

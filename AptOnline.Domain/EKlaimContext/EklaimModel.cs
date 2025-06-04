@@ -1,4 +1,5 @@
 ﻿using AptOnline.Domain.BillingContext.PasienFeature;
+using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.SepContext;
 using Farpu.Domain.Helpers;
 using Ardalis.GuardClauses;
@@ -38,7 +39,7 @@ public class EklaimModel : IEklaimKey
         Guard.Against.Null(upgradeClassIndikator, nameof(upgradeClassIndikator));
         Guard.Against.Null(admPayment, nameof(admPayment));
 
-        Guard.Against.Null(vitalSign, nameof(vitalSign));
+        Guard. Against.Null(vitalSign, nameof(vitalSign));
         Guard.Against.Null(icu, nameof(icu));
         Guard.Against.Null(covid, nameof(covid));
         Guard.Against.Null(jenazah, nameof(jenazah));
@@ -73,7 +74,7 @@ public class EklaimModel : IEklaimKey
         BayiLahirStatusCode = bayiLahirStatusCode;
     }
 
-    public static EklaimModel Create(DateTime eklaimDate, SepModel sep, PasienType pasien)
+    public static EklaimModel CreateFromSep(SepType sep, DateTime eklaimDate)
     {
         //Guard.NotNull(sep, nameof(sep), "Sep tidak boleh kosong");
         //Guard.NotNull(pasien, nameof(pasien), "Pasien tidak boleh kosong");
