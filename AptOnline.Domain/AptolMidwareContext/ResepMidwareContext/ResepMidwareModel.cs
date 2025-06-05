@@ -4,11 +4,13 @@ using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.EKlaimContext;
 using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
+using AptOnline.Domain.SepContext.FaskesFeature;
+using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.ReferensiFeature;
+using AptOnline.Domain.SepContext.SepFeature;
 using Ardalis.GuardClauses;
 using Farpu.Domain.Helpers;
 using Nuna.Lib.PatternHelper;
@@ -83,7 +85,9 @@ public class ResepMidwareModel : IResepMidwareKey
             JenisObatId = jenisObatId,
             Iterasi = iterasi,
 
-            Sep = new SepType(sepId, sepDate, sepNo, noPeserta, reg, dokter, false, "", ""),
+            Sep = new SepType(sepId, sepDate, sepNo, 
+                PesertaBpjsType.Create(noPeserta, "", JenisPesertaType.Default, KelasRawatType.Default, 
+                    FaskesType.Default.ToRefference()), reg, dokter, false, "", ""),
             Ppk = new PpkRefference(ppkId, ppkName),
             PoliBpjs = new PoliBpjsType(poliBpjsId, poliBpjsName),
             

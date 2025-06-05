@@ -10,11 +10,13 @@ using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.PharmacyContext.BrgAgg;
 using AptOnline.Domain.PharmacyContext.DphoAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
+using AptOnline.Domain.SepContext.FaskesFeature;
+using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.ReferensiFeature;
+using AptOnline.Domain.SepContext.SepFeature;
 using FluentAssertions;
 using Moq;
 using Nuna.Lib.ValidationHelper;
@@ -72,8 +74,8 @@ public class ResepRsValidateTest
     private static MayBe<SepType> SepFaker()
         => MayBe
             .From(new SepType(
-                "SEP-ID-1", new DateTime(2025,4,1), "SEP-NO-1", "PESERTA-1", 
-                RegType.Load("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), PasienType.Default, JenisRegEnum.Unknown, KelasRawatType.Default),
+                "SEP-ID-1", new DateTime(2025,4,1), "SEP-NO-1", PesertaBpjsType.Create("A", "B", JenisPesertaType.Default, KelasRawatType.Default, FaskesType.Default.ToRefference()),
+                 RegType.Load("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), PasienType.Default, JenisRegEnum.Unknown, KelasRawatType.Default),
                 new DokterType("DOKTER-ID-1", "DOKTER-NAME-1"),
                 false, "-", "1"));
     

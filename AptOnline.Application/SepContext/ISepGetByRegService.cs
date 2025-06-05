@@ -1,6 +1,6 @@
 ﻿using AptOnline.Application.Helpers;
 using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.BillingContext.SepAgg;
+using AptOnline.Domain.SepContext.SepFeature;
 using Nuna.Lib.CleanArchHelper;
 
 namespace AptOnline.Application.SepContext;

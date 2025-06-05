@@ -45,18 +45,5 @@ public class EKlaimCreateHandler : IRequestHandler<EklaimCreateCommand, EKlaimCr
         var result = new EKlaimCreateResponse(
             eklaim.EklaimId, eklaim.NomorSep, eklaim.Pasien);
         return Task.FromResult(result);
-        
-        // var sep = _sepGetByRegService.Execute(RegType.Key(request.RegId));
-        // var reg = _regGetService.Execute(sep);
-        // var pasien = _pasienGetSerivce.Execute(reg);
-        //
-        // var eklaim = EklaimModel.Create(DateTime.Now, sep, pasien);
-        // _eklaimRepo.Insert(eklaim);
-        // _eKlaimNewClaimService.Execute(eklaim);    
-        //
-        // var result = new EKlaimCreateResponse(
-        //     eklaim.EklaimId, eklaim.NomorSep, eklaim.Pasien);
-        // return Task.FromResult(result);
-        throw new NotImplementedException();
     }
 }
