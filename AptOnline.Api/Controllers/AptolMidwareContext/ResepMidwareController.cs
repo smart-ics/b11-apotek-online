@@ -18,7 +18,6 @@ public class ResepMidwareController : Controller
         _mediator = mediator;
     }
 
-
     [HttpPost]
     public async Task<IActionResult> Create(ResepRsValidateCommand command)
     {
@@ -30,11 +29,31 @@ public class ResepMidwareController : Controller
     public async Task<IActionResult> Confirm(ResepRsConfirmCommand command)
     {
         var result = await _mediator.Send(command);
+        if (!result.BridgeState.Equals("CREATED"))
+        {
+            var saveCommand = new ResepBpjsSaveCommand(command.ResepMidwareId);
+            var result1 = await _mediator.Send(saveCommand);
+            return Ok(new JSendOk(result1));
+        } 
         return Ok(new JSendOk(result));
     }
     [HttpPut]
     [Route("send")]
     public async Task<IActionResult> Send(ResepBpjsSaveCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return Ok(new JSendOk(result));
+    }
+    [HttpDelete]
+    [Route("delete")]
+    public async Task<IActionResult> Delete(ResepBpjsDeleteCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return Ok(new JSendOk(result));
+    }
+    [HttpDelete]
+    [Route("obat/delete")]
+    public async Task<IActionResult> DeleteObat(ObatBpjsDeleteCommand command)
     {
         var result = await _mediator.Send(command);
         return Ok(new JSendOk(result));

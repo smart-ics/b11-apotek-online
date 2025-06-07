@@ -42,11 +42,11 @@ namespace AptOnline.Infrastructure.Helpers
         {
             byte[][] result = new byte[2][];
             Encoding enc = Encoding.UTF8;
-            SHA256 sha2 = new SHA256CryptoServiceProvider();
+            var sha256 = SHA256.Create();
             byte[] rawKey = enc.GetBytes(key);
             byte[] rawIV = enc.GetBytes(key);
-            byte[] hashKey = sha2.ComputeHash(rawKey);
-            byte[] hashIV = sha2.ComputeHash(rawIV);
+            byte[] hashKey = sha256.ComputeHash(rawKey);
+            byte[] hashIV = sha256.ComputeHash(rawIV);
             Array.Resize(ref hashIV, 16);
             result[0] = hashKey;
             result[1] = hashIV;
@@ -95,10 +95,9 @@ namespace AptOnline.Infrastructure.Helpers
         //---md5 hash
         public static string CreateMD5(string input)
         {
-            using System.Security.Cryptography.MD5 md5 =
-            System.Security.Cryptography.MD5.Create();
+            using var md5 = MD5.Create();
             byte[] retVal = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             for (int i = 0; i < retVal.Length; i++)
             {
                 sb.Append(retVal[i].ToString("x2"));
