@@ -17,7 +17,7 @@ namespace AptOnline.Api.Controllers.AptolCloudContext
             _mediator = mediator;
         }
 
-        [HttpGet("/getSetting")]
+        [HttpGet("getSetting")]
         public async Task<IActionResult> GetData()
         {
             var query = new GetSettingPpkBpjsQuery();
