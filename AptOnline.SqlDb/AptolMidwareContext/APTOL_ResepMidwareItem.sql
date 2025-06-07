@@ -13,7 +13,8 @@
     Permintaan INT NOT NULL CONSTRAINT APTOL_ResepMidwareItem_Permintaan DEFAULT 0,
     Jho INT NOT NULL CONSTRAINT APTOL_ResepMidwareItem_Jho DEFAULT 0,
     Jumlah INT NOT NULL CONSTRAINT APTOL_ResepMidwareItem_Jumlah DEFAULT 0,
-    Note VARCHAR(20) NOT NULL CONSTRAINT APTOL_ResepMidwareItem_Note DEFAULT ''
+    Note VARCHAR(20) NOT NULL CONSTRAINT APTOL_ResepMidwareItem_Note DEFAULT '',
+    IsUploaded BIT NOT NULL CONSTRAINT APTOL_ResepMidwareItem_IsUploaded DEFAULT 0
 
     CONSTRAINT PK_APTOL_ResepMidwareItem PRIMARY KEY (ResepMidwareId, NoUrut)
 )

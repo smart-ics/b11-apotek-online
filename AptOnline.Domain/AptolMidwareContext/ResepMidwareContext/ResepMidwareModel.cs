@@ -1,7 +1,6 @@
 ﻿using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.BillingContext.DokterAgg;
-using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.Helpers;
@@ -14,10 +13,10 @@ namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 
 public class ResepMidwareModel : IResepMidwareKey
 {
-    private const string BRIDGE_STATE_CREATED = "CREATED";
-    private const string BRIDGE_STATE_CONFIRMED = "CONFIRMED";
-    private const string BRIDGE_STATE_SYNCED = "SYNCED";
-    private const string BRIDGE_STATE_UPLOADED = "UPLOADED";
+    public const string BRIDGE_STATE_CREATED = "CREATED";
+    public const string BRIDGE_STATE_CONFIRMED = "CONFIRMED";
+    public const string BRIDGE_STATE_SYNCED = "SYNCED";
+    public const string BRIDGE_STATE_UPLOADED = "UPLOADED";
     
     public ResepMidwareModel(DateTime resepDate,int iterasi, SepType sep, PpkRefference ppk, PoliBpjsType poliBpjs)
     {
@@ -31,9 +30,10 @@ public class ResepMidwareModel : IResepMidwareKey
         ChartId = string.Empty;
         ResepRsId = string.Empty;
         ReffId = string.Empty;
-        JenisObatId = poliBpjs.PoliBpjsId == "KEM" ? "3"
-              : sep.IsPrb ? "1"
-              : "2";
+        ResepBpjsNo = string.Empty;
+        JenisObatId = poliBpjs.PoliBpjsId == "KEM" ? "3" : "2";
+        // : sep.IsPrb ? "1" [prb sementara disabled (dari bpjs kc jogja)
+
         Iterasi = iterasi;
         Sep = sep;
         Ppk = ppk;
@@ -54,8 +54,8 @@ public class ResepMidwareModel : IResepMidwareKey
 
     public static ResepMidwareModel Load(
         string resepMidwareId, DateTime resepMidwareDate, 
-        string chartId, string resepRsId, 
-        string reffId, string jenisObatId, int iterasi,        
+        string chartId, string resepRsId, string reffId,
+        string resepBpjsNo, string jenisObatId, int iterasi,         
         string sepId, DateTime sepDate, string sepNo, string noPeserta,
         string regId, DateTime regDate, string pasienId, string pasienName,
         string dokterId, string dokterName,
@@ -73,15 +73,15 @@ public class ResepMidwareModel : IResepMidwareKey
 
             ChartId = chartId,
             ResepRsId = resepRsId,
-
+            Registrasi = reg,
             ReffId = reffId,
+            ResepBpjsNo = resepBpjsNo,
             JenisObatId = jenisObatId,
             Iterasi = iterasi,
 
             Sep = new SepType(sepId, sepDate, sepNo, noPeserta, reg, dokter, false, "", ""),
             Ppk = new PpkRefference(ppkId, ppkName),
             PoliBpjs = new PoliBpjsType(poliBpjsId, poliBpjsName),
-            
             BridgeState = bridgeState,
             CreateTimestamp = createTimestamp,
             ConfirmTimeStamp = confirmTimestamp,
@@ -98,15 +98,17 @@ public class ResepMidwareModel : IResepMidwareKey
 #region EMR-RELATED
     public string ChartId { get; private set; }
     public string ResepRsId { get; private set; }
+    public RegType Registrasi { get; private set; }
     #endregion
     
 #region APTOL-RELATED
     public string ReffId { get; private set; }
+    public string ResepBpjsNo { get; set; }
     public string JenisObatId { get; private set;}
     public int Iterasi { get; private set;}
     #endregion
 
-#region SEP-RELATED
+    #region SEP-RELATED
     public SepType Sep { get; private  set; }
     public PpkRefference Ppk { get; private set; }
     public PoliBpjsType PoliBpjs { get; private set; }
@@ -136,6 +138,12 @@ public class ResepMidwareModel : IResepMidwareKey
     {
         ChartId = chartId;
         ResepRsId = resepRsId;
+    }
+    public void Sent(string reffId, DateTime sentTimeStamp)
+    {
+        ReffId = reffId;
+        UploadTimestamp = sentTimeStamp;
+        BridgeState = BRIDGE_STATE_UPLOADED;
     }
     #endregion
     

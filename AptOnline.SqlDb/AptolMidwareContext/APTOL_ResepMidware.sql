@@ -12,6 +12,7 @@
     ReffId VARCHAR(30) NOT NULL CONSTRAINT APTOL_ResepMidware_ReffId DEFAULT '',
     JenisObatId VARCHAR(2) NOT NULL CONSTRAINT APTOL_ResepMidware_JenisObatId DEFAULT '',
     Iterasi INT NOT NULL CONSTRAINT APTOL_ResepMidware_Iterasi DEFAULT 0,
+    [ResepBpjsNo] VARCHAR(5) NOT NULL CONSTRAINT APTOL_ResepMidware_ResepBpjsNo DEFAULT '',
 
     -- SEP
     SepId VARCHAR(20) NOT NULL CONSTRAINT APTOL_ResepMidware_SepId DEFAULT '',

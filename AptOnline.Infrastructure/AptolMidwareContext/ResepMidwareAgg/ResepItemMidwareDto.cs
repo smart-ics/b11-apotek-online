@@ -24,6 +24,7 @@ public class ResepMidwareItemDto
         Jho = model.Jho;
         Jumlah = model.Jumlah;
         Note = model.Note;
+        IsUploaded = model.IsUploaded;
     }
     public string ResepMidwareId {get;set;}
     public int NoUrut {get;set;}
@@ -39,11 +40,12 @@ public class ResepMidwareItemDto
     public int Jho {get;set;}
     public int Jumlah {get;set;}
     public string Note {get;set;}
-    
+    public bool IsUploaded { get; set; }
+
     public ResepMidwareItemModel ToModel() 
         => ResepMidwareItemModel.Load(
             ResepMidwareId, NoUrut, IsRacik, RacikId,
             BarangId, BarangName, DphoId, DphoName,
             Signa1, Signa2, Permintaan,
-            Jho, Jumlah, Note);
+            Jho, Jumlah, Note, IsUploaded);
 }
