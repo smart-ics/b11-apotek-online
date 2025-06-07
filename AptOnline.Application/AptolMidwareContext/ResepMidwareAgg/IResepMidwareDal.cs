@@ -1,4 +1,5 @@
 ﻿using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
+using AptOnline.Domain.EmrContext.ResepRsAgg;
 using Nuna.Lib.DataAccessHelper;
 using Nuna.Lib.ValidationHelper;
 
@@ -9,6 +10,7 @@ public interface IResepMidwareDal :
     IUpdate<ResepMidwareModel>,
     IDelete<IResepMidwareKey>,
     IGetData<ResepMidwareModel, IResepMidwareKey>,
+    IGetData<ResepMidwareModel, IResepRsKey>,
     IListData<ResepMidwareModel, Periode>
 {
 }

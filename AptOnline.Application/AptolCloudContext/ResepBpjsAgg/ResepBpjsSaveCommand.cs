@@ -1,18 +1,12 @@
-﻿using AptOnline.Application.AptolCloudContext.ObatBpjsAgg;
-using AptOnline.Application.AptolMidwareContext.ResepMidwareAgg;
-using AptOnline.Application.AptolMidwareContext.ResepMidwareAgg.ResepRsValidateUseCase;
-using AptOnline.Domain.AptolCloudContext.ResepBpjsAgg;
+﻿using AptOnline.Application.AptolMidwareContext.ResepMidwareAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
-using AptOnline.Domain.BillingContext.LayananAgg;
-using AptOnline.Domain.BillingContext.RegAgg;
 using MediatR;
-using Nuna.Lib.DataTypeExtension;
+
 
 namespace AptOnline.Application.AptolCloudContext.ResepBpjsAgg;
-//06B60QDMMRZ2F741WTTDNC5KT8
-public record ResepBpjsSaveCommand(string ResepMidwareId) : IRequest<ResepBpjsModel>, IResepMidwareKey;
+public record ResepBpjsSaveCommand(string ResepMidwareId) : IRequest<ResepBpjsSaveResponse>, IResepMidwareKey;
 
-public class ResepBpjsSaveHandler : IRequestHandler<ResepBpjsSaveCommand, ResepBpjsModel>
+public class ResepBpjsSaveHandler : IRequestHandler<ResepBpjsSaveCommand, ResepBpjsSaveResponse>
 {
     private readonly IResepMidwareBuilder _builder;
     private readonly IResepMidwareWriter _writer;
@@ -30,27 +24,63 @@ public class ResepBpjsSaveHandler : IRequestHandler<ResepBpjsSaveCommand, ResepB
         _writer = writer;
     }
 
-    public Task<ResepBpjsModel> Handle(ResepBpjsSaveCommand request, CancellationToken cancellationToken)
+    public Task<ResepBpjsSaveResponse> Handle(ResepBpjsSaveCommand request, CancellationToken cancellationToken)
     {
         //build
-        var resepMidware = _builder.Load(request).Build();
-        //send
+        var resepMidware = _builder.Load(request).Build() ??
+            throw new KeyNotFoundException("Resep not found or invalid");
+        //jika sep tsb sudah pernah kirim header ke bpjs, ambil no apotik
+        if(resepMidware.BridgeState.Equals("CREATED"))
+            throw new KeyNotFoundException("Status Resep belum CONFIRMED");
         var noApotik = resepMidware.ReffId;
         var noSep = resepMidware.Sep.SepNo;
+        var noResep = resepMidware.ResepBpjsNo;
+        //jika belum pernah kirim header ke bpjs
         if (noApotik.Trim().Length == 0)
         {
             var resepBpjs = _resepBpjsSaveService.Execute(resepMidware);
             noSep = resepBpjs.NoSep;
-            noApotik = resepBpjs.NoApotik;
-        }
 
+            noApotik = resepBpjs.NoApotik;
+            resepMidware.Sent(noApotik, DateTime.Now);
+            //_writer.Save(resepMidware);
+        }
+        
+        var saveNote = string.Empty;
+        var saveResult = string.Empty;
+        bool isLanjut = true;
+        var errMsg = string.Empty;
         foreach (var item in resepMidware.ListItem)
         {
-            var reqParam = new ObatBpjsInsertParam (noSep, noApotik, item);
-            var x = _obatBpjsInsertService.Execute( reqParam);
+            var reqParam = new ObatBpjsInsertParam (noSep, noApotik, noResep, item);
+            var x = _obatBpjsInsertService.Execute(reqParam);
+            switch (x.RespCode)
+            {
+                case "200":
+                    item.SetUploaded();
+                    if (saveResult.Equals(string.Empty)) saveResult = "SUCCESS";
+                    break;
+                case "201":
+                    saveResult = "PARTIAL";
+                    item.SetNote(x.RespMessage);
+                    saveNote += $"{x.ObatId}: {x.RespMessage}{Environment.NewLine}";
+                    break;
+                //case "404":
+                //    throw new KeyNotFoundException($"{request.ResepMidwareId} - {x.RespMessage}");
+                default:
+                    isLanjut = false;
+                    errMsg = $"Insert Obat BPJS\n({x.RespCode}) {x.RespMessage}";
+                    break;                  
+            }
+            if(!isLanjut) 
+                break;
         }
+        _writer.Save(resepMidware);
+        if (!isLanjut) 
+            throw new Exception(errMsg);
         //response
-        throw new NotImplementedException();
+        var resp = new ResepBpjsSaveResponse(request.ResepMidwareId, noApotik, saveResult, saveNote);
+        return Task.FromResult(resp);
     }
 }
 /*

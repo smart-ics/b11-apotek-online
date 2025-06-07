@@ -7,6 +7,7 @@ namespace AptOnline.Application.AptolMidwareContext.ResepMidwareAgg;
 
 public interface IResepMidwareWriter : INunaWriterWithReturn<ResepMidwareModel>
 {
+    void Delete(ResepMidwareModel model);
 }
 public class ResepMidwareWriter: IResepMidwareWriter
 {
@@ -41,5 +42,12 @@ public class ResepMidwareWriter: IResepMidwareWriter
         _resepMidwareItemDal.Insert(model.ListItem);
         trans.Complete();
         return model;
+    }
+    public void Delete(ResepMidwareModel model)
+    {
+        using var trans = TransHelper.NewScope();
+        _resepMidwareDal.Delete(model);
+        _resepMidwareItemDal.Delete(model);
+        trans.Complete();
     }
 }
