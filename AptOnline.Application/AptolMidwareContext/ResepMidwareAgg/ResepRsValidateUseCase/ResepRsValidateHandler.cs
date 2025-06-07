@@ -46,6 +46,8 @@ public class ResepRsValidateHandler :
         //  GUARD (header only)
         var sep = _sepGetByRegService.Execute(request)
             ?? throw new KeyNotFoundException($"SEP for register {request.RegId} not found");
+        if ((DateTime.Now - sep.SepDateTime).Days > 15)
+            throw new Exception($"Resep melebihi 15 hari dari SEP No. {sep.SepNo} ({sep.SepDateTime:dd-MM-yyyy})");
         var ppk = _ppkGetService.Execute()
             ?? throw new KeyNotFoundException($"Setting Faskes not found");
         var layanan = sep.JenisPelayananId switch
@@ -70,7 +72,6 @@ public class ResepRsValidateHandler :
         foreach (var item in listResult.Where(x => x.IsCreated))
         {
             _ = _writer.Save(item.ResepMidware);
-            //item.ResepMidware.ResepMidwareId = writeResult.ResepMidwareId;
         }
         trans.Complete();
         
@@ -88,8 +89,7 @@ public class ResepRsValidateHandler :
         ResepRsValidateCommandResep resep,
         SepType sep, PpkRefference ppk, LayananType layanan)
     {
-        var resepMidware = CreateResepHeader(sep, ppk, layanan);
-
+        var resepMidware = CreateResepHeader(resep, sep, ppk, layanan);
         var listValidationNote = new List<string>();
         var itemCount = 0;
         foreach (var itemObat in resep.ListItem)
@@ -106,18 +106,19 @@ public class ResepRsValidateHandler :
         }
 
         var listValidationNoteStr = string.Join("\n", listValidationNote);
-        if (listValidationNote.Count == itemCount)
-            return new ResepRsValidateResponseDto(noUrut, 
-                resepMidware, false, listValidationNoteStr);
+        if (itemCount > 0)
+            return new ResepRsValidateResponseDto(noUrut,
+            resepMidware, true, listValidationNoteStr);
 
         return new ResepRsValidateResponseDto(noUrut,
-            resepMidware, true, listValidationNoteStr);
+            resepMidware, false, listValidationNoteStr);
     }
     
-    private ResepMidwareModel CreateResepHeader(SepType sep, 
+    private ResepMidwareModel CreateResepHeader(ResepRsValidateCommandResep resep, SepType sep, 
         PpkRefference ppk, LayananType layanan)
     {
-        var result = new ResepMidwareModel(_dateTime.Now, 1, sep, ppk, layanan.PoliBpjs);
+        int iterasi = resep.ListItem.Any(x => x.Iter > 0) ? 1 : 0;
+        var result = new ResepMidwareModel(_dateTime.Now, iterasi, sep, ppk, layanan.PoliBpjs);
         return result;
     }
     
@@ -126,13 +127,16 @@ public class ResepRsValidateHandler :
         ref int itemCount, 
         ref List<string> listValidationNote)
     {
-        itemCount++;
+        //itemCount++;
         var mapDpho = _mapDphoGetService.Execute(itemObat);
         if (mapDpho is null)
-        {
-            listValidationNote.Add($"'{itemObat.BrgName}' tidak masuk dalam daftar DPHO");
             return resepMidware;
-        }
+        //if (mapDpho is not null)
+        //{
+            itemCount++;
+            listValidationNote.Add($"'{itemObat.BrgName}' termasuk dalam DPHO");
+            //return resepMidware;
+        //}
         var resultType = resepMidware.AddObat(mapDpho, itemObat.Signa, itemObat.Qty);
         if (resultType.IsFailed)
             listValidationNote.Add(resultType.ErrorMessage);
@@ -146,13 +150,16 @@ public class ResepRsValidateHandler :
         ref int itemCount,
         ref List<string> listValidationNote)
     {
-        itemCount++;
+        //itemCount++;
         var mapDpho = _mapDphoGetService.Execute(itemRacik);
         if (mapDpho is null)
-        {
-            listValidationNote.Add($"'{itemRacik.BrgName}' tidak masuk dalam daftar DPHO");
             return resepMidware;
-        }        
+        //if (mapDpho is not null)
+        //{
+            itemCount++;
+            listValidationNote.Add($"'{itemRacik.BrgName}' termasuk dalam DPHO");
+            //return resepMidware;
+        //}        
         var resultType = resepMidware.AddRacik(mapDpho, signa, itemRacik.Qty, jenisRacik);
         if (resultType.IsFailed)
             listValidationNote.Add(resultType.ErrorMessage);
