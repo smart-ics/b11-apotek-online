@@ -43,7 +43,7 @@ public class PpkGetService : IPpkGetService
 
         if (!jResult["metaData"]["code"].ToString().Equals("200"))
         {
-            throw new Exception(response.Content);
+            throw new Exception($"PPK Setting: {jResult["metaData"]["message"].ToString()}");
         }
         var tempResp = jResult.SelectToken("response");
         try
@@ -53,23 +53,23 @@ public class PpkGetService : IPpkGetService
         }
         catch { }
         var tempResult = jResult.ToObject<PpkGetResponse>();
-        var content = tempResult.response;
+        var resp = tempResult.response;
         var result = new PpkGetDto
         {
-            Kode = tempResult.response.Kode,
-            Nama =_opt.PpkName,
-            NamaApoteker = tempResult.response.NamaApoteker,
-            NamaKepala = tempResult.response.NamaKepala,
-            JabatanKepala = tempResult.response.JabatanKepala,
-            NipKepala = tempResult.response.NamaKepala,
-            Siup = tempResult.response.Siup,
-            Alamat = tempResult.response.Alamat,
-            Kota = tempResult.response.Kota,
-            NamaVerifikator = tempResult.response.NamaVerifikator,
-            NppVerifikator = tempResult.response.NppVerifikator,
-            NamaPetugasApotek = tempResult.response.NamaPetugasApotek,
-            NipPetugasApotek = tempResult.response.NipPetugasApotek,
-            CheckStock = tempResult.response.CheckStock
+            Kode = resp.Kode,
+            Nama = _opt.PpkName,
+            NamaApoteker = resp.NamaApoteker,
+            NamaKepala = resp.NamaKepala,
+            JabatanKepala = resp.JabatanKepala,
+            NipKepala = resp.NamaKepala,
+            Siup = resp.Siup,
+            Alamat = resp.Alamat,
+            Kota = resp.Kota,
+            NamaVerifikator = resp.NamaVerifikator,
+            NppVerifikator = resp.NppVerifikator,
+            NamaPetugasApotek = resp.NamaPetugasApotek,
+            NipPetugasApotek = resp.NipPetugasApotek,
+            CheckStock = resp.CheckStock
         };
         return result.ToType();
     }

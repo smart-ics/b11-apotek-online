@@ -16,7 +16,7 @@ namespace AptOnline.Api.Controllers.AptolCloudContext
             _mediator = mediator;
         }
 
-        [HttpGet("{keyword}")]
+        [HttpGet("list")]
         public async Task<IActionResult> ListData(string kodeJenisFaskes, string tglResep, string keyword)
         {
             var query = new ListObatBpjsQuery(kodeJenisFaskes, tglResep, keyword);
