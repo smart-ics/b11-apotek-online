@@ -1,5 +1,4 @@
-﻿using AptOnline.Domain.EKlaimContext;
-using Ardalis.GuardClauses;
+﻿using Ardalis.GuardClauses;
 using FluentAssertions;
 using Xunit;
 
@@ -15,6 +14,7 @@ public record PasienType : IPasienKey
         BirthDate = birthDate;
         Gender = gender;
     }
+
     public string PasienId { get; init; }
     public string PasienName { get; init; }
     public DateTime BirthDate { get; init; }
@@ -26,7 +26,7 @@ public record PasienType : IPasienKey
     {
         Guard.Against.NullOrWhiteSpace(pasienId, nameof(pasienId));
         Guard.Against.NullOrWhiteSpace(pasienName, nameof(pasienName));
-        Guard.Against.Null(gender, nameof(birthDate));
+        Guard.Against.Null(gender, nameof(gender));
 
         return new PasienType(pasienId, pasienName, birthDate, gender);
     }

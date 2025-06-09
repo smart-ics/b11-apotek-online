@@ -45,4 +45,7 @@ public record SepType : ISepKey
         AppConst.DASH, AppConst.DEF_DATE, AppConst.DASH, 
         PesertaBpjsType.Default, RegType.Default, DokterType.Default, false, 
         AppConst.DASH, AppConst.DASH);
+
+    public SepRefference ToRefference()
+        => new SepRefference(SepId, SepNo, SepDateTime);
 }

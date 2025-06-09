@@ -1,6 +1,6 @@
 ﻿using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.Helpers;
-using AptOnline.Domain.SepContext.ReferensiFeature;
+using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.BillingContext.RegAgg;
