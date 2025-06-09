@@ -9,11 +9,11 @@ public interface IGetResepFarmasiService
 {
     ResepRsDto Execute(string resepId);
 }
-public class GetResepFarmasiService : IGetResepFarmasiService
+public class ResepFarmasiGetService : IGetResepFarmasiService
 {
     private readonly FarmasiOptions _opt;
 
-    public GetResepFarmasiService(IOptions<FarmasiOptions> opt)
+    public ResepFarmasiGetService(IOptions<FarmasiOptions> opt)
     {
         _opt = opt.Value;
     }
