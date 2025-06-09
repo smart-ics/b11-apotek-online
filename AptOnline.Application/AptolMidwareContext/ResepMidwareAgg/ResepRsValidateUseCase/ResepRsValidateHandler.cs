@@ -1,12 +1,12 @@
 ﻿using AptOnline.Application.AptolCloudContext.PpkAgg;
 using AptOnline.Application.BillingContext.LayananAgg;
-using AptOnline.Application.BillingContext.SepAgg;
 using AptOnline.Application.PharmacyContext.MapDphoAgg;
+using AptOnline.Application.SepContext;
 using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 using AptOnline.Domain.BillingContext.LayananAgg;
-using AptOnline.Domain.BillingContext.SepAgg;
+using AptOnline.Domain.SepContext.SepFeature;
 using MediatR;
 using Nuna.Lib.TransactionHelper;
 using Nuna.Lib.ValidationHelper;
@@ -45,7 +45,7 @@ public class ResepRsValidateHandler :
     {
         //  GUARD (header only)
         var sep = _sepGetByRegService.Execute(request)
-            ?? throw new KeyNotFoundException($"SEP for register {request.RegId} not found");
+            .GetValueOrThrow($"SEP for register {request.RegId} not found");
         if ((DateTime.Now - sep.SepDateTime).Days > 15)
             throw new Exception($"Resep melebihi 15 hari dari SEP No. {sep.SepNo} ({sep.SepDateTime:dd-MM-yyyy})");
         var ppk = _ppkGetService.Execute()

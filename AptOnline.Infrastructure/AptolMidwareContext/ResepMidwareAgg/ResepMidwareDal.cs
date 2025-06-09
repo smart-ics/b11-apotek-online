@@ -54,7 +54,7 @@ public class ResepMidwareDal : IResepMidwareDal
         dp.AddParam("@SepId", resepMidware.Sep.SepId, SqlDbType.VarChar);
         dp.AddParam("@SepDate", resepMidware.Sep.SepDateTime, SqlDbType.DateTime);
         dp.AddParam("@SepNo", resepMidware.Sep.SepNo, SqlDbType.VarChar);
-        dp.AddParam("@NoPeserta", resepMidware.Sep.PesertaBpjs.PesertaBpjsId, SqlDbType.VarChar);
+        dp.AddParam("@NoPeserta", resepMidware.Sep.PesertaBpjs.PesertaBpjsNo, SqlDbType.VarChar);
         dp.AddParam("@RegId", resepMidware.Sep.Reg.RegId, SqlDbType.VarChar); 
         dp.AddParam("@RegDate", resepMidware.Sep.Reg.RegDate, SqlDbType.DateTime); 
         dp.AddParam("@PasienId", resepMidware.Sep.Reg.Pasien.PasienId, SqlDbType.VarChar); 
@@ -131,7 +131,7 @@ public class ResepMidwareDal : IResepMidwareDal
         dp.AddParam("@SepId", resepMidware.Sep.SepId, SqlDbType.VarChar);
         dp.AddParam("@SepDate", resepMidware.Sep.SepDateTime, SqlDbType.DateTime);
         dp.AddParam("@SepNo", resepMidware.Sep.SepNo, SqlDbType.VarChar);
-        dp.AddParam("@NoPeserta", resepMidware.Sep.PesertaBpjs.PesertaBpjsId, SqlDbType.VarChar);
+        dp.AddParam("@NoPeserta", resepMidware.Sep.PesertaBpjs.PesertaBpjsNo, SqlDbType.VarChar);
         dp.AddParam("@RegId", resepMidware.Sep.Reg.RegId, SqlDbType.VarChar); 
         dp.AddParam("@RegDate", resepMidware.Sep.Reg.RegDate, SqlDbType.DateTime); 
         dp.AddParam("@PasienId", resepMidware.Sep.Reg.Pasien.PasienId, SqlDbType.VarChar); 

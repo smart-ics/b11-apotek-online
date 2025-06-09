@@ -36,7 +36,7 @@ namespace AptOnline.Domain.EKlaimContext
             
             return new EKlaimModel(eKlaimId, eKlaimDate,
                 sep.ToRefference(), sep.Reg.Pasien,
-                sep.PesertaBpjs.ToRefference());
+                sep.PesertaBpjs);
         }
         
         public static EKlaimModel Load(string eKlaimId, DateTime eKlaimDate, 

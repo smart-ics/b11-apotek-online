@@ -34,7 +34,7 @@ public class SepGetByRegServiceTest
         var expected = new SepType("JP00580127",
             new DateTime(2024, 6, 6, 23, 26, 31),
             "1104R0040624V002150",
-            pesertaBpjs,
+            pesertaBpjs.ToRefference(),
             reg, dokter, true, string.Empty, "1");
         
         var act = _sut.Execute(RegType.Key("RG01376985"));

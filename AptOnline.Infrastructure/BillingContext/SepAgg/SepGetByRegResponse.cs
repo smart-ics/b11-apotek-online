@@ -37,7 +37,7 @@ public class SepGetByRegResponseData
         var pasien = PasienType.Create(PasienId, PasienName, new DateTime(3000,1,1), GenderType.Default);
         var pesertaBpjs = PesertaBpjsType.Default with { PesertaBpjsId = PesertaJaminanId };
         var result = new SepType(SepId, DateTime.Parse(SepDateTime),
-            SepNo, pesertaBpjs,
+            SepNo, pesertaBpjs.ToRefference(),
             RegType.Create(RegId, DateTime.Parse(SepDateTime), DateTime.Parse(SepDateTime), 
                 pasien, JenisRegEnum.RawatJalan, KelasRawatType.Default),
             new DokterType(DpjpLayananId.Trim().Length > 0 ? DpjpLayananId : DpjpId,

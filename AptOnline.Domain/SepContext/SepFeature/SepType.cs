@@ -9,7 +9,7 @@ namespace AptOnline.Domain.SepContext.SepFeature;
 public record SepType : ISepKey
 {
     public SepType(string sepId, DateTime sepDateTime, string sepNo, 
-        PesertaBpjsType pesertaBpjs, RegType reg, DokterType dpjp, 
+        PesertaBpjsRefference pesertaBpjs, RegType reg, DokterType dpjp, 
         bool isPrb, string prb, string jnsPelayananId)
     {
         Guard.Against.NullOrWhiteSpace(sepId, nameof(sepId));
@@ -31,7 +31,7 @@ public record SepType : ISepKey
     public string SepId { get; private set; }
     public DateTime SepDateTime { get; private set; }
     public string SepNo { get; private set; }
-    public PesertaBpjsType PesertaBpjs { get; private set; }
+    public PesertaBpjsRefference PesertaBpjs { get; private set; }
 
     public string JenisPelayananId { get; set; }
     
@@ -43,7 +43,7 @@ public record SepType : ISepKey
     
     public static SepType Default => new SepType(
         AppConst.DASH, AppConst.DEF_DATE, AppConst.DASH, 
-        PesertaBpjsType.Default, RegType.Default, DokterType.Default, false, 
+        PesertaBpjsType.Default.ToRefference(), RegType.Default, DokterType.Default, false, 
         AppConst.DASH, AppConst.DASH);
 
     public SepRefference ToRefference()

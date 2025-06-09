@@ -75,7 +75,7 @@ public class ResepRsValidateTest
         var pesertaBpjs = PesertaBpjsType.Create("A", "B", "", JenisPesertaType.Default, KelasRawatType.Default, FaskesType.Default.ToRefference());
         var result  = MayBe
             .From(new SepType(
-                "SEP-ID-1", new DateTime(2025,4,1), "SEP-NO-1", pesertaBpjs,
+                "SEP-ID-1", new DateTime(2025,4,1), "SEP-NO-1", pesertaBpjs.ToRefference(),
                 RegType.Load("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), PasienType.Default, JenisRegEnum.Unknown, KelasRawatType.Default),
                 new DokterType("DOKTER-ID-1", "DOKTER-NAME-1"),
                 false, "-", "1"));

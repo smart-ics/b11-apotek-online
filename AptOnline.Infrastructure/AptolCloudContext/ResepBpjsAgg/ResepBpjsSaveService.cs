@@ -21,8 +21,8 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
             //"tglResep":"2025-01-28", "kdJnsObat":"2","tglEntry":"2025-01-28"}
 
             return new ResepBpjsModel("0137A04701250000001",
-                req.Sep.SepNo, req.Sep.NoPeserta,
-                req.Registrasi.PasienName, req.Ppk.PpkId, req.ResepRsId.Substring(4,5),
+                req.Sep.SepNo, req.Sep.PesertaBpjs.PesertaBpjsNo,
+                req.Registrasi.Pasien.PasienName, req.Ppk.PpkId, req.ResepRsId.Substring(4,5),
                 req.CreateTimestamp.ToString("yyyy-MM-dd"), req.JenisObatId,
                 req.CreateTimestamp.ToString("yyyy-MM-dd"));
         }

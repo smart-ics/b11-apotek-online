@@ -1,14 +1,14 @@
 ﻿using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.BillingContext.SepAgg;
 using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
-using GuardNet;
+using AptOnline.Domain.SepContext.PesertaBpjsFeature;
+using AptOnline.Domain.SepContext.SepFeature;
 using Nuna.Lib.PatternHelper;
-using Ulid = AptOnline.Domain.Helpers.Ulid;
-
+using Ardalis.GuardClauses;
 namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 
 public class ResepMidwareModel : IResepMidwareKey
@@ -20,11 +20,11 @@ public class ResepMidwareModel : IResepMidwareKey
     
     public ResepMidwareModel(DateTime resepDate,int iterasi, SepType sep, PpkRefference ppk, PoliBpjsType poliBpjs)
     {
-        Guard.NotNull(sep, nameof(sep));
-        Guard.NotNull(ppk, nameof(ppk));
-        Guard.NotNull(poliBpjs, nameof(poliBpjs));
+        Guard.Against.Null(sep, nameof(sep));
+        Guard.Against.Null(ppk, nameof(ppk));
+        Guard.Against.Null(poliBpjs, nameof(poliBpjs));
 
-        ResepMidwareId = Ulid.NewUlid();
+        ResepMidwareId = Ulid.NewUlid().ToString();
         ResepMidwareDate = resepDate;
 
         ChartId = string.Empty;
@@ -64,8 +64,10 @@ public class ResepMidwareModel : IResepMidwareKey
         string bridgeState, DateTime createTimestamp, DateTime confirmTimestamp, 
         DateTime syncTimestamp, DateTime uploadTimestamp)
     {
-        var reg = new RegType(regId, regDate, pasienId, pasienName);
+        var pasien = PasienType.Load(pasienId, pasienName, new DateTime(3000, 1, 1), GenderType.Default);
+        var reg = RegType.Load(regId, regDate, new DateTime(3000,1,1), pasien, JenisRegEnum.Unknown, KelasRawatType.Default);
         var dokter = new DokterType(dokterId, dokterName);
+        var pesertaBpjs = new PesertaBpjsRefference(noPeserta, pasienName);
         return new ResepMidwareModel
         {
             ResepMidwareId = resepMidwareId,
@@ -79,7 +81,7 @@ public class ResepMidwareModel : IResepMidwareKey
             JenisObatId = jenisObatId,
             Iterasi = iterasi,
 
-            Sep = new SepType(sepId, sepDate, sepNo, noPeserta, reg, dokter, false, "", ""),
+            Sep = new SepType(sepId, sepDate, sepNo, pesertaBpjs, reg, dokter, false, "", ""),
             Ppk = new PpkRefference(ppkId, ppkName),
             PoliBpjs = new PoliBpjsType(poliBpjsId, poliBpjsName),
             BridgeState = bridgeState,
