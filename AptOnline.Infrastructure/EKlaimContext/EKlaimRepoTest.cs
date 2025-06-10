@@ -10,7 +10,7 @@ namespace AptOnline.Infrastructure.EKlaimContext;
 
 public class EKlaimRepoTest
 {
-    private EKlaimRepo _sut;
+    private readonly EKlaimRepo _sut;
 
     public EKlaimRepoTest()
     {
