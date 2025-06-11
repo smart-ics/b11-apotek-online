@@ -1,4 +1,4 @@
-﻿namespace AptOnline.Application.Helpers;
+﻿namespace AptOnline.Domain.Helpers;
 
 public readonly struct MayBe<T>
 {

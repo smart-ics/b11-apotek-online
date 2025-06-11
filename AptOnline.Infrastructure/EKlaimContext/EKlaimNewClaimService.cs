@@ -7,6 +7,6 @@ public class EKlaimNewClaimService : IEKlaimNewClaimService
 {
     public void Execute(EKlaimModel req)
     {
-        throw new NotImplementedException();
+        return;
     }
 }

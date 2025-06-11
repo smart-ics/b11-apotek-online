@@ -41,10 +41,13 @@ public record SepType : ISepKey
     public bool IsPrb { get; private set; }
     public string Prb { get; private set; }
     
-    public static SepType Default => new SepType(
-        AppConst.DASH, AppConst.DEF_DATE, AppConst.DASH, 
+    public static SepType Default 
+        => new SepType(AppConst.DASH, AppConst.DEF_DATE, AppConst.DASH, 
         PesertaBpjsType.Default.ToRefference(), RegType.Default, DokterType.Default, false, 
         AppConst.DASH, AppConst.DASH);
+    
+    public static ISepKey Key(string sepId) 
+        => SepType.Default with { SepId = sepId }; 
 
     public SepRefference ToRefference()
         => new SepRefference(SepId, SepNo, SepDateTime);
