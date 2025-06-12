@@ -57,6 +57,8 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="AptolMidwareContext" />
+    <Folder Include="EKlaimContext\" />
+    <Folder Include="SepContext\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="AptolMidwareContext\APTOL_Log.sql" />

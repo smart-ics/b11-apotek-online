@@ -26,14 +26,14 @@ namespace AptOnline.Infrastructure.EKlaimContext
             var reqBody = JsonConvert.SerializeObject(req);
             var client = new RestClient(endpoint);
             var request = new RestRequest(Method.POST);
-            if (isDebugMode)
+            if (!isDebugMode)
                 reqBody = EKlaimHelper.Encrypt(reqBody, _opt.ApiKey);
             request.AddJsonBody(reqBody);
             var response = client.Execute(request);
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 throw new Exception(response.ErrorMessage);
             string tmpResult = response.Content;
-            if (isDebugMode)
+            if (!isDebugMode)
             {
                 tmpResult = tmpResult.Replace(MARK_START, "").Replace(MARK_END, "");
                 tmpResult = EKlaimHelper.Decrypt(tmpResult, _opt.ApiKey);
