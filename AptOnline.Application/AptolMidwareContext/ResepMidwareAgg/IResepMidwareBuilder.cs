@@ -30,8 +30,9 @@ public class ResepMidwareBuilder : IResepMidwareBuilder
     public IResepMidwareBuilder Load(IResepMidwareKey key)
     {
         _agg = _resepMidwareDal.GetData(key);
-        _agg.ListItem = _resepMidwareItemDal.ListData(key)?.ToList() 
-            ?? new List<ResepMidwareItemModel>();
+        if(_agg is not null)
+            _agg.ListItem = _resepMidwareItemDal.ListData(key)?.ToList() 
+                ?? new List<ResepMidwareItemModel>();
         return this;
     }
 }

@@ -10,6 +10,7 @@ public class ResepMidwareDto
     public string ChartId { get; set; }
     public string ResepRsId { get; set; }
     public string ReffId { get; set; }
+    public string ResepBpjsNo { get; set; }
     public string JenisObatId { get; set; }
     public int Iterasi { get; set; }
 
@@ -38,7 +39,7 @@ public class ResepMidwareDto
     public ResepMidwareModel ToModel()
     {
         var result = ResepMidwareModel.Load(ResepMidwareId, ResepMidwareDate,
-            ChartId, ResepRsId, ReffId, JenisObatId, Iterasi, 
+            ChartId, ResepRsId, ReffId,ResepBpjsNo, JenisObatId, Iterasi, 
             SepId, SepDate, SepNo, NoPeserta, 
             RegId, RegDate, PasienId, PasienName, 
             DokterId, DokterName, 

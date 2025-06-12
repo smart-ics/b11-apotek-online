@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EKlaimContext2\**" />
     <Compile Remove="SepContextBackup\**" />
+    <EmbeddedResource Remove="EKlaimContext2\**" />
     <EmbeddedResource Remove="SepContextBackup\**" />
+    <None Remove="EKlaimContext2\**" />
     <None Remove="SepContextBackup\**" />
   </ItemGroup>
 

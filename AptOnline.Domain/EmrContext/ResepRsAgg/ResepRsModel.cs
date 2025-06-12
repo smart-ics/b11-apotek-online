@@ -2,7 +2,7 @@
 
 namespace AptOnline.Domain.EmrContext.ResepRsAgg;
 
-public class ResepRsModel : IRegKey
+public class ResepRsModel : IRegKey, IResepRsKey
 {
     public string ResepId { get; set; }
     public string TglJam { get; set; }

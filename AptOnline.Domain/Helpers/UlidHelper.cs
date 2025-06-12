@@ -1,9 +1,7 @@
-﻿namespace Farpu.Domain.Helpers;
-
-using System;
-using System.Linq;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
+
+namespace AptOnline.Domain.Helpers;
 
 public struct UlidHelper
 {

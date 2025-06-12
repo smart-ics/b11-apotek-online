@@ -17,7 +17,7 @@ public class ResepMidwareItemModel : IResepMidwareKey
         ResepMidwareId = string.Empty;
         IsRacik = false;
         RacikId = string.Empty;
-        Permintaan = 0;
+        //Permintaan = 0;
         Note = string.Empty;
     }
 
@@ -28,7 +28,7 @@ public class ResepMidwareItemModel : IResepMidwareKey
     public static ResepMidwareItemModel Load(
         string respeMidwareId, int noUrut, bool isRacik, string racikId,
         string barangId, string barangName, string dphoId, string dphoName,
-        int signa1, decimal signa2, int permintaan, int jho, int jumlah, string note)
+        int signa1, decimal signa2, int permintaan, int jho, int jumlah, string note, bool isUploaded)
         => new ResepMidwareItemModel
         {
             ResepMidwareId = respeMidwareId,
@@ -42,7 +42,8 @@ public class ResepMidwareItemModel : IResepMidwareKey
             Permintaan = permintaan,
             Jho = jho,
             Jumlah = jumlah,
-            Note = note
+            Note = note,
+            IsUploaded = isUploaded
         };
     #endregion
     
@@ -62,9 +63,11 @@ public class ResepMidwareItemModel : IResepMidwareKey
     public int Jumlah { get; private set; }
 
     public string Note { get; private set; }
+
+    public bool IsUploaded { get; private set; }
     #endregion
-    
-    
+
+
     #region METHODS
     public void SetId(string id) => ResepMidwareId = id;
 
@@ -80,7 +83,7 @@ public class ResepMidwareItemModel : IResepMidwareKey
         var signaResult = SignaParser.Parse(signa);
         Signa1 = signaResult.DailyDose;
         Signa2 = signaResult.ConsumeAmount;
-        
+        Permintaan = qty;
         Jumlah = qty;
         Jho = Convert.ToInt16(Math.Ceiling(qty / (Signa1 * Signa2)));
     }
@@ -95,6 +98,16 @@ public class ResepMidwareItemModel : IResepMidwareKey
     {
         RacikId = string.Empty;
         IsRacik = false;
+    }
+
+    public void SetUploaded()
+    {
+        IsUploaded = true;
+    }
+
+    public void SetNote(string note)
+    {
+        Note = note;
     }
     #endregion
 }

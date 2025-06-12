@@ -41,7 +41,8 @@ public class ResepMidwareItemDal : IResepMidwareItemDal
         bcp.AddMap("Jho", "Jho");
         bcp.AddMap("Jumlah", "Jumlah");
         bcp.AddMap("Note", "Note");
- 
+        bcp.AddMap("IsUploaded", "IsUploaded");
+
         var fetched = listModelDto.ToList();
         bcp.BatchSize = fetched.Count;
         bcp.DestinationTableName = "APTOL_ResepMidwareItem";

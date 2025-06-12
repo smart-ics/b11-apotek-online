@@ -1,6 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 
-namespace AptOnline.Domain.SepContext.ReferensiFeature;
+namespace AptOnline.Domain.SepContext.PesertaBpjsFeature;
 
 public record KelasRawatType
 {

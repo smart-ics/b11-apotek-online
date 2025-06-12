@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using AptOnline.Application.AptolMidwareContext.ResepMidwareAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
+using AptOnline.Domain.EmrContext.ResepRsAgg;
 using AptOnline.Infrastructure.Helpers;
 using Dapper;
 using FluentAssertions;
@@ -26,7 +27,7 @@ public class ResepMidwareDal : IResepMidwareDal
         const string sql = @"
             INSERT INTO APTOL_ResepMidware(
                 ResepMidwareId, ResepMidwareDate, 
-                ChartId, ResepRsId, ReffId, JenisObatId, Iterasi, 
+                ChartId, ResepRsId, ReffId, ResepBpjsNo, JenisObatId, Iterasi, 
                 SepId, SepDate, SepNo, NoPeserta, 
                 RegId, RegDate, PasienId, PasienName, DokterId, DokterName,
                 PpkId, PpkName, PoliBpjsId, PoliBpjsName,   
@@ -47,12 +48,13 @@ public class ResepMidwareDal : IResepMidwareDal
         dp.AddParam("@ResepRsId", resepMidware.ResepRsId, SqlDbType.VarChar); 
         dp.AddParam("@JenisObatId", resepMidware.JenisObatId, SqlDbType.VarChar);
         dp.AddParam("@ReffId", resepMidware.ReffId, SqlDbType.VarChar);
+        dp.AddParam("@ResepBpjsNo", resepMidware.ResepBpjsNo, SqlDbType.VarChar);
         dp.AddParam("@Iterasi", resepMidware.Iterasi, SqlDbType.Int);
         
         dp.AddParam("@SepId", resepMidware.Sep.SepId, SqlDbType.VarChar);
         dp.AddParam("@SepDate", resepMidware.Sep.SepDateTime, SqlDbType.DateTime);
         dp.AddParam("@SepNo", resepMidware.Sep.SepNo, SqlDbType.VarChar);
-        dp.AddParam("@NoPeserta", resepMidware.Sep.PesertaBpjs.NomorPeserta, SqlDbType.VarChar);
+        dp.AddParam("@NoPeserta", resepMidware.Sep.PesertaBpjs.PesertaBpjsNo, SqlDbType.VarChar);
         dp.AddParam("@RegId", resepMidware.Sep.Reg.RegId, SqlDbType.VarChar); 
         dp.AddParam("@RegDate", resepMidware.Sep.Reg.RegDate, SqlDbType.DateTime); 
         dp.AddParam("@PasienId", resepMidware.Sep.Reg.Pasien.PasienId, SqlDbType.VarChar); 
@@ -87,6 +89,7 @@ public class ResepMidwareDal : IResepMidwareDal
                 ChartId = @ChartId,
                 ResepRsId = @ResepRsId,
                 ReffId = @ReffId,
+                ResepBpjsNo = @ResepBpjsNo,
                 JenisObatId = @JenisObatId, 
                 Iterasi = @Iterasi,
 
@@ -122,12 +125,13 @@ public class ResepMidwareDal : IResepMidwareDal
         dp.AddParam("@ResepRsId", resepMidware.ResepRsId, SqlDbType.VarChar); 
         dp.AddParam("@JenisObatId", resepMidware.JenisObatId, SqlDbType.VarChar);
         dp.AddParam("@ReffId", resepMidware.ReffId, SqlDbType.VarChar);
+        dp.AddParam("@ResepBpjsNo", resepMidware.ResepBpjsNo, SqlDbType.VarChar);
         dp.AddParam("@Iterasi", resepMidware.Iterasi, SqlDbType.Int);
         
         dp.AddParam("@SepId", resepMidware.Sep.SepId, SqlDbType.VarChar);
         dp.AddParam("@SepDate", resepMidware.Sep.SepDateTime, SqlDbType.DateTime);
         dp.AddParam("@SepNo", resepMidware.Sep.SepNo, SqlDbType.VarChar);
-        dp.AddParam("@NoPeserta", resepMidware.Sep.PesertaBpjs.NomorPeserta, SqlDbType.VarChar);
+        dp.AddParam("@NoPeserta", resepMidware.Sep.PesertaBpjs.PesertaBpjsNo, SqlDbType.VarChar);
         dp.AddParam("@RegId", resepMidware.Sep.Reg.RegId, SqlDbType.VarChar); 
         dp.AddParam("@RegDate", resepMidware.Sep.Reg.RegDate, SqlDbType.DateTime); 
         dp.AddParam("@PasienId", resepMidware.Sep.Reg.Pasien.PasienId, SqlDbType.VarChar); 
@@ -171,7 +175,7 @@ public class ResepMidwareDal : IResepMidwareDal
         const string sql = @"
             SELECT 
                 ResepMidwareId, ResepMidwareDate, 
-                ChartId, ResepRsId, ReffId, JenisObatId, Iterasi, 
+                ChartId, ResepRsId, ReffId, ResepBpjsNo, JenisObatId, Iterasi, 
                 SepId, SepDate, SepNo, NoPeserta, 
                 RegId, RegDate, PasienId, PasienName, DokterId, DokterName,
                 PpkId, PpkName, PoliBpjsId, PoliBpjsName,   
@@ -194,7 +198,7 @@ public class ResepMidwareDal : IResepMidwareDal
         const string sql = @"
             SELECT 
                 ResepMidwareId, ResepMidwareDate, 
-                ChartId, ResepRsId, ReffId, JenisObatId, Iterasi, 
+                ChartId, ResepRsId, ReffId, ResepBpjsNo, JenisObatId, Iterasi, 
                 SepId, SepDate, SepNo, NoPeserta, 
                 RegId, RegDate, PasienId, PasienName, DokterId, DokterName,
                 PpkId, PpkName, PoliBpjsId, PoliBpjsName,   
@@ -213,6 +217,29 @@ public class ResepMidwareDal : IResepMidwareDal
         var response = result?.Select(x => x.ToModel());
         return response;
     }
+
+    public ResepMidwareModel GetData(IResepRsKey key)
+    {
+        const string sql = @"
+            SELECT 
+                ResepMidwareId, ResepMidwareDate, 
+                ChartId, ResepRsId, ReffId, ResepBpjsNo, JenisObatId, Iterasi, 
+                SepId, SepDate, SepNo, NoPeserta, 
+                RegId, RegDate, PasienId, PasienName, DokterId, DokterName,
+                PpkId, PpkName, PoliBpjsId, PoliBpjsName,   
+                BridgeState, CreateTimestamp, ConfirmTimeStamp, SyncTimestamp, UploadTimestamp            
+            FROM
+                APTOL_ResepMidware
+            WHERE
+                ResepRsId = @ResepRsId";
+
+        var dp = new DynamicParameters();
+        dp.AddParam("@ResepRsId", key.ResepId, SqlDbType.VarChar);
+
+        using var conn = new SqlConnection(ConnStringHelper.Get(_options));
+        var result = conn.ReadSingle<ResepMidwareDto>(sql, dp);
+        return result?.ToModel();
+    }
 }
 
 public class ResepMidwareDalTest
@@ -226,7 +253,7 @@ public class ResepMidwareDalTest
 
     private static ResepMidwareModel ResepMidwareFaker()
         => ResepMidwareModel.Load("A", new DateTime(2025,4,1), "B",
-            "C","D","E",2,"F", new DateTime(2025,4,2), "G", "H",
+            "C","D","E","12345",2,"F", new DateTime(2025,4,2), "G", "H",
             "I", new DateTime(2025,4,3), "J", "K", "L", "M", "N", "O", "P", "Q", "R", 
             new DateTime(2024,4,4),
             new DateTime(2024,4,5),

@@ -1,6 +1,6 @@
 ﻿using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.Helpers;
-using AptOnline.Domain.SepContext.ReferensiFeature;
+using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.BillingContext.RegAgg;
@@ -57,5 +57,9 @@ public record RegType : IRegKey
     public JenisRegEnum JenisReg { get; init; }
     public KelasRawatType KelasRawat { get; init; }
     #endregion
+    
+    public RegRefference ToRefference() => new RegRefference(RegId, RegDate); 
 }
+
+public record RegRefference(string RegId, DateTime RegDate);
 
