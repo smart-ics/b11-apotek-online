@@ -1,0 +1,8 @@
+﻿CREATE TABLE JKNMW_CaraMasuk(
+    CaraMasukId VARCHAR(10) NOT NULL CONSTRAINT DF_JKNMW_CaraMasuk_CaraMasukId DEFAULT(''),
+    CaraMasukName VARCHAR(50) NOT NULL CONSTRAINT DF_JKNMW_CaraMasuk_CaraMasukName DEFAULT(''),
+    
+    CONSTRAINT PK_JKNMW_CaraMasuk PRIMARY KEY CLUSTERED (CaraMasukId)
+)
+GO
+
