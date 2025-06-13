@@ -8,7 +8,7 @@ using RestSharp;
 
 namespace AptOnline.Infrastructure.EKlaimContext
 {
-    public class EKlaimNewClaimService : IEklaimNewClaimService
+    public class EKlaimNewClaimService : IEKlaimNewClaimService
     {
         const string MARK_START = "----BEGIN ENCRYPTED DATA----";
         const string MARK_END = "----END ENCRYPTED DATA----";

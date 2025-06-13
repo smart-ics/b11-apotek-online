@@ -3,7 +3,7 @@ using Nuna.Lib.CleanArchHelper;
 
 namespace AptOnline.Application.EklaimContext;
 
-public interface IEklaimNewClaimService : INunaService<EKlaimNewClaimDto, EKlaimModel>
+public interface IEKlaimNewClaimService : INunaService<EKlaimNewClaimDto, EKlaimModel>
 {
 }
 public class EKlaimNewClaimDto
