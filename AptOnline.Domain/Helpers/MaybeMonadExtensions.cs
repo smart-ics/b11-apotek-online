@@ -18,5 +18,11 @@ public static class MaybeMonadExtensions
 
         return mayBe;
     }
+    public static Result<T> ToResult<T>(this MayBe<T> maybe, string errorMessage)
+    {
+        return maybe.HasValue
+            ? Result<T>.Success(maybe.Value)
+            : Result<T>.Failure(errorMessage);
+    }    
  
 }

@@ -1,19 +1,10 @@
 ﻿using AptOnline.Domain.EKlaimContext;
+using AptOnline.Domain.Helpers;
 using Nuna.Lib.CleanArchHelper;
 
 namespace AptOnline.Application.EklaimContext;
 
-public interface IEklaimNewClaimService : INunaService<EKlaimNewClaimDto, EKlaimModel>
+public interface IEKlaimNewClaimService : INunaService<EKlaimNewClaimDto, EKlaimModel>
 {
 }
-public class EKlaimNewClaimDto
-{
-    public EKlaimNewClaimDto(bool isSuccess, string message)
-    {
-        IsSuccess = isSuccess;
-        Message = message;
-    }
-
-    public bool IsSuccess { get; internal set; }
-    public string Message { get; internal set; }
-}
+public record EKlaimNewClaimDto(bool IsSuccess, string Message);
