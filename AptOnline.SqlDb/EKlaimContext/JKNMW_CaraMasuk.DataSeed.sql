@@ -1,5 +1,5 @@
 ﻿INSERT INTO JKNMW_CaraMasuk (CaraMasukId, CaraMasukName)
-SELECT 'gp', 'Rujukan KFTP' UNION
+SELECT 'gp', 'Rujukan FKTP' UNION
 SELECT 'hosp-trans', 'Rujukan FKRTL' UNION
 SELECT 'mp', 'Rujukan Spesialis' UNION
 SELECT 'outp', 'Dari Rawat Jalan' UNION
