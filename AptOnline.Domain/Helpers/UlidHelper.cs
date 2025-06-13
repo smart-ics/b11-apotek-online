@@ -1,9 +1,9 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using Xunit;
 
 namespace AptOnline.Domain.Helpers;
-public struct Ulid
+
+public struct UlidHelper
 {
     private static readonly char[] EncodingChars = "0123456789ABCDEFGHJKMNPQRSTVWXYZ".ToCharArray();
     private static readonly RandomNumberGenerator Rng = RandomNumberGenerator.Create();
@@ -35,15 +35,5 @@ public struct Ulid
         }
 
         return sb.ToString();
-    }
-}
-
-public class UlidGeneratorTest
-{
-    [Fact]
-    public void UT1_GivenValidInput_ThenSuccess()
-    {
-        var actual = Ulid.NewUlid();
-        Assert.True(true);
     }
 }

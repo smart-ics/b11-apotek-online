@@ -22,6 +22,7 @@ public static class InfrastructureService
             .AddScoped<IMemoryCache, MemoryCache>()
             .AddScoped<INunaCounterDal, ParamNoDal>()
             .AddScoped<INunaCounterDecDal, ParamNoDal>()
+            .AddScoped<IRestClientFactory,  RestClientFactory>()
             .AddMemoryCache();
 
         services
@@ -29,6 +30,7 @@ public static class InfrastructureService
             .Configure<BillingOptions>(configuration.GetSection(BillingOptions.SECTION_NAME))
             .Configure<FarmasiOptions>(configuration.GetSection(FarmasiOptions.SECTION_NAME))
             .Configure<BpjsOptions>(configuration.GetSection(BpjsOptions.SECTION_NAME))
+            .Configure<EKlaimOptions>(configuration.GetSection(EKlaimOptions.SECTION_NAME))
             .Configure<DatabaseOptions>(configuration.GetSection(DatabaseOptions.SECTION_NAME));
             
         services

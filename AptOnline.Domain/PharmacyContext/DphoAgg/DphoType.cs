@@ -1,7 +1,7 @@
 ﻿using AptOnline.Domain.Helpers;
 using FluentAssertions;
-using GuardNet;
 using Xunit;
+using Ardalis.GuardClauses; 
 
 namespace AptOnline.Domain.PharmacyContext.DphoAgg;
 
@@ -11,8 +11,8 @@ public class DphoType : IDphoKey
         string kronis, string kemo, decimal harga, 
         string restriksi, string generik, bool isAktif)
     {
-        Guard.NotNullOrWhitespace(id, nameof(id));
-        Guard.NotNullOrWhitespace(name, nameof(name));
+        Guard.Against.NullOrWhiteSpace(id, nameof(id));
+        Guard.Against.NullOrWhiteSpace(name, nameof(name));
         
         DphoId = id;
         DphoName = name;

@@ -57,10 +57,14 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="AptolMidwareContext" />
+    <Folder Include="EKlaimContext\" />
+    <Folder Include="SepContext\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="AptolMidwareContext\APTOL_Log.sql" />
     <Build Include="AptolMidwareContext\APTOL_ResepMidware.sql" />
     <Build Include="AptolMidwareContext\APTOL_ResepMidwareItem.sql" />
+    <Build Include="EKlaimContext\JKNMW_EKlaim.sql" />
+    <Build Include="SepContext\VCLAIM_Sep.sql" />
   </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 ﻿using AptOnline.Domain.Helpers;
-using GuardNet;
+using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.BillingContext.DokterAgg;
 
@@ -7,8 +7,8 @@ public record DokterType : IDokterKey
 {
     public DokterType(string dokterId, string dokterName)
     {
-        Guard.NotNullOrWhitespace(dokterId, nameof(dokterId));
-        Guard.NotNullOrWhitespace(dokterName, nameof(dokterName));
+        Guard.Against.NullOrWhiteSpace(dokterId, nameof(dokterId));
+        Guard.Against.NullOrWhiteSpace(dokterName, nameof(dokterName));
         
         DokterId = dokterId;
         DokterName = dokterName;

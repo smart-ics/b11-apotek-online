@@ -1,0 +1,26 @@
+﻿using AptOnline.Application.EKlaimContext;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Nuna.Lib.ActionResultHelper;
+
+namespace AptOnline.Api.Controllers.EKlaimContext;
+
+[Route("api/[controller]")]
+[ApiController]
+public class EKlaimController : Controller
+{
+    private readonly IMediator _mediator;
+
+    public EKlaimController(IMediator mediator)
+    {
+        _mediator = mediator;
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> Create(EKlaimCreateCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return Ok(new JSendOk(result));
+    }
+}

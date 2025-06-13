@@ -1,19 +1,25 @@
 ﻿using AptOnline.Application.AptolCloudContext.PpkAgg;
 using AptOnline.Application.BillingContext.LayananAgg;
-using AptOnline.Application.BillingContext.SepAgg;
+using AptOnline.Application.Helpers;
 using AptOnline.Application.PharmacyContext.MapDphoAgg;
+using AptOnline.Application.SepContext;
 using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
+using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.BillingContext.SepAgg;
+using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.BrgAgg;
 using AptOnline.Domain.PharmacyContext.DphoAgg;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
+using AptOnline.Domain.SepContext.FaskesFeature;
+using AptOnline.Domain.SepContext.PesertaBpjsFeature;
+using AptOnline.Domain.SepContext.SepFeature;
 using FluentAssertions;
 using Moq;
+using Nuna.Lib.PatternHelper;
 using Nuna.Lib.ValidationHelper;
 using Xunit;
 
@@ -24,11 +30,11 @@ public class ResepRsValidateTest
     /* test case:
      A. Happy Path Testing
         1. Resep Single
-            T01. All DPHO : 1 DPHO => 0 ValidationNote [done]
-            T02. Campuran : 1 DPHO + 1 Non DPHO  => 1 ValidationNote  [done]
+            T01. All DPHO : 1 DPHO => 0 ValidationNote
+            T02. Campuran : 1 DPHO + 1 Non DPHO  => 1 ValidationNote
         2. Resep Racik
-            T03. All DPHO : 1 DPHO  => 0 ValidationNote  [done]
-            T04. Campuran : 1 DPHO + 1 Non DPHO => 1 ValidationNote  [done]
+            T03. All DPHO : 1 DPHO  => 0 ValidationNote
+            T04. Campuran : 1 DPHO + 1 Non DPHO => 1 ValidationNote
         3. Resep Kombinasi
             T05. All DPHO : 2 DPHO         | 1 DPHO => 0 ValidationNote
             T06. Campuran : 1 DPHO + 1 Non | 1 DPHO + 1 Non DPHO => 2 ValidationNote
@@ -66,12 +72,18 @@ public class ResepRsValidateTest
             _dateTime.Object);
     }
 
-    private static SepType SepFaker()
-        => new SepType(
-            "SEP-ID-1", new DateTime(2025, 4, 1), "SEP-NO-1", "PESERTA-1",
-            new RegType("REG-1", new DateTime(2025, 4, 1), "PASIEN-1", "PASIEN-NAME-1"),
-            new DokterType("DOKTER-ID-1", "DOKTER-NAME-1"),
-            false, "-", "1");
+    private static MayBe<SepType> SepFaker()
+    {
+        var pesertaBpjs = PesertaBpjsType.Create("A", "B", "", JenisPesertaType.Default, KelasRawatType.Default, FaskesType.Default.ToRefference());
+        var result  = MayBe
+            .From(new SepType(
+                "SEP-ID-1", new DateTime(2025,4,1), "SEP-NO-1", pesertaBpjs.ToRefference(),
+                RegType.Load("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), PasienType.Default, JenisRegEnum.Unknown, KelasRawatType.Default),
+                new DokterType("DOKTER-ID-1", "DOKTER-NAME-1"),
+                false, "-", "1"));
+        return result;
+    }
+    
     private static PpkType PpkFaker()
         => new PpkType(
             "PPK-ID-1", "PPK-NAME-1","-","-","-",

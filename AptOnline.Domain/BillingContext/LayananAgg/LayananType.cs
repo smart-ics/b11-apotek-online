@@ -1,5 +1,5 @@
 ﻿using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
-using GuardNet;
+using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.BillingContext.LayananAgg;
 
@@ -8,8 +8,8 @@ public record LayananType : ILayananKey
     public LayananType(string id, string name, bool isActive,
         PoliBpjsType poliBpjs)
     {
-        Guard.NotNullOrWhitespace(id, nameof(id));
-        Guard.NotNullOrWhitespace(name, nameof(name));
+        Guard.Against.NullOrWhiteSpace(id, nameof(id));
+        Guard.Against.NullOrWhiteSpace(name, nameof(name));
         
         LayananId = id;
         LayananName = name;

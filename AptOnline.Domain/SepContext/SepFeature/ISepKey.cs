@@ -1,4 +1,4 @@
-﻿namespace AptOnline.Domain.BillingContext.SepAgg;
+﻿namespace AptOnline.Domain.SepContext.SepFeature;
 
 public interface ISepKey
 {
