@@ -96,7 +96,7 @@ public class EKlaimRepo : IEKlaimRepo
         dp.AddParam("@EKlaimId", key.EKlaimId, SqlDbType.VarChar);
 
         using var conn = new SqlConnection(ConnStringHelper.Get(_opt));
-        var dto = conn.QuerySingleOrDefault<EKlaimRepoDto>(sql, dp);
+        var dto = conn.ReadSingle<EKlaimRepoDto>(sql, dp);
         return MayBe.From(dto).Map(x => x.ToModel());
     }
 

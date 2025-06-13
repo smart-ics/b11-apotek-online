@@ -27,6 +27,8 @@ namespace AptOnline.Domain.EKlaimContext
         public PasienType Pasien { get; private set; }
         public PesertaBpjsRefference PesertaBpjs { get; private set; }
 
+        
+        
         public static EKlaimModel CreateFromSep(SepType sep, DateTime eKlaimDate)
         {
             Guard.Against.Null(sep, nameof(sep), "SEP tidak boleh kosong");

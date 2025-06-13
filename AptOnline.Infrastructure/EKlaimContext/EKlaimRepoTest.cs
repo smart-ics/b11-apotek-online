@@ -57,6 +57,17 @@ public class EKlaimRepoTest
             opt.Excluding(y => y.Sep.SepId)
                 .Excluding(y => y.Sep.SepDateTime));
     }
+    
+    [Fact]
+    public void UT6_GetData_ByEklaimId_NotFound_Test()
+    {
+        using var trans = TransHelper.NewScope();
+        var key = EKlaimModel.Key(Faker().EKlaimId);
+        var actual = _sut.GetData(key);
+        actual.HasValue.Should().BeFalse();
+    }
+
+    
     [Fact]
     public void UT5_GetData_BySepNo_Test()
     {
