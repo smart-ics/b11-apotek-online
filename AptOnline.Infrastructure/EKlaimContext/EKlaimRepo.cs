@@ -8,6 +8,7 @@ using AptOnline.Infrastructure.Helpers;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Nuna.Lib.DataAccessHelper;
+using Nuna.Lib.PatternHelper;
 using Nuna.Lib.ValidationHelper;
 
 namespace AptOnline.Infrastructure.EKlaimContext;

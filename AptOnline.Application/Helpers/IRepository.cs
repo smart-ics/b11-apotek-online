@@ -1,4 +1,5 @@
 ﻿using AptOnline.Domain.Helpers;
+using Nuna.Lib.PatternHelper;
 
 namespace AptOnline.Application.Helpers;
 

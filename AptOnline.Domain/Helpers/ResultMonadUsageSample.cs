@@ -1,4 +1,6 @@
-﻿namespace AptOnline.Domain.Helpers;
+﻿using Nuna.Lib.PatternHelper;
+
+namespace AptOnline.Domain.Helpers;
 
 public class ResultMonadUsageSample
 {

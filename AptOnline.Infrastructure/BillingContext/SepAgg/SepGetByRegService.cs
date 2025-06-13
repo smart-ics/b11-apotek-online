@@ -5,6 +5,7 @@ using AptOnline.Domain.Helpers;
 using AptOnline.Domain.SepContext.SepFeature;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
+using Nuna.Lib.PatternHelper;
 using RestSharp;
 
 namespace AptOnline.Infrastructure.BillingContext.SepAgg;

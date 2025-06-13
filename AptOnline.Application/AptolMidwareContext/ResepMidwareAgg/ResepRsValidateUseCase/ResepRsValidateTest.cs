@@ -19,6 +19,7 @@ using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using FluentAssertions;
 using Moq;
+using Nuna.Lib.PatternHelper;
 using Nuna.Lib.ValidationHelper;
 using Xunit;
 

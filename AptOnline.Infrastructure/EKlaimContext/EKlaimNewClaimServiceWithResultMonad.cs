@@ -5,6 +5,7 @@ using AptOnline.Domain.Helpers;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Nuna.Lib.PatternHelper;
 using RestSharp;
 
 namespace AptOnline.Infrastructure.EKlaimContext;

@@ -150,16 +150,16 @@ public class ResepMidwareModel : IResepMidwareKey
     #endregion
     
 #region METHODS-ITEM-RELATED
-    public NunaResult<string> AddObat(MapDphoType mapBrgDpho, string signa, int qty)
+    public Result<string> AddObat(MapDphoType mapBrgDpho, string signa, int qty)
     {
         var no = ListItem.Any() ? ListItem.Max(x => x.NoUrut) + 1 : 1;
         var newItem = new ResepMidwareItemModel(no, mapBrgDpho, signa, qty);
         ListItem.Add(newItem);
         
-        return NunaResult<string>.Success("Success");
+        return Result<string>.Success("Success");
     }
  
-    public NunaResult<string> AddRacik(MapDphoType mapBrgDpho, 
+    public Result<string> AddRacik(MapDphoType mapBrgDpho, 
         string signa, int qty, string jenisRacik)
     {
         var no = ListItem.Any() ? ListItem.Max(x => x.NoUrut) + 1 : 1;
@@ -167,7 +167,7 @@ public class ResepMidwareModel : IResepMidwareKey
         newItem.SetAsRacik(jenisRacik);
         ListItem.Add(newItem);
         
-        return NunaResult<string>.Success("Success");
+        return Result<string>.Success("Success");
     }
     #endregion
 }
