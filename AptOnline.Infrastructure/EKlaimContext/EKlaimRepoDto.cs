@@ -11,7 +11,7 @@ using Nuna.Lib.ValidationHelper;
 namespace AptOnline.Infrastructure.EKlaimContext;
 
 
-public class EKlaimDto
+public class EKlaimRepoDto
 {
     public string EKlaimId { get; set; }
     public DateTime EKlaimDate { get; set; }

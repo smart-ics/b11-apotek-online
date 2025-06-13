@@ -22,6 +22,7 @@ public static class InfrastructureService
             .AddScoped<IMemoryCache, MemoryCache>()
             .AddScoped<INunaCounterDal, ParamNoDal>()
             .AddScoped<INunaCounterDecDal, ParamNoDal>()
+            .AddScoped<IRestClientFactory,  RestClientFactory>()
             .AddMemoryCache();
 
         services

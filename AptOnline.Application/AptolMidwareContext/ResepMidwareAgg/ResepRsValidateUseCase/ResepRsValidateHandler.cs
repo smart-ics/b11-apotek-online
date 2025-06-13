@@ -138,8 +138,8 @@ public class ResepRsValidateHandler :
             //return resepMidware;
         //}
         var resultType = resepMidware.AddObat(mapDpho, itemObat.Signa, itemObat.Qty);
-        if (resultType.IsFailed)
-            listValidationNote.Add(resultType.ErrorMessage);
+        if (resultType.IsFailure)
+            listValidationNote.Add(resultType.Error);
         return resepMidware;
     }
 
@@ -161,8 +161,8 @@ public class ResepRsValidateHandler :
             //return resepMidware;
         //}        
         var resultType = resepMidware.AddRacik(mapDpho, signa, itemRacik.Qty, jenisRacik);
-        if (resultType.IsFailed)
-            listValidationNote.Add(resultType.ErrorMessage);
+        if (resultType.IsFailure)
+            listValidationNote.Add(resultType.Error);
         return resepMidware;
     }
 }

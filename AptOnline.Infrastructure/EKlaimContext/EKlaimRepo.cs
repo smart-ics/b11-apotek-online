@@ -8,6 +8,7 @@ using AptOnline.Infrastructure.Helpers;
 using Dapper;
 using Microsoft.Extensions.Options;
 using Nuna.Lib.DataAccessHelper;
+using Nuna.Lib.PatternHelper;
 using Nuna.Lib.ValidationHelper;
 
 namespace AptOnline.Infrastructure.EKlaimContext;
@@ -95,7 +96,7 @@ public class EKlaimRepo : IEKlaimRepo
         dp.AddParam("@EKlaimId", key.EKlaimId, SqlDbType.VarChar);
 
         using var conn = new SqlConnection(ConnStringHelper.Get(_opt));
-        var dto = conn.QuerySingleOrDefault<EKlaimDto>(sql, dp);
+        var dto = conn.ReadSingle<EKlaimRepoDto>(sql, dp);
         return MayBe.From(dto).Map(x => x.ToModel());
     }
 
@@ -109,7 +110,7 @@ public class EKlaimRepo : IEKlaimRepo
         dp.AddParam("@Tgl2", filter.Tgl2, SqlDbType.DateTime);
 
         using var conn = new SqlConnection(ConnStringHelper.Get(_opt));
-        var dto = conn.Read<EKlaimDto>(sql, dp);
+        var dto = conn.Read<EKlaimRepoDto>(sql, dp);
         return MayBe.From(dto)
             .Map(x => x .Select(y => y.ToModel()));
     }
@@ -123,7 +124,7 @@ public class EKlaimRepo : IEKlaimRepo
         dp.AddParam("@SepNo", key.SepId, SqlDbType.VarChar); 
 
         using var conn = new SqlConnection(ConnStringHelper.Get(_opt));
-        var dto = conn.ReadSingle<EKlaimDto>(sql, dp);
+        var dto = conn.ReadSingle<EKlaimRepoDto>(sql, dp);
         return MayBe.From(dto).Map(x => x.ToModel());
     }
 
@@ -136,7 +137,7 @@ public class EKlaimRepo : IEKlaimRepo
         dp.AddParam("@RegId", key.RegId, SqlDbType.VarChar); 
 
         using var conn = new SqlConnection(ConnStringHelper.Get(_opt));
-        var dto = conn.ReadSingle<EKlaimDto>(sql, dp);
+        var dto = conn.ReadSingle<EKlaimRepoDto>(sql, dp);
         return MayBe.From(dto).Map(x => x.ToModel());
     }
     
