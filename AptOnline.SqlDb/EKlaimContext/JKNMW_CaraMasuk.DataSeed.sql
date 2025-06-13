@@ -10,4 +10,4 @@ SELECT 'nursing', 'Rujukan Panti Jompo' UNION
 SELECT 'psych', 'Rujukan Dari RS Jiwa' UNION
 SELECT 'rehab', 'Rujukan Fasilitas Rehab' UNION
 SELECT 'other', 'Lain-Lain'
-GO
+GO 
