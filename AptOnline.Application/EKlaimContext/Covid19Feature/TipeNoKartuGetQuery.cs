@@ -21,7 +21,7 @@ public class TipeNoKartuGet : IRequestHandler<TipeNoKartuGetQuery, TipeNoKartuGe
         var result = _tipeNoKartuDal
             .GetData(TipeNoKartuType.Key(request.TipeNoKartuId))
             .Map(x => new TipeNoKartuGetResponse(x.TipeNoKartuId, x.TipeNoKartuName))
-            .GetValueOrThrow($"Cara Masuk '{request.TipeNoKartuId}' tidak ditemukan");
+            .GetValueOrThrow($"Tipe Nomor Kartu '{request.TipeNoKartuId}' tidak ditemukan");
         
         return Task.FromResult(result);
     }
