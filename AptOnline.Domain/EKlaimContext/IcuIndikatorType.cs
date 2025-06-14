@@ -18,6 +18,8 @@ public record IcuIndikatorType(int IcuFlag, int Los)
         1 => "ICU",
         _ => throw new ArgumentOutOfRangeException(nameof(IcuFlag), IcuFlag, null)
     };
+
+    public static IcuIndikatorType Default => new(0, 0);
 }
 
 public class IcuIndikatorTypeTest
