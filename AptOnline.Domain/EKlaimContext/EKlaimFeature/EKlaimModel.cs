@@ -1,11 +1,11 @@
 ﻿using AptOnline.Domain.BillingContext.PasienFeature;
+using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.EKlaimContext.CaraMasukFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using Ardalis.GuardClauses;
-using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.EKlaimContext.CaraMasukFeature;
 
-namespace AptOnline.Domain.EKlaimContext
+namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
 {
     public class EKlaimModel : IEKlaimKey
     {

@@ -1,11 +1,10 @@
 ﻿using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.Helpers;
 using AptOnline.Domain.SepContext.SepFeature;
 using Nuna.Lib.DataAccessHelper;
 using Nuna.Lib.PatternHelper;
 using Nuna.Lib.ValidationHelper;
 
-namespace AptOnline.Domain.EKlaimContext;
+namespace AptOnline.Domain.EKlaimContext.EKlaimFeature;
 
 public interface IEKlaimRepo :
     IInsert<EKlaimModel>,

@@ -1,4 +1,4 @@
-﻿namespace AptOnline.Domain.EKlaimContext;
+﻿namespace AptOnline.Domain.EKlaimContext.EKlaimFeature;
 
 public interface IEKlaimKey
 {
