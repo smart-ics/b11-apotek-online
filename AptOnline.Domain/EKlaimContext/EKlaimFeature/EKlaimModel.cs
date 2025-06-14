@@ -1,6 +1,11 @@
 ﻿using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.EKlaimContext.CaraMasukFeature;
+using AptOnline.Domain.EKlaimContext.Covid19Feature;
+using AptOnline.Domain.EKlaimContext.DischargeStatusFeature;
+using AptOnline.Domain.EKlaimContext.TarifRsFeature;
+using AptOnline.Domain.SepContext.JenisRawatFeature;
+using AptOnline.Domain.SepContext.KelasRawatFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using Ardalis.GuardClauses;
@@ -27,8 +32,19 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
 
         public PasienType Pasien { get; private set; }
         public PesertaBpjsRefference PesertaBpjs { get; private set; }
+        
 
         public CaraMasukType CaraMasuk { get; private set; }
+        public JenisRawatType JenisRawat { get; private set; }
+        public KelasRawatType KelasRawat { get; private set; }
+        public AdlScoreType AdlScore { get; private set; }
+        public IcuIndikatorType IcuIndikator { get; private set; }
+        public UpgradeKelasIndikatorType  UpgradeKelasIndikator { get; private set; }
+        public VitalSignType VitalSign { get; private set; }
+        public DischargeStatusType DischargeStatus { get; private set; }
+        public TarifRsType TarifRs { get; private set; }
+        public Covid19Type Covid19 { get; private set; }
+        
         
         public static EKlaimModel CreateFromSep(SepType sep, DateTime eKlaimDate)
         {
