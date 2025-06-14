@@ -1,0 +1,7 @@
+﻿CREATE TABLE JKNMW_JenisRawat(
+     JenisRawatId VARCHAR(1) NOT NULL CONSTRAINT DF_JKNMW_JenisRawat_JenisRawatId DEFAULT(''),
+     JenisRawatName VARCHAR(15) NOT NULL CONSTRAINT DF_JKNMW_JenisRawat_JenisRawatName DEFAULT(''),
+
+     CONSTRAINT PK_JKNMW_JenisRawat PRIMARY KEY CLUSTERED (JenisRawatId)
+)
+
