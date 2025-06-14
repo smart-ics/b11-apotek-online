@@ -1,6 +1,7 @@
 ﻿using AptOnline.Application.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.SepContext.KelasRawatFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Infrastructure.Helpers;
 using FluentAssertions;

@@ -66,6 +66,8 @@
     <Build Include="EKlaimContext\JKNMW_CaraMasuk.sql" />
     <Build Include="EKlaimContext\JKNMW_CaraMasuk.DataSeed.sql" />
     <Build Include="EKlaimContext\JKNMW_EKlaim.sql" />
+    <Build Include="EKlaimContext\JKNMW_KelasRawat.DataSeed.sql" />
+    <Build Include="EKlaimContext\JKNMW_KelasRawat.sql" />
     <Build Include="SepContext\VCLAIM_Sep.sql" />
   </ItemGroup>
 </Project>

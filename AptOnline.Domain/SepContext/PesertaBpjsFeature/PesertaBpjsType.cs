@@ -1,5 +1,6 @@
 ﻿using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.SepContext.FaskesFeature;
+using AptOnline.Domain.SepContext.KelasRawatFeature;
 using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.SepContext.PesertaBpjsFeature;
