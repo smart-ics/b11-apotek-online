@@ -27,8 +27,4 @@
     <ProjectReference Include="..\AptOnline.Domain\AptOnline.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="SepContext\" />
-  </ItemGroup>
-
 </Project>
