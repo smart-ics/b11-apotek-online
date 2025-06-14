@@ -63,6 +63,8 @@
     <Build Include="AptolMidwareContext\APTOL_Log.sql" />
     <Build Include="AptolMidwareContext\APTOL_ResepMidware.sql" />
     <Build Include="AptolMidwareContext\APTOL_ResepMidwareItem.sql" />
+    <Build Include="EKlaimContext\JKNMW_BayiLahirStatus.DataSeed.sql" />
+    <Build Include="EKlaimContext\JKNMW_BayiLahirStatus.sql" />
     <Build Include="EKlaimContext\JKNMW_CaraMasuk.sql" />
     <Build Include="EKlaimContext\JKNMW_CaraMasuk.DataSeed.sql" />
     <Build Include="EKlaimContext\JKNMW_Covid19Status.DataSeed.sql" />

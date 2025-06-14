@@ -20,7 +20,7 @@ public class Covid19StatusListHandler : IRequestHandler<Covid19StatusListQuery, 
         var result = _covid19StatusDal
             .ListData()
             .Map(x => x.Select(y => new Covid19StatusGetResponse(y.Covid19StatusId, y.Covid19StatusName)).ToList())
-            .GetValueOrThrow("Cara Masuk tidak ditemukan");
+            .GetValueOrThrow("Status Covid-19 tidak ditemukan");
 
         return Task.FromResult(result);
     }

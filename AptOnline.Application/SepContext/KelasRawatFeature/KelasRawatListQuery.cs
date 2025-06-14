@@ -20,7 +20,7 @@ public class KelasRawatListHandler : IRequestHandler<KelasRawatListQuery, List<K
         var result = _kelasRawatDal
             .ListData()
             .Map(x => x.Select(y => new KelasRawatGetResponse(y.KelasRawatId, y.KelasRawatName)).ToList())
-            .GetValueOrThrow("Cara Masuk tidak ditemukan");
+            .GetValueOrThrow("Kelas Rawat tidak ditemukan");
 
         return Task.FromResult(result);
     }

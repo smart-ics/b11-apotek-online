@@ -21,7 +21,7 @@ public class Covid19StatusGet : IRequestHandler<Covid19StatusGetQuery, Covid19St
         var result = _covid19StatusDal
             .GetData(Covid19StatusType.Key(request.Covid19StatusId))
             .Map(x => new Covid19StatusGetResponse(x.Covid19StatusId, x.Covid19StatusName))
-            .GetValueOrThrow($"Cara Masuk '{request.Covid19StatusId}' tidak ditemukan");
+            .GetValueOrThrow($"Status Covid-19 '{request.Covid19StatusId}' tidak ditemukan");
         
         return Task.FromResult(result);
     }
