@@ -1,0 +1,6 @@
+﻿CREATE TABLE JKNMW_TipeNoKartu(
+    TipeNoKartuId VARCHAR(10) NOT NULL CONSTRAINT DF_JKNMW_TipeNoKartu_TipeNoKartuId DEFAULT(''),
+    TipeNoKartuName VARCHAR(35) NOT NULL CONSTRAINT DF_JKNMW_TipeNoKartu_TipeNoKartuName DEFAULT(''),
+    
+    CONSTRAINT PK_JKNMW_TipeNoKartu PRIMARY KEY CLUSTERED (TipeNoKartuId)
+)

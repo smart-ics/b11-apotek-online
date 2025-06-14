@@ -1,0 +1,13 @@
+﻿-- INSERT INTO JKNMW_TipeNoKartu (TipeNoKartuId, TipeNoKartuName) VALUES
+-- ('nik', 'Nomor Induk Kependudukan'),
+-- ('kitas', 'KITAS/KITAP'),
+-- ('paspor', 'Nomor Passport, Jika WNA.'),
+-- ('kartu_jkn', 'Nomor Kartu Peserta JKN (BPJS)'),
+-- ('kk', 'Nomor Kartu Keluarga'),
+-- ('unhcr', 'Nomor Dokumen UNHCR'),
+-- ('kelurahan', 'Nomor Dokumen Kelurahan'),
+-- ('dinsos', 'Nomor Dokumen Dinas Sosial'),
+-- ('dinkes', 'Nomor Dokumen Dinas Kesehatan'),
+-- ('sjp', 'Nomor Surat Jaminan Perawatan (SJP)'),
+-- ('klaim_ibu', 'Jaminan Bayi Baru Lahir.'),
+-- ('lainnya', 'untuk nomor identitas lainnya');

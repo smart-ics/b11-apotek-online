@@ -72,6 +72,8 @@
     <Build Include="EKlaimContext\JKNMW_JenisRawat.sql" />
     <Build Include="EKlaimContext\JKNMW_KelasRawat.DataSeed.sql" />
     <Build Include="EKlaimContext\JKNMW_KelasRawat.sql" />
+    <Build Include="EKlaimContext\JKNMW_TipeNoKartu.DataSeed.sql" />
+    <Build Include="EKlaimContext\JKNMW_TipeNoKartu.sql" />
     <Build Include="SepContext\VCLAIM_Sep.sql" />
   </ItemGroup>
 </Project>
