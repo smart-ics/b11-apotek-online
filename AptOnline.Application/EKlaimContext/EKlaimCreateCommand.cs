@@ -3,6 +3,7 @@ using AptOnline.Application.SepContext;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.EKlaimContext;
+using AptOnline.Domain.EKlaimContext.EKlaimFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using MediatR;
 using Nuna.Lib.TransactionHelper;

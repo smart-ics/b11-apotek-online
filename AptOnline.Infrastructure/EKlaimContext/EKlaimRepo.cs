@@ -2,6 +2,7 @@
 using System.Data.SqlClient;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.EKlaimContext;
+using AptOnline.Domain.EKlaimContext.EKlaimFeature;
 using AptOnline.Domain.Helpers;
 using AptOnline.Domain.SepContext.SepFeature;
 using AptOnline.Infrastructure.Helpers;

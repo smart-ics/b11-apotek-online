@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace AptOnline.Domain.EKlaimContext.AdlScoreFeature;
+namespace AptOnline.Domain.EKlaimContext;
 
 public record AdlScoreType(int SubAcute, int Chronic)
 {
