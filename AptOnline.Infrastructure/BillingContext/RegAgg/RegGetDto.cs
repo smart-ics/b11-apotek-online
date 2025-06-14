@@ -1,5 +1,6 @@
 ﻿using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.SepContext.KelasRawatFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 
 namespace AptOnline.Infrastructure.BillingContext.RegAgg;

@@ -3,6 +3,7 @@ using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using Ardalis.GuardClauses;
 using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.EKlaimContext.CaraMasukFeature;
 
 namespace AptOnline.Domain.EKlaimContext
 {
@@ -27,7 +28,7 @@ namespace AptOnline.Domain.EKlaimContext
         public PasienType Pasien { get; private set; }
         public PesertaBpjsRefference PesertaBpjs { get; private set; }
 
-        
+        public CaraMasukType CaraMasuk { get; private set; }
         
         public static EKlaimModel CreateFromSep(SepType sep, DateTime eKlaimDate)
         {
