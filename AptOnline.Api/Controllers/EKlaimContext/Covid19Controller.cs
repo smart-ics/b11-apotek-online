@@ -32,4 +32,20 @@ public class Covid19Controller : Controller
         var result = await _mediator.Send(query);
         return Ok(new JSendOk(result));
     }
+    
+    [HttpGet("status/{id}")]
+    public async Task<IActionResult> GetStatus(string id)
+    {
+        var query = new Covid19StatusGetQuery(id);
+        var result = await _mediator.Send(query);
+        return Ok(new JSendOk(result));
+    }
+
+    [HttpGet("status")]
+    public async Task<IActionResult> ListCovid19Status()
+    {
+        var query = new Covid19StatusListQuery();
+        var result = await _mediator.Send(query);
+        return Ok(new JSendOk(result));
+    }    
 }

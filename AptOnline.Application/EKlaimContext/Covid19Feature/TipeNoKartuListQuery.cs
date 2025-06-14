@@ -20,7 +20,7 @@ public class TipeNoKartuListHandler : IRequestHandler<TipeNoKartuListQuery, List
         var result = _tipeNoKartuDal
             .ListData()
             .Map(x => x.Select(y => new TipeNoKartuGetResponse(y.TipeNoKartuId, y.TipeNoKartuName)).ToList())
-            .GetValueOrThrow("Cara Masuk tidak ditemukan");
+            .GetValueOrThrow("Tipe No Kartu tidak ditemukan");
 
         return Task.FromResult(result);
     }
