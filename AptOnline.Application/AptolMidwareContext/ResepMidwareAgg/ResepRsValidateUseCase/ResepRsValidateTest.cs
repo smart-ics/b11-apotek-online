@@ -3,6 +3,7 @@ using AptOnline.Application.BillingContext.LayananAgg;
 using AptOnline.Application.Helpers;
 using AptOnline.Application.PharmacyContext.MapDphoAgg;
 using AptOnline.Application.SepContext;
+using AptOnline.Application.SepContext.SepFeature;
 using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
@@ -50,7 +51,7 @@ public class ResepRsValidateTest
      */
     private readonly ResepRsValidateHandler _sut;
     private readonly Mock<IResepMidwareWriter> _writer;
-    private readonly Mock<ISepGetByRegService> _sepGetByRegService;
+    private readonly Mock<ISepDal> _sepDal;
     private readonly Mock<IPpkGetService> _ppkGetService;
     private readonly Mock<ILayananGetService> _layananGetService;
     private readonly Mock<IMapDphoGetService> _mapDphoGetService;
@@ -59,13 +60,13 @@ public class ResepRsValidateTest
     public ResepRsValidateTest()
     {
         _writer = new Mock<IResepMidwareWriter>();
-        _sepGetByRegService = new Mock<ISepGetByRegService>();
+        _sepDal = new Mock<ISepDal>();
         _ppkGetService = new Mock<IPpkGetService>();
         _layananGetService = new Mock<ILayananGetService>();
         _mapDphoGetService = new Mock<IMapDphoGetService>();
         _dateTime = new Mock<ITglJamProvider>();
         _sut = new ResepRsValidateHandler(
-            _sepGetByRegService.Object,
+            _sepDal.Object,
             _ppkGetService.Object,
             _layananGetService.Object,
             _mapDphoGetService.Object,
@@ -80,7 +81,7 @@ public class ResepRsValidateTest
             .From(new SepType(
                 "SEP-ID-1", new DateTime(2025,4,1), "SEP-NO-1", pesertaBpjs.ToRefference(),
                 RegType.Load("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), PasienType.Default, JenisRegEnum.Unknown, KelasRawatType.Default),
-                new DokterType("DOKTER-ID-1", "DOKTER-NAME-1"),
+                new DokterType("DOKTER-ID-1", "DOKTER-NAME-1"), DokterType.Default, 
                 false, "-", "1"));
         return result;
     }
@@ -121,8 +122,8 @@ public class ResepRsValidateTest
     
     private void HappyPathMocking()
     {
-        _sepGetByRegService
-            .Setup(x => x.Execute(It.IsAny<IRegKey>()))
+        _sepDal
+            .Setup(x => x.GetData(It.IsAny<IRegKey>()))
             .Returns(SepFaker());
         _ppkGetService
             .Setup(x => x.Execute())

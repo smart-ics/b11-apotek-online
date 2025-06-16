@@ -1,0 +1,40 @@
+﻿using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.PasienFeature;
+using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.SepContext.KelasRawatFeature;
+using AptOnline.Domain.SepContext.PesertaBpjsFeature;
+using AptOnline.Domain.SepContext.SepFeature;
+
+namespace AptOnline.Infrastructure.SepContext.SepFeature;
+
+public class SepDto
+{
+    public string SepId { get; set; }
+    public string SepDateTime {get;set;}
+    public string SepNo {get;set;}
+    public string PesertaJaminanId {get;set;}
+    public string JnsPelayananKode { get; set; }
+    public string RegId {get;set;}
+    public string PasienId {get;set;}
+    public string PasienName { get; set; }
+    public string DpjpId { get; set; }
+    public string DpjpName {get;set;}
+    public string DpjpLayananId {get;set;}
+    public string DpjpLayananName {get;set;}
+    public string IsPrb {get;set;}
+    public string Prb {get;set;}
+
+    public SepType ToSepType()
+    {
+        var pasien = PasienType.Create(PasienId, PasienName, new DateTime(3000,1,1), GenderType.Default);
+        var pesertaBpjs = PesertaBpjsType.Default with { PesertaBpjsId = PesertaJaminanId };
+        var result = new SepType(SepId, DateTime.Parse(SepDateTime),
+            SepNo, pesertaBpjs.ToRefference(),
+            RegType.Create(RegId, DateTime.Parse(SepDateTime), new DateTime(3000,1,1), 
+                pasien, JenisRegEnum.RawatJalan, KelasRawatType.Default),
+            new DokterType(DpjpId, DpjpName),
+            new DokterType(DpjpLayananId, DpjpLayananName),
+            bool.Parse(IsPrb), Prb.Trim(), JnsPelayananKode);
+        return result;
+    }
+}

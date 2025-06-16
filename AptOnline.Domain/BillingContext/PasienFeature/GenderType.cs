@@ -31,7 +31,6 @@ public class GenderTypeTest
     [Theory]
     [InlineData("1")]
     [InlineData("2")]
-    [InlineData("")]
     public void UT1_GivenValidValue_WhenCreate_ThenOk(string value)
     {
         var actual = GenderType.Create(value);

@@ -1,10 +1,15 @@
-﻿using AptOnline.Domain.BillingContext.PasienFeature;
+﻿using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.PasienFeature;
+using AptOnline.Domain.BillingContext.PegFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.EKlaimContext.CaraMasukFeature;
 using AptOnline.Domain.EKlaimContext.Covid19Feature;
 using AptOnline.Domain.EKlaimContext.DischargeStatusFeature;
+using AptOnline.Domain.EKlaimContext.JenisRawatFeature;
+using AptOnline.Domain.EKlaimContext.KelasTarifRsFeature;
+using AptOnline.Domain.EKlaimContext.PayorFeature;
+using AptOnline.Domain.EKlaimContext.PelayananDarahFeature;
 using AptOnline.Domain.EKlaimContext.TarifRsFeature;
-using AptOnline.Domain.SepContext.JenisRawatFeature;
 using AptOnline.Domain.SepContext.KelasRawatFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SepFeature;
@@ -24,7 +29,8 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
             Pasien = pasien;
             PesertaBpjs = pesertaBpjs;
         }
-
+        
+        #region PROPERTIES
         public string EKlaimId { get; private set; }
         public DateTime EKlaimDate { get; private set; }
         public RegRefference Reg { get; private set; }
@@ -44,8 +50,15 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
         public DischargeStatusType DischargeStatus { get; private set; }
         public TarifRsType TarifRs { get; private set; }
         public Covid19Type Covid19 { get; private set; }
+        public PelayananDarahType PelayananDarah { get; private set; }
+        public decimal TarifPoliEksekutif { get; private set; }
+        public  DokterType Dpjp { get; private set;}
+        public KelasTarifRsType KelasTarifRs { get; private set; }
+        public PayorType Payor { get; private set; }
+        public PegType Coder { get; private set; } 
+        #endregion
         
-        
+        #region STATIC FACTORY
         public static EKlaimModel CreateFromSep(SepType sep, DateTime eKlaimDate)
         {
             Guard.Against.Null(sep, nameof(sep), "SEP tidak boleh kosong");
@@ -56,7 +69,6 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
                 sep.ToRefference(), sep.Reg.Pasien,
                 sep.PesertaBpjs);
         }
-        
         public static EKlaimModel Load(string eKlaimId, DateTime eKlaimDate, RegRefference reg, 
             SepRefference sep, PasienType pasien, PesertaBpjsRefference pesertaBpjs) 
             => new EKlaimModel(eKlaimId, eKlaimDate, reg, sep, pasien, pesertaBpjs);
@@ -72,6 +84,11 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
             result.EKlaimId = id;
             return result;
         }
+        #endregion
+        
+        #region BEHAVIOR
+        //public void 
+        #endregion
 
     }
 }

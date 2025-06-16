@@ -1,0 +1,7 @@
+﻿CREATE TABLE JKNMW_KelasTarifRs(
+    KelasTarifRsId VARCHAR(5) NOT NULL CONSTRAINT DF_JKNMW_KelasTarifRs_KelasTarifRsId DEFAULT(''),
+    KelasTarifRsName VARCHAR(30) NOT NULL CONSTRAINT DF_JKNMW_KelasTarifRs_KelasTarifRsName DEFAULT(''),
+    
+    CONSTRAINT PK_JKNMW_KelasTarifRs PRIMARY KEY CLUSTERED (KelasTarifRsId)
+)
+
