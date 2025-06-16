@@ -1,8 +1,11 @@
-﻿using AptOnline.Domain.BillingContext.PasienFeature;
+﻿using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.EKlaimContext.CaraMasukFeature;
 using AptOnline.Domain.EKlaimContext.Covid19Feature;
 using AptOnline.Domain.EKlaimContext.DischargeStatusFeature;
+using AptOnline.Domain.EKlaimContext.KelasTarifRsFeature;
+using AptOnline.Domain.EKlaimContext.PelayananDarahFeature;
 using AptOnline.Domain.EKlaimContext.TarifRsFeature;
 using AptOnline.Domain.SepContext.JenisRawatFeature;
 using AptOnline.Domain.SepContext.KelasRawatFeature;
@@ -44,6 +47,10 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
         public DischargeStatusType DischargeStatus { get; private set; }
         public TarifRsType TarifRs { get; private set; }
         public Covid19Type Covid19 { get; private set; }
+        public PelayananDarahType PelayananDarah { get; private set; }
+        public decimal TarifPoliEksekutif { get; private set; }
+        public  DokterType Dpjp { get; private set;}
+        public KelasTarifRsType KelasTarifRs { get; private set; }
         
         
         public static EKlaimModel CreateFromSep(SepType sep, DateTime eKlaimDate)
