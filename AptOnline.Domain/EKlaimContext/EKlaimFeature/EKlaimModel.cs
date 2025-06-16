@@ -5,6 +5,7 @@ using AptOnline.Domain.EKlaimContext.CaraMasukFeature;
 using AptOnline.Domain.EKlaimContext.Covid19Feature;
 using AptOnline.Domain.EKlaimContext.DischargeStatusFeature;
 using AptOnline.Domain.EKlaimContext.KelasTarifRsFeature;
+using AptOnline.Domain.EKlaimContext.PayorFeature;
 using AptOnline.Domain.EKlaimContext.PelayananDarahFeature;
 using AptOnline.Domain.EKlaimContext.TarifRsFeature;
 using AptOnline.Domain.SepContext.JenisRawatFeature;
@@ -51,6 +52,9 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
         public decimal TarifPoliEksekutif { get; private set; }
         public  DokterType Dpjp { get; private set;}
         public KelasTarifRsType KelasTarifRs { get; private set; }
+        public PayorType Payor { get; private set; }
+        public string CobCode => "#";
+        
         
         
         public static EKlaimModel CreateFromSep(SepType sep, DateTime eKlaimDate)

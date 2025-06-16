@@ -2,11 +2,11 @@
 
 namespace AptOnline.Application.EKlaimContext.KelasTarifRsFeature;
 
-public record KelasTarifRsListQuery() : IRequest<List<KelasTarifRsGetResponse>>;
+public record KelasTarifRsListQuery : IRequest<List<KelasTarifRsListResponse>>;
 
 public record KelasTarifRsListResponse(string KelasTarifRsId, string KelasTarifRsName);
 
-public class KelasTarifRsListHandler : IRequestHandler<KelasTarifRsListQuery, List<KelasTarifRsGetResponse>>
+public class KelasTarifRsListHandler : IRequestHandler<KelasTarifRsListQuery, List<KelasTarifRsListResponse>>
 {
     private readonly IKelasTarifRsDal _kelasTarifRsDal;
 
@@ -15,11 +15,11 @@ public class KelasTarifRsListHandler : IRequestHandler<KelasTarifRsListQuery, Li
         _kelasTarifRsDal = kelasTarifRsDal;
     }
 
-    public Task<List<KelasTarifRsGetResponse>> Handle(KelasTarifRsListQuery request, CancellationToken cancellationToken)
+    public Task<List<KelasTarifRsListResponse>> Handle(KelasTarifRsListQuery request, CancellationToken cancellationToken)
     {
         var result = _kelasTarifRsDal
             .ListData()
-            .Map(x => x.Select(y => new KelasTarifRsGetResponse(y.KelasTarifRsId, y.KelasTarifRsName)).ToList())
+            .Map(x => x.Select(y => new KelasTarifRsListResponse(y.KelasTarifRsId, y.KelasTarifRsName)).ToList())
             .GetValueOrThrow("Kelas Tarif RS tidak ditemukan");
 
         return Task.FromResult(result);

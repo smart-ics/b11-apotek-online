@@ -3,11 +3,11 @@ using MediatR;
 
 namespace AptOnline.Application.EKlaimContext.BayiLahirFeature;
 
-public record BayiLahirStatusListQuery() : IRequest<List<BayiLahirStatusGetResponse>>;
+public record BayiLahirStatusListQuery() : IRequest<List<BayiLahirStatusListResponse>>;
 
 public record BayiLahirStatusListResponse(string BayiLahirStatusId, string BayiLahirStatusName);
 
-public class BayiLahirStatusListHandler : IRequestHandler<BayiLahirStatusListQuery, List<BayiLahirStatusGetResponse>>
+public class BayiLahirStatusListHandler : IRequestHandler<BayiLahirStatusListQuery, List<BayiLahirStatusListResponse>>
 {
     private readonly IBayiLahirStatusDal _bayiLahirStatusDal;
 
@@ -16,11 +16,11 @@ public class BayiLahirStatusListHandler : IRequestHandler<BayiLahirStatusListQue
         _bayiLahirStatusDal = bayiLahirStatusDal;
     }
 
-    public Task<List<BayiLahirStatusGetResponse>> Handle(BayiLahirStatusListQuery request, CancellationToken cancellationToken)
+    public Task<List<BayiLahirStatusListResponse>> Handle(BayiLahirStatusListQuery request, CancellationToken cancellationToken)
     {
         var result = _bayiLahirStatusDal
             .ListData()
-            .Map(x => x.Select(y => new BayiLahirStatusGetResponse(y.BayiLahirStatusId, y.BayiLahirStatusName)).ToList())
+            .Map(x => x.Select(y => new BayiLahirStatusListResponse(y.BayiLahirStatusId, y.BayiLahirStatusName)).ToList())
             .GetValueOrThrow("Status Bayi Lahir tidak ditemukan");
 
         return Task.FromResult(result);

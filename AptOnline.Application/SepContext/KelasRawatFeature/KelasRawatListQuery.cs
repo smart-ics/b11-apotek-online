@@ -2,11 +2,11 @@
 
 namespace AptOnline.Application.SepContext.KelasRawatFeature;
 
-public record KelasRawatListQuery() : IRequest<List<KelasRawatGetResponse>>;
+public record KelasRawatListQuery : IRequest<List<KelasRawatListResponse>>;
 
 public record KelasRawatListResponse(string KelasRawatId, string KelasRawatName);
 
-public class KelasRawatListHandler : IRequestHandler<KelasRawatListQuery, List<KelasRawatGetResponse>>
+public class KelasRawatListHandler : IRequestHandler<KelasRawatListQuery, List<KelasRawatListResponse>>
 {
     private readonly IKelasRawatDal _kelasRawatDal;
 
@@ -15,11 +15,11 @@ public class KelasRawatListHandler : IRequestHandler<KelasRawatListQuery, List<K
         _kelasRawatDal = kelasRawatDal;
     }
 
-    public Task<List<KelasRawatGetResponse>> Handle(KelasRawatListQuery request, CancellationToken cancellationToken)
+    public Task<List<KelasRawatListResponse>> Handle(KelasRawatListQuery request, CancellationToken cancellationToken)
     {
         var result = _kelasRawatDal
             .ListData()
-            .Map(x => x.Select(y => new KelasRawatGetResponse(y.KelasRawatId, y.KelasRawatName)).ToList())
+            .Map(x => x.Select(y => new KelasRawatListResponse(y.KelasRawatId, y.KelasRawatName)).ToList())
             .GetValueOrThrow("Kelas Rawat tidak ditemukan");
 
         return Task.FromResult(result);

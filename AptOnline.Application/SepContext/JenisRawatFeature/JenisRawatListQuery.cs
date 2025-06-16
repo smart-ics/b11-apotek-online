@@ -2,11 +2,11 @@
 
 namespace AptOnline.Application.SepContext.JenisRawatFeature;
 
-public record JenisRawatListQuery() : IRequest<List<JenisRawatGetResponse>>;
+public record JenisRawatListQuery : IRequest<List<JenisRawatListResponse>>;
 
 public record JenisRawatListResponse(string JenisRawatId, string JenisRawatName);
 
-public class JenisRawatListHandler : IRequestHandler<JenisRawatListQuery, List<JenisRawatGetResponse>>
+public class JenisRawatListHandler : IRequestHandler<JenisRawatListQuery, List<JenisRawatListResponse>>
 {
     private readonly IJenisRawatDal _jenisRawatDal;
 
@@ -15,11 +15,11 @@ public class JenisRawatListHandler : IRequestHandler<JenisRawatListQuery, List<J
         _jenisRawatDal = jenisRawatDal;
     }
 
-    public Task<List<JenisRawatGetResponse>> Handle(JenisRawatListQuery request, CancellationToken cancellationToken)
+    public Task<List<JenisRawatListResponse>> Handle(JenisRawatListQuery request, CancellationToken cancellationToken)
     {
         var result = _jenisRawatDal
             .ListData()
-            .Map(x => x.Select(y => new JenisRawatGetResponse(y.JenisRawatId, y.JenisRawatName)).ToList())
+            .Map(x => x.Select(y => new JenisRawatListResponse(y.JenisRawatId, y.JenisRawatName)).ToList())
             .GetValueOrThrow("Jenis Rawat tidak ditemukan");
 
         return Task.FromResult(result);

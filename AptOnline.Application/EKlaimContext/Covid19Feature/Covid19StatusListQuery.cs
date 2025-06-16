@@ -2,11 +2,11 @@
 
 namespace AptOnline.Application.EKlaimContext.Covid19Feature;
 
-public record Covid19StatusListQuery() : IRequest<List<Covid19StatusGetResponse>>;
+public record Covid19StatusListQuery() : IRequest<List<Covid19StatusListResponse>>;
 
 public record Covid19StatusListResponse(string Covid19StatusId, string Covid19StatusName);
 
-public class Covid19StatusListHandler : IRequestHandler<Covid19StatusListQuery, List<Covid19StatusGetResponse>>
+public class Covid19StatusListHandler : IRequestHandler<Covid19StatusListQuery, List<Covid19StatusListResponse>>
 {
     private readonly ICovid19StatusDal _covid19StatusDal;
 
@@ -15,11 +15,11 @@ public class Covid19StatusListHandler : IRequestHandler<Covid19StatusListQuery, 
         _covid19StatusDal = covid19StatusDal;
     }
 
-    public Task<List<Covid19StatusGetResponse>> Handle(Covid19StatusListQuery request, CancellationToken cancellationToken)
+    public Task<List<Covid19StatusListResponse>> Handle(Covid19StatusListQuery request, CancellationToken cancellationToken)
     {
         var result = _covid19StatusDal
             .ListData()
-            .Map(x => x.Select(y => new Covid19StatusGetResponse(y.Covid19StatusId, y.Covid19StatusName)).ToList())
+            .Map(x => x.Select(y => new Covid19StatusListResponse(y.Covid19StatusId, y.Covid19StatusName)).ToList())
             .GetValueOrThrow("Status Covid-19 tidak ditemukan");
 
         return Task.FromResult(result);
