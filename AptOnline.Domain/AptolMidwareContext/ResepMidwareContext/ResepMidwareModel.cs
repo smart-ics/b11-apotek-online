@@ -82,7 +82,7 @@ public class ResepMidwareModel : IResepMidwareKey
             JenisObatId = jenisObatId,
             Iterasi = iterasi,
 
-            Sep = new SepType(sepId, sepDate, sepNo, pesertaBpjs, reg, dokter, false, "", ""),
+            Sep = new SepType(sepId, sepDate, sepNo, pesertaBpjs, reg, dokter, DokterType.Default, false, "", ""),
             Ppk = new PpkRefference(ppkId, ppkName),
             PoliBpjs = new PoliBpjsType(poliBpjsId, poliBpjsName),
             BridgeState = bridgeState,

@@ -1,5 +1,6 @@
 ﻿using AptOnline.Application.EklaimContext;
 using AptOnline.Application.SepContext;
+using AptOnline.Application.SepContext.SepFeature;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.EKlaimContext;
@@ -16,14 +17,14 @@ public record EKlaimCreateResponse(string RegId, PasienType Pasien, string NoSep
 
 public class EKlaimCreateHandler : IRequestHandler<EKlaimCreateCommand, EKlaimCreateResponse>
 {
-    private readonly ISepGetByRegService _sepGetByRegService;
+    private readonly ISepDal _sepDal;
     private readonly IEKlaimRepo _eKlaimRepo;
     private readonly IEKlaimNewClaimService _eKlaimNewClaimService;
     
-    public EKlaimCreateHandler(ISepGetByRegService sepGetByRegService, 
+    public EKlaimCreateHandler(ISepDal sepDal, 
         IEKlaimRepo ieKlaimRepo, IEKlaimNewClaimService eKlaimNewClaimService)
     {
-        _sepGetByRegService = sepGetByRegService;
+        _sepDal = sepDal;
         _eKlaimRepo = ieKlaimRepo;
         _eKlaimNewClaimService = eKlaimNewClaimService;
     }
@@ -31,7 +32,7 @@ public class EKlaimCreateHandler : IRequestHandler<EKlaimCreateCommand, EKlaimCr
     public Task<EKlaimCreateResponse> Handle(EKlaimCreateCommand request, CancellationToken cancellationToken)
     {
         //  GUARD
-        var sep = _sepGetByRegService.Execute(RegType.Key(request.RegId))
+        var sep = _sepDal.GetData(RegType.Key(request.RegId))
             .GetValueOrThrow($"SEP utk register '{request.RegId}' tidak ditemukan");
         var existingEKlaim = _eKlaimRepo.GetData(SepType.Key(sep.SepNo));
         if (existingEKlaim.HasValue)

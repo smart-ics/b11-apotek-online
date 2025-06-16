@@ -9,13 +9,15 @@ namespace AptOnline.Domain.SepContext.SepFeature;
 public record SepType : ISepKey
 {
     public SepType(string sepId, DateTime sepDateTime, string sepNo, 
-        PesertaBpjsRefference pesertaBpjs, RegType reg, DokterType dpjp, 
+        PesertaBpjsRefference pesertaBpjs, RegType reg, 
+        DokterType dpjp, DokterType dpjpLayanan, 
         bool isPrb, string prb, string jnsPelayananId)
     {
         Guard.Against.NullOrWhiteSpace(sepId, nameof(sepId));
         Guard.Against.Null(pesertaBpjs, nameof(pesertaBpjs));
         Guard.Against.Null(reg, nameof(reg));
         Guard.Against.Null(dpjp, nameof(dpjp));
+        Guard.Against.Null(dpjpLayanan, nameof(dpjpLayanan));
         
         SepId = sepId;
         SepDateTime = sepDateTime;
@@ -23,6 +25,7 @@ public record SepType : ISepKey
         PesertaBpjs = pesertaBpjs;
         Reg = reg;
         Dpjp = dpjp;
+        DpjpLayanan = dpjpLayanan;
         IsPrb = isPrb;
         Prb = prb;
         JenisPelayananId = jnsPelayananId;
@@ -37,13 +40,15 @@ public record SepType : ISepKey
     
     public RegType Reg { get; private set; }
     public DokterType Dpjp { get; private set; }
+    public DokterType DpjpLayanan { get; private set; }
     
     public bool IsPrb { get; private set; }
     public string Prb { get; private set; }
     
     public static SepType Default 
         => new SepType(AppConst.DASH, AppConst.DEF_DATE, AppConst.DASH, 
-        PesertaBpjsType.Default.ToRefference(), RegType.Default, DokterType.Default, false, 
+        PesertaBpjsType.Default.ToRefference(), RegType.Default, 
+        DokterType.Default, DokterType.Default, false, 
         AppConst.DASH, AppConst.DASH);
     
     public static ISepKey Key(string sepId) 

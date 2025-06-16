@@ -2,6 +2,7 @@
 using AptOnline.Application.BillingContext.LayananAgg;
 using AptOnline.Application.PharmacyContext.MapDphoAgg;
 using AptOnline.Application.SepContext;
+using AptOnline.Application.SepContext.SepFeature;
 using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
@@ -17,7 +18,7 @@ public class ResepRsValidateHandler :
     IRequestHandler<ResepRsValidateCommand, IEnumerable<ResepRsValidateResponse>>
 {
     private readonly IResepMidwareWriter _writer;
-    private readonly ISepGetByRegService _sepGetByRegService;
+    private readonly ISepDal _sepDal;
     private readonly IPpkGetService _ppkGetService;
     private readonly ILayananGetService _layananGetService;
     private readonly IMapDphoGetService _mapDphoGetService;
@@ -25,14 +26,14 @@ public class ResepRsValidateHandler :
 
 
     public ResepRsValidateHandler(
-        ISepGetByRegService sepGetByRegService,
+        ISepDal sepDal,
         IPpkGetService ppkGetService,
         ILayananGetService layananGetService, 
         IMapDphoGetService mapDphoGetService, 
         IResepMidwareWriter writer, 
         ITglJamProvider dateTime)
     {
-        _sepGetByRegService = sepGetByRegService;
+        _sepDal = sepDal;
         _ppkGetService = ppkGetService;
         _layananGetService = layananGetService;
         _mapDphoGetService = mapDphoGetService;
@@ -44,7 +45,7 @@ public class ResepRsValidateHandler :
         ResepRsValidateCommand request, CancellationToken cancellationToken)
     {
         //  GUARD (header only)
-        var sep = _sepGetByRegService.Execute(request)
+        var sep = _sepDal.GetData(request)
             .GetValueOrThrow($"SEP for register {request.RegId} not found");
         if ((DateTime.Now - sep.SepDateTime).Days > 15)
             throw new Exception($"Resep melebihi 15 hari dari SEP No. {sep.SepNo} ({sep.SepDateTime:dd-MM-yyyy})");

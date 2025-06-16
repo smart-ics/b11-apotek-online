@@ -57,7 +57,6 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="AptolMidwareContext" />
-    <Folder Include="SepContext\" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="AptolMidwareContext\APTOL_Log.sql" />
@@ -74,14 +73,18 @@
     <Build Include="EKlaimContext\JKNMW_EKlaim.sql" />
     <Build Include="EKlaimContext\JKNMW_JenisRawat.DataSeed.sql" />
     <Build Include="EKlaimContext\JKNMW_JenisRawat.sql" />
-    <Build Include="EKlaimContext\JKNMW_KelasRawat.DataSeed.sql" />
-    <Build Include="EKlaimContext\JKNMW_KelasRawat.sql" />
     <Build Include="EKlaimContext\JKNMW_KelasTarifRs.DataSeed.sql" />
     <Build Include="EKlaimContext\JKNMW_Payor.DataSeed.sql" />
     <Build Include="EKlaimContext\JKNMW_Payor.sql" />
     <Build Include="EKlaimContext\JKNMW_Peg.sql" />
     <Build Include="EKlaimContext\JKNMW_TipeNoKartu.DataSeed.sql" />
     <Build Include="EKlaimContext\JKNMW_TipeNoKartu.sql" />
+    <Build Include="SepContext\JKNMW_AssesmentPelayanan.DataSeed.sql" />
+    <Build Include="SepContext\JKNMW_AssesmentPelayanan.sql" />
+    <Build Include="SepContext\JKNMW_JenisPelayanan.DataSeed.sql" />
+    <Build Include="SepContext\JKNMW_JenisPelayanan.sql" />
+    <Build Include="SepContext\JKNMW_KelasRawat.DataSeed.sql" />
+    <Build Include="SepContext\JKNMW_KelasRawat.sql" />
     <Build Include="SepContext\VCLAIM_Sep.sql" />
   </ItemGroup>
   <ItemGroup>

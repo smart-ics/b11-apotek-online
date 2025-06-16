@@ -1,5 +1,4 @@
 ﻿using AptOnline.Domain.BillingContext.PegFeature;
-using AptOnline.Domain.EKlaimContext.BayiLahirFeature;
 using Nuna.Lib.DataAccessHelper;
 using Nuna.Lib.PatternHelper;
 
@@ -9,7 +8,8 @@ public interface IPegDal :
     IInsert<PegType>,
     IUpdate<PegType>,
     IDelete<IPegKey>,
-    IGetData<MayBe<PegType>, IPegKey>
+    IGetData<MayBe<PegType>, IPegKey>,
+    IGetData<MayBe<PegType>, string>
 {
     MayBe<IEnumerable<PegType>> ListData();
 }
