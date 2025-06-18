@@ -38,9 +38,8 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
 
         public PasienType Pasien { get; private set; }
         public PesertaBpjsRefference PesertaBpjs { get; private set; }
-        
-
         public CaraMasukType CaraMasuk { get; private set; }
+
         public JenisRawatType JenisRawat { get; private set; }
         public KelasRawatType KelasRawat { get; private set; }
         public AdlScoreType AdlScore { get; private set; }

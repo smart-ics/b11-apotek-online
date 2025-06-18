@@ -1,15 +1,13 @@
 ﻿using AptOnline.Application.EklaimContext;
-using AptOnline.Application.SepContext;
 using AptOnline.Application.SepContext.SepFeature;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.EKlaimContext;
 using AptOnline.Domain.EKlaimContext.EKlaimFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using MediatR;
 using Nuna.Lib.TransactionHelper;
 
-namespace AptOnline.Application.EKlaimContext;
+namespace AptOnline.Application.EKlaimContext.EKlaimFeature;
 
 public record EKlaimCreateCommand(string RegId) : IRequest<EKlaimCreateResponse>;
 
