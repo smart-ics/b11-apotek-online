@@ -23,22 +23,34 @@ public class SepDal : ISepDal
     {
         const string sql = @"
            INSERT INTO VCLAIM_Sep(
-                fs_kd_trs, fd_tgl_jam_trs, fs_no_sep, fs_no_peserta,
-                fs_kd_jns_pelayanan, fs_kd_reg, fs_no_mr, fs_nm_peserta, 
+                fs_kd_trs, fd_tgl_jam_trs, fs_no_sep, fs_no_peserta, 
+                fs_kd_ppk_rujukan, fs_nm_ppk_rujukan, fs_kd_jns_pelayanan,  
+                fs_kd_tipe_faskes, fs_kd_assesment_pel, fs_no_skdp,
+                fs_kd_reg, fs_no_mr, fs_nm_peserta, 
                 fs_kd_dpjp, fs_nm_dpjp, fs_kd_dpjp_layanan, 
                 fb_prb, fs_prb)
             VALUES(
-                @fs_kd_trs, @fd_tgl_jam_trs, @fs_no_sep, @fs_no_peserta,
-                @fs_kd_jns_pelayanan, @fs_kd_reg, @fs_no_mr, @fs_nm_peserta, 
+                @fs_kd_trs, @fd_tgl_jam_trs, @fs_no_sep, @fs_no_peserta, 
+                @fs_kd_ppk_rujukan, @fs_nm_ppk_rujukan, @fs_kd_jns_pelayanan, 
+                @fs_kd_tipe_faskes, @fs_kd_assesment_pel, @fs_no_skdp,
+                @fs_kd_reg, @fs_no_mr, @fs_nm_peserta, 
                 @fs_kd_dpjp, @fs_nm_dpjp, @fs_kd_dpjp_layanan, 
                 @fb_prb, @fs_prb)";
 
         var dp = new DynamicParameters();
         dp.AddParam("@fs_kd_trs", model.SepId, SqlDbType.VarChar);
         dp.AddParam("@fd_tgl_jam_trs", model.SepDateTime.ToString("yyyy-MM-dd HH:mm:ss"), SqlDbType.VarChar);
+        
         dp.AddParam("@fs_no_sep", model.SepNo, SqlDbType.VarChar);
         dp.AddParam("@fs_no_peserta", model.PesertaBpjs.PesertaBpjsNo, SqlDbType.VarChar);
-        dp.AddParam("@fs_kd_jns_pelayanan", model.JenisPelayananId, SqlDbType.VarChar);
+        dp.AddParam("@fs_kd_ppk_rujukan", model.FaskesPerujuk.FaskesId, SqlDbType.VarChar);        
+        dp.AddParam("@fs_nm_ppk_rujukan", model.FaskesPerujuk.FaskesName, SqlDbType.VarChar);
+        dp.AddParam("@fs_kd_tipe_faskes", model.FaskesPerujuk.TipeFaskes.TipeFaskesId, SqlDbType.VarChar);
+        dp.AddParam("@fs_kd_jns_pelayanan", model.JenisPelayanan.JenisPelayananId, SqlDbType.VarChar);
+        dp.AddParam("@fs_kd_assesment_pel", model.AssesmentPelayanan.AssesmentPelayananId, SqlDbType.VarChar);
+        dp.AddParam("@fs_no_skdp", model.Skdp.SkdpNo, SqlDbType.VarChar);
+        
+        
         dp.AddParam("@fs_kd_reg", model.Reg.RegId, SqlDbType.VarChar);
         dp.AddParam("@fs_no_mr", model.Reg.Pasien.PasienId, SqlDbType.VarChar);
         dp.AddParam("@fs_nm_peserta", model.Reg.Pasien.PasienName, SqlDbType.VarChar);
@@ -67,16 +79,29 @@ public class SepDal : ISepDal
            SELECT
                 aa.fs_kd_trs SepId, aa.fd_tgl_jam_trs SepDateTime,
                 aa.fs_no_sep SepNo, aa.fs_no_peserta PesertaJaminanid,
-                aa.fs_kd_jns_pelayanan JnsPelayananKode,
+                aa.fs_kd_ppk_rujukan FaskesPerujukId ,
+                aa.fs_nm_ppk_rujukan FaskesPerujukName,
+                aa.fs_kd_tipe_faskes TipeFaskesPerujukId,
+                aa.fs_kd_jns_pelayanan JenisPelayananId,
+                aa.fs_kd_assesment_pel AssesmentPelayananId,
+                aa.fs_no_skdp SkdpNo,
+
                 aa.fs_kd_reg RegId, aa.fs_no_mr PasienId,
                 aa.fs_nm_peserta PasienName, 
                 aa.fs_kd_dpjp DpjpId, aa.fs_nm_dpjp DpjpName, 
                 aa.fb_prb IsPrb, aa.fs_prb Prb, 
                 aa.fs_kd_dpjp_layanan DpjpLayananId,
-                ISNULL(cc.fs_nm_dpjp,'-') DpjpLayananName 
+                
+                ISNULL(bb.fs_nm_dpjp,'-') DpjpLayananName,
+                ISNULL(cc.TipeFaskesName,'-') TipeFaskesPerujukName,
+                ISNULL(dd.JenisPelayananName, '-') JenisPelayananName,
+                ISNULL(ee.AssesmentPelayananName, '-') AssesmentPelayananName
             FROM 
                 VCLAIM_Sep aa
-                LEFT JOIN VCLAIM_Dpjp cc ON aa.fs_kd_dpjp_layanan = cc.fs_kd_dpjp
+                LEFT JOIN VCLAIM_Dpjp bb ON aa.fs_kd_dpjp_layanan = bb.fs_kd_dpjp
+                LEFT JOIN JKNMW_TipeFaskes cc ON aa.fs_kd_tipe_faskes = cc.TipeFaskesId
+                LEFT JOIN JKNMW_JenisPelayanan dd ON aa.fs_kd_jns_pelayanan = dd.JenisPelayananId
+                LEFT JOIN JKNMW_AssesmentPelayanan ee ON aa.fs_kd_assesment_pel = ee.AssesmentPelayananId
             WHERE
                 aa.fs_kd_reg = @RegID
                 AND aa.fd_tgl_void = '3000-01-01'";

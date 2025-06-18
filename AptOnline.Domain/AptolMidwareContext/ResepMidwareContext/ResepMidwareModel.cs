@@ -5,9 +5,13 @@ using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.MapDphoAgg;
+using AptOnline.Domain.SepContext.AssesmentPelayananFeature;
+using AptOnline.Domain.SepContext.FaskesFeature;
+using AptOnline.Domain.SepContext.JenisPelayananFeature;
 using AptOnline.Domain.SepContext.KelasRawatFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SepFeature;
+using AptOnline.Domain.SepContext.SkdpFeature;
 using Nuna.Lib.PatternHelper;
 using Ardalis.GuardClauses;
 namespace AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
@@ -82,7 +86,10 @@ public class ResepMidwareModel : IResepMidwareKey
             JenisObatId = jenisObatId,
             Iterasi = iterasi,
 
-            Sep = new SepType(sepId, sepDate, sepNo, pesertaBpjs, reg, dokter, DokterType.Default, false, "", ""),
+            Sep = new SepType(sepId, sepDate, sepNo, pesertaBpjs, 
+                FaskesType.Default, JenisPelayananType.Default,
+                AssesmentPelayananType.Default, SkdpRefference.Default,  
+                reg, dokter, DokterType.Default, false, ""),
             Ppk = new PpkRefference(ppkId, ppkName),
             PoliBpjs = new PoliBpjsType(poliBpjsId, poliBpjsName),
             BridgeState = bridgeState,

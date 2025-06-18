@@ -51,7 +51,7 @@ public class ResepRsValidateHandler :
             throw new Exception($"Resep melebihi 15 hari dari SEP No. {sep.SepNo} ({sep.SepDateTime:dd-MM-yyyy})");
         var ppk = _ppkGetService.Execute()
             ?? throw new KeyNotFoundException($"Setting Faskes not found");
-        var layanan = sep.JenisPelayananId switch
+        var layanan = sep.JenisPelayanan.JenisPelayananId switch
         {
             "1" => new LayananType("IGD", "IGD", true, new PoliBpjsType("IGD", "IGD")),
             "2" => _layananGetService.Execute(request),
