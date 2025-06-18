@@ -20,7 +20,7 @@ public class BayiLahirController : Controller
     [HttpGet("status/{id}")]
     public async Task<IActionResult> GetData(string id)
     {
-        var query = new BayiLahirStatusGetQuery(id);
+        var query = new StatusBayiLahirGetQuery(id);
         var result = await _mediator.Send(query);
         return Ok(new JSendOk(result));
     }
@@ -28,7 +28,7 @@ public class BayiLahirController : Controller
     [HttpGet("status")]
     public async Task<IActionResult> ListData()
     {
-        var query = new BayiLahirStatusListQuery();
+        var query = new StatusBayiLahirListQuery();
         var result = await _mediator.Send(query);
         return Ok(new JSendOk(result));
     }

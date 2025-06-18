@@ -14,7 +14,7 @@ public class TbIndikatorGet : IRequestHandler<TbIndikatorGetQuery, TbIndikatorGe
     {
         var result = GetData(request.TbIndikatorId)
             .Map(x => new TbIndikatorGetResponse(x.TbIndikatorId, x.TbIndikatorName))
-            .GetValueOrThrow($"TbIndikator '{request.TbIndikatorId}' tidak ditemukan");
+            .GetValueOrThrow($"TB Indikator '{request.TbIndikatorId}' tidak ditemukan");
         
         return Task.FromResult(result);
     }
