@@ -1,40 +1,24 @@
-﻿using AptOnline.Application.SepContext.KelasRawatFeature;
-using AptOnline.Domain.SepContext.JenisPelayananFeature;
-using AptOnline.Domain.SepContext.KelasRawatFeature;
+﻿using AptOnline.Application.EKlaimContext.BayiLahirFeature;
 using FluentAssertions;
-using Moq;
-using Nuna.Lib.PatternHelper;
 using Xunit;
 
 namespace AptOnline.Application.SepContext.JenisPelayananFeature;
 
 public class JenisPelayananGetTest
 {
-    private readonly JenisPelayananGetHandler _sut;
-    private readonly Mock<IJenisPelayananDal> _jenisPelayananDal;
-
-    public JenisPelayananGetTest()
-    {
-        _jenisPelayananDal = new Mock<IJenisPelayananDal>();
-        _sut = new JenisPelayananGetHandler(_jenisPelayananDal.Object);
-    }
+    private readonly JenisPelayananGet _sut = new();
 
     [Fact]
     public async Task UT1_GivenExistedId_ThenReturnExpected()
     {
-        var expected = new JenisPelayananGetResponse("A", "B");
-        _jenisPelayananDal.Setup(x => x.GetData(It.IsAny<IJenisPelayananKey>()))
-            .Returns(MayBe.From(new JenisPelayananType("A", "B")));
-        var actual = await _sut.Handle(new JenisPelayananGetQuery("A"), CancellationToken.None);
-        actual.Should().BeEquivalentTo(expected);
+        var actual = await _sut.Handle(new JenisPelayananGetQuery("1"), CancellationToken.None);
+        actual.Should().BeEquivalentTo(new JenisPelayananGetResponse("1", "Rawat Inap"));
     }
 
     [Fact]
     public async Task UT2_GivenInvalidId_ThenThrowEx()
     {
-        _jenisPelayananDal.Setup(x => x.GetData(It.IsAny<IJenisPelayananKey>()))
-            .Returns(MayBe.From<JenisPelayananType>(null!));
-        var actual = () => _sut.Handle(new JenisPelayananGetQuery("A"), CancellationToken.None);
+        var actual = () => _sut.Handle(new JenisPelayananGetQuery("3"), CancellationToken.None);
         await actual.Should().ThrowAsync<KeyNotFoundException>();
     }
 }

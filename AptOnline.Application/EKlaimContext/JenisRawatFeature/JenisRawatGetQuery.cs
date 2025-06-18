@@ -1,5 +1,6 @@
 ﻿using AptOnline.Domain.EKlaimContext.JenisRawatFeature;
 using MediatR;
+using Nuna.Lib.PatternHelper;
 
 namespace AptOnline.Application.EKlaimContext.JenisRawatFeature;
 
@@ -7,22 +8,20 @@ public record JenisRawatGetQuery(string JenisRawatId) : IRequest<JenisRawatGetRe
 
 public record JenisRawatGetResponse(string JenisRawatId, string JenisRawatName);
 
-public class JenisRawatGetHandler : IRequestHandler<JenisRawatGetQuery, JenisRawatGetResponse>
+public class JenisRawatGet : IRequestHandler<JenisRawatGetQuery, JenisRawatGetResponse>
 {
-    private readonly IJenisRawatDal _jenisRawatDal;
-
-    public JenisRawatGetHandler(IJenisRawatDal jenisRawatDal)
-    {
-        _jenisRawatDal = jenisRawatDal;
-    }
-
     public Task<JenisRawatGetResponse> Handle(JenisRawatGetQuery request, CancellationToken cancellationToken)
     {
-        var result = _jenisRawatDal
-            .GetData(JenisRawatType.Key(request.JenisRawatId))
+        var result = GetData(request.JenisRawatId)
             .Map(x => new JenisRawatGetResponse(x.JenisRawatId, x.JenisRawatName))
-            .GetValueOrThrow($"Kelas Rawat '{request.JenisRawatId}' tidak ditemukan");
+            .GetValueOrThrow($"Jenis Rawat '{request.JenisRawatId}' tidak ditemukan");
         
         return Task.FromResult(result);
+    }
+
+    private static MayBe<JenisRawatType> GetData(string id)
+    {
+        var result = JenisRawatType.ListData().FirstOrDefault(x => x.JenisRawatId == id);
+        return MayBe.From(result!);
     }
 }
