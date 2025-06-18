@@ -79,12 +79,8 @@
     <Build Include="EKlaimContext\JKNMW_TipeNoKartu.sql" />
     <Build Include="SepContext\JKNMW_AssesmentPelayanan.DataSeed.sql" />
     <Build Include="SepContext\JKNMW_AssesmentPelayanan.sql" />
-    <Build Include="SepContext\JKNMW_JenisPelayanan.DataSeed.sql" />
-    <Build Include="SepContext\JKNMW_JenisPelayanan.sql" />
     <Build Include="SepContext\JKNMW_KelasRawat.DataSeed.sql" />
     <Build Include="SepContext\JKNMW_KelasRawat.sql" />
-    <Build Include="SepContext\JKNMW_TipeFaskes.DataSeed.sql" />
-    <Build Include="SepContext\JKNMW_TipeFaskes.sql" />
     <Build Include="SepContext\VCLAIM_Sep.sql" />
   </ItemGroup>
   <ItemGroup>

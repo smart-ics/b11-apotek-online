@@ -14,4 +14,8 @@ public record JenisPelayananType(string JenisPelayananId, string JenisPelayananN
 
     public static JenisPelayananType Default => new("-", "-");
     public static IJenisPelayananKey Key(string id) => new JenisPelayananType(id, "-");
+
+    public static JenisPelayananType RawatInap => new("1", "Rawat Inap");
+    public static JenisPelayananType RawatJalan => new("2", "Rawat Jalan");
+    public static IEnumerable<JenisPelayananType> ListData() => new List<JenisPelayananType> { RawatInap, RawatJalan };
 }

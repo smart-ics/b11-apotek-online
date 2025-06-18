@@ -1,7 +1,0 @@
-﻿CREATE TABLE JKNMW_TipeFaskes(
-    TipeFaskesId VARCHAR(1) NOT NULL CONSTRAINT DF_JKNMW_TipeFaskes_TipeFaskesId DEFAULT(''),
-    TipeFaskesName VARCHAR(10) NOT NULL CONSTRAINT DF_JKNMW_TipeFaskes_TipeFaskesName DEFAULT(''),
-    
-    CONSTRAINT PK_JKNMW_TipeFaskes PRIMARY KEY CLUSTERED (TipeFaskesId)
-)
-
