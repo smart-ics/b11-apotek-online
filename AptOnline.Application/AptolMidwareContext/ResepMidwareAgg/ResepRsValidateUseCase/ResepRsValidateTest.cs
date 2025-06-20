@@ -11,6 +11,7 @@ using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.BillingContext.TipeLayananDkFeature;
 using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.BrgAgg;
 using AptOnline.Domain.PharmacyContext.DphoAgg;
@@ -84,7 +85,8 @@ public class ResepRsValidateTest
             .From(new SepType(
                 "SEP-ID-1", new DateTime(2025,4,1), "SEP-NO-1", pesertaBpjs.ToRefference(), FaskesType.Default, 
                 JenisPelayananType.Default, AssesmentPelayananType.Default, SkdpRefference.Default, 
-                RegType.Load("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), PasienType.Default, JenisRegEnum.Unknown, KelasRawatType.Default),
+                new RegType("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), PasienType.Default, 
+                    JenisRegEnum.Unknown, KelasRawatType.Default, LayananType.Default.ToRefference()),
                 new DokterType("DOKTER-ID-1", "DOKTER-NAME-1"), DokterType.Default,  false, "-"));
         return result;
     }
@@ -95,10 +97,11 @@ public class ResepRsValidateTest
             KepalaType.Default, 
             VerifikatorType.Default, 
             ApotekType.Default);
+
     private static LayananType LayananFaker()
         => new LayananType(
             "LYN-ID-1", "LYN-NAME-1", true,
-            PoliBpjsType.Default);
+            PoliBpjsType.Default, TipeLayananDkType.Default);
     private static BrgType BrgDphoFaker()
         => new BrgType("BRG-ID-1", "BRG-NAME-1");
     private static BrgType BrgNonDphoFaker()

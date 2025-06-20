@@ -1,4 +1,5 @@
 ﻿using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.SepContext.AssesmentPelayananFeature;
@@ -28,15 +29,15 @@ public class SepDalTest
 
     private static SepType Faker()
     {
-        var reg = RegType.Load("RG01376985",
+        var reg = new RegType("RG01376985",
             new DateTime(2024, 6, 6, 23, 26, 31), 
             new DateTime(3000,1,1, 0, 0, 0),
             PasienType.Load("337502200146916", "KEISHA KHALIQA RIZQI", new DateTime(3000,1,1), GenderType.Default),
-            JenisRegEnum.RawatJalan, KelasRawatType.Default);
+            JenisRegEnum.RawatJalan, KelasRawatType.Default, LayananType.Default.ToRefference());
         var dokter = new DokterType("226634", "dr. Dwi Riyanto, Sp.A");
         var dokterLayanan = DokterType.Default;
-        var faskesPerujuk = new FaskesType("010", "RSUD DR. H. RACHMAT HIDAYATULLAH", new TipeFaskesType("1", "-"));
-        var jenisPelayanan = new JenisPelayananType("1", "-");
+        var faskesPerujuk = new FaskesType("010", "RSUD DR. H. RACHMAT HIDAYATULLAH", new TipeFaskesType("1", "Faskes-1"));
+        var jenisPelayanan = new JenisPelayananType("1", "Rawat Inap");
         var assesmentPelayanan = new AssesmentPelayananType("2", "-");
         var skdp = new SkdpRefference("1104R0040624V002150");
         var pesertaBpjs = PesertaBpjsType.Default with { PesertaBpjsId = "0002278745223" };

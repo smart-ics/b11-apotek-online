@@ -1,6 +1,7 @@
 ﻿using AptOnline.Application.BillingContext.LayananAgg;
 using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
+using AptOnline.Domain.BillingContext.TipeLayananDkFeature;
 using AptOnline.Infrastructure.Helpers;
 using FluentAssertions;
 using Microsoft.Extensions.Options;
@@ -31,7 +32,10 @@ public class LayananGetService : ILayananGetService
             responseData.IsActive,
             new PoliBpjsType(
                 responseData.LayananBpjsId,
-                responseData.LayananBpjsName));
+                responseData.LayananBpjsName),
+            new TipeLayananDkType(
+                responseData.LayananTipeDkId,
+                responseData.LayananTipeDkName));
         return result;
     }
 
@@ -70,7 +74,8 @@ public class LayananGetResponseTest
     public void UT1_GivenValidLayananID_WhenExecute_ThenReturnAsExpected()
     {
         var poliBpjs = new PoliBpjsType("ANA", "ANAK");
-        var expected = new LayananType("2RJ05", "POLI ANAK", true, poliBpjs);
+        var tipeLayananDk = new TipeLayananDkType("3", "POLIKLINIK");
+        var expected = new LayananType("2RJ05", "POLI ANAK", true, poliBpjs, tipeLayananDk);
         var actual = _sut.Execute(expected);
         actual.Should().BeEquivalentTo(expected);
     }

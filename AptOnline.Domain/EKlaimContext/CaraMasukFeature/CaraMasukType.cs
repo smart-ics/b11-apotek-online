@@ -16,6 +16,7 @@ public record CaraMasukType(string CaraMasukId, string CaraMasukName) : ICaraMas
         Guard.Against.NullOrWhiteSpace(name, nameof(name));
         return new CaraMasukType(id, name);
     }
+    
     public static CaraMasukType Default => new("-", "-");
     public static ICaraMasukKey Key(string id)
         => Default with {CaraMasukId = id};

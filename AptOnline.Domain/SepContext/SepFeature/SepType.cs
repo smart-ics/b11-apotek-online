@@ -15,8 +15,7 @@ public record SepType : ISepKey
     public SepType(string sepId, DateTime sepDateTime, string sepNo, 
         PesertaBpjsRefference pesertaBpjs, FaskesType faskesPerujuk,
         JenisPelayananType jenisPelayanan, AssesmentPelayananType assesmentPelayanan,
-        SkdpRefference skdp, 
-        RegType reg, DokterType dpjp, DokterType dpjpLayanan, 
+        SkdpRefference skdp, RegType reg, DokterType dpjp, DokterType dpjpLayanan, 
         bool isPrb, string prb)
     {
         Guard.Against.NullOrWhiteSpace(sepId, nameof(sepId));

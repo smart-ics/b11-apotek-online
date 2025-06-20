@@ -1,6 +1,7 @@
 ﻿using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.Helpers;
@@ -70,7 +71,8 @@ public class ResepMidwareModel : IResepMidwareKey
         DateTime syncTimestamp, DateTime uploadTimestamp)
     {
         var pasien = PasienType.Load(pasienId, pasienName, new DateTime(3000, 1, 1), GenderType.Default);
-        var reg = RegType.Load(regId, regDate, new DateTime(3000,1,1), pasien, JenisRegEnum.Unknown, KelasRawatType.Default);
+        var reg = new RegType(regId, regDate, new DateTime(3000, 1, 1), pasien, JenisRegEnum.Unknown, 
+            KelasRawatType.Default, LayananType.Default.ToRefference());
         var dokter = new DokterType(dokterId, dokterName);
         var pesertaBpjs = new PesertaBpjsRefference(noPeserta, pasienName);
         return new ResepMidwareModel

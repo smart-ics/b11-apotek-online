@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using AptOnline.Application.BillingContext.RegAgg;
+using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.SepContext.KelasRawatFeature;
@@ -74,9 +75,10 @@ public class RegGetPreviousServiceTest
         dp.AddParam("@fs_kd_reg_hut", "RG001", SqlDbType.VarChar);
         _conn.Execute(sql, dp);
         //      - mock reg hutang   
-        var regHut = RegType.Load(
+        var regHut = new RegType(
             "RG001", DateTime.Parse("2024-06-05"), DateTime.Parse("2024-06-05"),
-            PasienType.Default, JenisRegEnum.RawatDarurat, KelasRawatType.Default);
+            PasienType.Default, JenisRegEnum.RawatDarurat, KelasRawatType.Default,
+            LayananType.Default.ToRefference());
         _regGetService.Setup(x => x.Execute(RegType.Key("RG001"))).Returns(regHut); 
 
         //      ACT

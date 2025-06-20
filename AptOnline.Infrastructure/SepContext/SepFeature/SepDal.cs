@@ -50,7 +50,6 @@ public class SepDal : ISepDal
         dp.AddParam("@fs_kd_assesment_pel", model.AssesmentPelayanan.AssesmentPelayananId, SqlDbType.VarChar);
         dp.AddParam("@fs_no_skdp", model.Skdp.SkdpNo, SqlDbType.VarChar);
         
-        
         dp.AddParam("@fs_kd_reg", model.Reg.RegId, SqlDbType.VarChar);
         dp.AddParam("@fs_no_mr", model.Reg.Pasien.PasienId, SqlDbType.VarChar);
         dp.AddParam("@fs_nm_peserta", model.Reg.Pasien.PasienName, SqlDbType.VarChar);
@@ -93,14 +92,10 @@ public class SepDal : ISepDal
                 aa.fs_kd_dpjp_layanan DpjpLayananId,
                 
                 ISNULL(bb.fs_nm_dpjp,'-') DpjpLayananName,
-                ISNULL(cc.TipeFaskesName,'-') TipeFaskesPerujukName,
-                ISNULL(dd.JenisPelayananName, '-') JenisPelayananName,
                 ISNULL(ee.AssesmentPelayananName, '-') AssesmentPelayananName
             FROM 
                 VCLAIM_Sep aa
                 LEFT JOIN VCLAIM_Dpjp bb ON aa.fs_kd_dpjp_layanan = bb.fs_kd_dpjp
-                LEFT JOIN JKNMW_TipeFaskes cc ON aa.fs_kd_tipe_faskes = cc.TipeFaskesId
-                LEFT JOIN JKNMW_JenisPelayanan dd ON aa.fs_kd_jns_pelayanan = dd.JenisPelayananId
                 LEFT JOIN JKNMW_AssesmentPelayanan ee ON aa.fs_kd_assesment_pel = ee.AssesmentPelayananId
             WHERE
                 aa.fs_kd_reg = @RegID

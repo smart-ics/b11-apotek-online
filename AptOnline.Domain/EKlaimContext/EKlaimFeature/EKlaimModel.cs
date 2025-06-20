@@ -117,7 +117,58 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
         #endregion
         
         #region BEHAVIOR
-        //public void 
+        public void SetAdministrasiMasuk(DokterType dpjp, CaraMasukType caraMasuk, JenisRawatType jenisRawat)
+        {
+            Guard.Against.Null(dpjp, nameof(dpjp));
+            Guard.Against.Null(caraMasuk, nameof(caraMasuk));
+            Guard.Against.Null(jenisRawat, nameof(jenisRawat));
+            
+            Dpjp = dpjp;
+            CaraMasuk = caraMasuk;
+            JenisRawat = jenisRawat;
+        } 
+        public void SetMedisPasien(AdlScoreType adlScore, 
+            IcuIndikatorType icuIndikator, Covid19Type covid19, 
+            PelayananDarahType pelayananDarah, VitalSignType vitalSign, 
+            TbIndikatorType pasienTb)
+        {
+            Guard.Against.Null(adlScore, nameof(adlScore));
+            Guard.Against.Null(icuIndikator, nameof(icuIndikator));
+            Guard.Against.Null(covid19, nameof(covid19));
+            Guard.Against.Null(pelayananDarah, nameof(pelayananDarah));
+            Guard.Against.Null(vitalSign, nameof(vitalSign));
+            Guard.Against.Null(pasienTb, nameof(pasienTb));
+            
+            AdlScore = adlScore;
+            IcuIndikator = icuIndikator;
+            Covid19 = covid19;
+            PelayananDarah = pelayananDarah;
+            VitalSign = vitalSign;
+            PasienTb = pasienTb;
+        }
+        
+        public void SetBillPasien(KelasRawatType kelasRawat, KelasTarifRsType kelasTarifRs, 
+            TarifRsType tarifRs, decimal tarifPoliEksekutif, UpgradeKelasIndikatorType upgradeKelasIndikator,
+            DischargeStatusType dischargeStatus, PayorType payor, PegType coder, int lengthOfStay)
+        {
+            Guard.Against.Null(kelasRawat, nameof(kelasRawat));
+            Guard.Against.Null(kelasTarifRs, nameof(kelasTarifRs));
+            Guard.Against.Null(tarifRs, nameof(tarifRs));
+            Guard.Against.Null(upgradeKelasIndikator, nameof(upgradeKelasIndikator));
+            Guard.Against.Null(dischargeStatus, nameof(dischargeStatus));
+            Guard.Against.Null(payor, nameof(payor));
+            Guard.Against.Null(coder, nameof(coder));
+            
+            KelasRawat = kelasRawat;
+            KelasTarifRs = kelasTarifRs;
+            TarifRs = tarifRs;
+            TarifPoliEksekutif = tarifPoliEksekutif;
+            UpgradeKelasIndikator = upgradeKelasIndikator;
+            DischargeStatus = dischargeStatus;
+            Payor = payor;
+            Coder = coder;
+            LengthOfStay = lengthOfStay;
+        }
         #endregion
 
     }
