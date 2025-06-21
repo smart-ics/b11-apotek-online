@@ -1,8 +1,6 @@
-﻿using AptOnline.Domain.EKlaimContext.SkemaTarifFeature;
+﻿using AptOnline.Domain.BillingContext.TrsBillingFeature;
+using AptOnline.Domain.EKlaimContext.SkemaTarifJknFeature;
 
 namespace AptOnline.Domain.EKlaimContext.TarifRsFeature;
 
-public record TarifRsSkemaType(SkemaTarifType SkemaTarif, decimal Nilai)
-{
-    publi
-};
+public record TarifRsSkemaType(ReffBiayaType ReffBiaya,SkemaTarifJknType SkemaTarifJkn, decimal Nilai);

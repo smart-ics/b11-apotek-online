@@ -3,6 +3,7 @@ using AptOnline.Application.BillingContext.ParamSistemFeature;
 using AptOnline.Application.BillingContext.RegAgg;
 using AptOnline.Application.BillingContext.RoomChargeFeature;
 using AptOnline.Application.BillingContext.TipeLayananDkFeature;
+using AptOnline.Application.BillingContext.TrsBillingFeature;
 using AptOnline.Application.EKlaimContext.KelasTarifRsFeature;
 using AptOnline.Application.EmrContext.AssesmentFeature;
 using AptOnline.Application.SepContext.SepFeature;
@@ -39,7 +40,8 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
     private readonly IAssesmentGetService _assesmentGetService;
     private readonly IRoomChargeGetService _roomChargeGetService;
     private readonly IKelasTarifRsDal _kelasTarifRsDal;
-
+    private readonly ITrsBillingGetService _trsBillingGetService;
+    
     public EKlaimGenClaimDataCommandHandler(ISepDal sepDal, 
         IRegGetService regService, IParamSistemDal paramSistemDal, 
         IRegGetPreviousService regGetPreviousService, 
@@ -130,7 +132,7 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
             .GetValueOrThrow($"Kelas Tarif RS tidak ditemukan");
         var kelasTarifRs = _kelasTarifRsDal.GetData(KelasTarifRsType.Key(kelasTarifRsId))
             .GetValueOrThrow($"Kelas Tarif RS '{kelasTarifRsId}' tidak ditemukan");
-        var listTrsBilling = _trsBillingDal.GetData(regKey);
+        var listTrsBilling = _trsBillingGetService.Execute(regKey);
         
         throw new AbandonedMutexException();
     }
