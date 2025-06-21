@@ -3,20 +3,24 @@ using AptOnline.Application.BillingContext.ParamSistemFeature;
 using AptOnline.Application.BillingContext.RegAgg;
 using AptOnline.Application.BillingContext.RoomChargeFeature;
 using AptOnline.Application.BillingContext.TipeLayananDkFeature;
+using AptOnline.Application.EKlaimContext.KelasTarifRsFeature;
 using AptOnline.Application.EmrContext.AssesmentFeature;
 using AptOnline.Application.SepContext.SepFeature;
 using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.ParamSistemFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.BillingContext.RoomChargeFeature;
 using AptOnline.Domain.BillingContext.TipeLayananDkFeature;
 using AptOnline.Domain.EKlaimContext;
 using AptOnline.Domain.EKlaimContext.CaraMasukFeature;
 using AptOnline.Domain.EKlaimContext.Covid19Feature;
 using AptOnline.Domain.EKlaimContext.EKlaimFeature;
 using AptOnline.Domain.EKlaimContext.JenisRawatFeature;
+using AptOnline.Domain.EKlaimContext.KelasTarifRsFeature;
 using AptOnline.Domain.EKlaimContext.PelayananDarahFeature;
 using AptOnline.Domain.EmrContext.AssesmentFeature;
 using AptOnline.Domain.SepContext.FaskesFeature;
+using AptOnline.Domain.SepContext.KelasRawatFeature;
 using AptOnline.Domain.SepContext.TipeFaskesFeature;
 using MediatR;
 
@@ -34,6 +38,7 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
     private readonly IEKlaimRepo _eklaimRepo;
     private readonly IAssesmentGetService _assesmentGetService;
     private readonly IRoomChargeGetService _roomChargeGetService;
+    private readonly IKelasTarifRsDal _kelasTarifRsDal;
 
     public EKlaimGenClaimDataCommandHandler(ISepDal sepDal, 
         IRegGetService regService, IParamSistemDal paramSistemDal, 
@@ -42,7 +47,8 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         ITipeLayananDkDal tipeLayananDkDal, 
         IEKlaimRepo eklaimRepo, 
         IAssesmentGetService assesmentGetService, 
-        IRoomChargeGetService roomChargeGetService)
+        IRoomChargeGetService roomChargeGetService, 
+        IKelasTarifRsDal kelasTarifRsDal)
     {
         _sepDal = sepDal;
         _regService = regService;
@@ -52,18 +58,20 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         _eklaimRepo = eklaimRepo;
         _assesmentGetService = assesmentGetService;
         _roomChargeGetService = roomChargeGetService;
+        _kelasTarifRsDal = kelasTarifRsDal;
     }
 
     public Task<Unit> Handle(EKlaimGenClaimDataCommand request, CancellationToken cancellationToken)
     {
         //  ----SET-ADMINISTRASI-MASUK
         //      1. dpjp
+        //      2. cara masuk
+        //      3. jenis-rawat
         var regKey = RegType.Key(request.RegId);
         var sep = _sepDal.GetData(regKey)
             .GetValueOrThrow($"SEP utk register '{request.RegId}' tidak ditemukan");
         var dpjp = sep.Dpjp;
-        
-        //      2. cara masuk
+        //        
         var faskesRs = _paramSistemDal.GetData(ParamSistemType.Key("BRI_BPJS_PPKRS"))
             .Map(x => new FaskesType(x.ParamValue, "-", TipeFaskesType.FaskesRs))
             .GetValueOrThrow($"Param sistem 'FASKES RS' tidak ditemukan");
@@ -75,11 +83,8 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         var tipeLayananDk = layanan is null 
             ? TipeLayananDkType.Default
             : layanan.TipeLayananDk;
-        var caraMasuk = CaraMasukType.Resolve(sep.JenisPelayanan, 
-            sep.AssesmentPelayanan, sep.FaskesPerujuk.TipeFaskes, 
-            sep.Skdp, sep.FaskesPerujuk, faskesRs, tipeLayananDk);
-        
-        //      3. jenis-rawat
+        var caraMasuk = CaraMasukType.Create(sep,faskesRs, tipeLayananDk);
+        //
         var jenisRawat = JenisRawatType.Create(sep.JenisPelayanan);
         var eklaim = _eklaimRepo.GetData(regKey)
             .GetValueOrThrow($"eKlaim utk register '{request.RegId}' tidak ditemukan");
@@ -92,24 +97,41 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         //      4. pelayanan-darah ***
         //      5. vital-sign
         //      6. pasien-tb
-        var reg = _regService.Execute(regKey)
-                  ?? throw new ApplicationException($"Register '{regKey}' tidak ditemukan");
         var assesment = _assesmentGetService.Execute(regKey)
             .Match(
-                onNone: () => AssesmentModel.Default,
-                onSome: x => x);
-        var adlScore = AdlScoreType.Create(assesment);
-        
-        var icuIndikator = _roomChargeGetService.Execute(regKey)
+                onSome: x => x,
+                onNone: () => AssesmentModel.Default);
+        var roomCharge = _roomChargeGetService.Execute(regKey)
             .Match(
-                onSome:  IcuIndikatorType.Create,
-                onNone: () => IcuIndikatorType.Default);
+                onSome: x => x,
+                onNone: () => RoomChargeModel.Default);
         
+        var adlScore = AdlScoreType.Create(assesment);
+        var icuIndikator = IcuIndikatorType.Create(roomCharge);
         var covid19 = Covid19Type.Default;
         var pelayananDarah = PelayananDarahType.Default;
-
         var vitalSign = VitalSignType.Create(assesment);
-        //var pasienTb = PasienTbType.Default;
+        
+        //  ----BILL-PASIEN
+        //      1. Kelas Rawat [done]
+        //      2. Kelas Tarif RS [done]
+        //      3. Tarif RS  [in-progress]
+        //      4. Tarif Poli Eksekutif
+        //      5. Indikator Upgrade Kelas
+        //      6. Discharge Status
+        //      7. Payor
+        //      8. Coder
+        //      9. Length-Of-Stay
+        var reg = _regService.Execute(regKey)
+                  ?? throw new ApplicationException($"Register '{regKey}' tidak ditemukan");
+        var kelasRawat = KelasRawatType.Create(roomCharge);
+        var kelasTarifRsId = _paramSistemDal.GetData(ParamSistemType.Key("BRI_GROUPER_RSID"))
+            .Map(x => x.ParamValue)
+            .GetValueOrThrow($"Kelas Tarif RS tidak ditemukan");
+        var kelasTarifRs = _kelasTarifRsDal.GetData(KelasTarifRsType.Key(kelasTarifRsId))
+            .GetValueOrThrow($"Kelas Tarif RS '{kelasTarifRsId}' tidak ditemukan");
+        var listTrsBilling = _trsBillingDal.GetData(regKey);
+        
         throw new AbandonedMutexException();
     }
 }

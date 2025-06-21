@@ -36,7 +36,7 @@ public class RoomChargeModel
 public record RoomChargeBedType(
     DateTime Tgl,
     BedType Bed,
-    KelasDkType Kelas,
+    KelasDkType KelasDk,
     LayananRefference Layanan, 
     LayananDkType LayananDk);
 
