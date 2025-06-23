@@ -11,7 +11,8 @@ using AptOnline.Domain.EKlaimContext.PayorFeature;
 using AptOnline.Domain.EKlaimContext.PelayananDarahFeature;
 using AptOnline.Domain.EKlaimContext.TarifRsFeature;
 using AptOnline.Domain.EKlaimContext.TbIndikatorFeature;
-using AptOnline.Domain.SepContext.KelasRawatFeature;
+using AptOnline.Domain.EKlaimContext.UpgradeIndikatorFeature;
+using AptOnline.Domain.SepContext.KelasJknFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using Ardalis.GuardClauses;
@@ -46,7 +47,7 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
             PasienTb = TbIndikatorType.Default;
             
             //      BILL PASIEN
-            KelasRawat = KelasRawatType.Default;
+            KelasJkn = KelasJknType.Default;
             KelasTarifRs = KelasTarifRsType.Default;
             TarifRs = TarifRsModel.Default;
             TarifPoliEksekutif = 0;
@@ -77,7 +78,7 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
         public VitalSignType VitalSign { get; private set; }
         public TbIndikatorType PasienTb { get; private set; }
         //      BILL & ADMIN KELUAR
-        public KelasRawatType KelasRawat { get; private set; }
+        public KelasJknType KelasJkn { get; private set; }
         public KelasTarifRsType KelasTarifRs { get; private set; }
         public TarifRsModel TarifRs { get; private set; }
         public decimal TarifPoliEksekutif { get; private set; }
@@ -147,11 +148,11 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
             PasienTb = pasienTb;
         }
         
-        public void SetBillPasien(KelasRawatType kelasRawat, KelasTarifRsType kelasTarifRs, 
+        public void SetBillPasien(KelasJknType kelasJkn, KelasTarifRsType kelasTarifRs, 
             TarifRsModel tarifRs, decimal tarifPoliEksekutif, UpgradeKelasIndikatorType upgradeKelasIndikator,
             DischargeStatusType dischargeStatus, PayorType payor, PegType coder, int lengthOfStay)
         {
-            Guard.Against.Null(kelasRawat, nameof(kelasRawat));
+            Guard.Against.Null(kelasJkn, nameof(kelasJkn));
             Guard.Against.Null(kelasTarifRs, nameof(kelasTarifRs));
             Guard.Against.Null(tarifRs, nameof(tarifRs));
             Guard.Against.Null(upgradeKelasIndikator, nameof(upgradeKelasIndikator));
@@ -159,7 +160,7 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
             Guard.Against.Null(payor, nameof(payor));
             Guard.Against.Null(coder, nameof(coder));
             
-            KelasRawat = kelasRawat;
+            KelasJkn = kelasJkn;
             KelasTarifRs = kelasTarifRs;
             TarifRs = tarifRs;
             TarifPoliEksekutif = tarifPoliEksekutif;

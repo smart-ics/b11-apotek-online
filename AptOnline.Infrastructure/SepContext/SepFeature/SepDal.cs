@@ -24,6 +24,7 @@ public class SepDal : ISepDal
         const string sql = @"
            INSERT INTO VCLAIM_Sep(
                 fs_kd_trs, fd_tgl_jam_trs, fs_no_sep, fs_no_peserta, 
+                fs_kd_kelas_peserta, fs_nm_kelas_peserta,
                 fs_kd_ppk_rujukan, fs_nm_ppk_rujukan, fs_kd_jns_pelayanan,  
                 fs_kd_tipe_faskes, fs_kd_assesment_pel, fs_no_skdp,
                 fs_kd_reg, fs_no_mr, fs_nm_peserta, 
@@ -31,6 +32,7 @@ public class SepDal : ISepDal
                 fb_prb, fs_prb)
             VALUES(
                 @fs_kd_trs, @fd_tgl_jam_trs, @fs_no_sep, @fs_no_peserta, 
+                @fs_kd_kelas_peserta, @fs_nm_kelas_peserta,
                 @fs_kd_ppk_rujukan, @fs_nm_ppk_rujukan, @fs_kd_jns_pelayanan, 
                 @fs_kd_tipe_faskes, @fs_kd_assesment_pel, @fs_no_skdp,
                 @fs_kd_reg, @fs_no_mr, @fs_nm_peserta, 
@@ -43,6 +45,10 @@ public class SepDal : ISepDal
         
         dp.AddParam("@fs_no_sep", model.SepNo, SqlDbType.VarChar);
         dp.AddParam("@fs_no_peserta", model.PesertaBpjs.PesertaBpjsNo, SqlDbType.VarChar);
+        
+        dp.AddParam("@fs_kd_kelas_peserta", model.KelasHak.KelasJknId, SqlDbType.VarChar);
+        dp.AddParam("@fs_nm_kelas_peserta", model.KelasHak.KelasJknName, SqlDbType.VarChar);
+        
         dp.AddParam("@fs_kd_ppk_rujukan", model.FaskesPerujuk.FaskesId, SqlDbType.VarChar);        
         dp.AddParam("@fs_nm_ppk_rujukan", model.FaskesPerujuk.FaskesName, SqlDbType.VarChar);
         dp.AddParam("@fs_kd_tipe_faskes", model.FaskesPerujuk.TipeFaskes.TipeFaskesId, SqlDbType.VarChar);
@@ -78,6 +84,9 @@ public class SepDal : ISepDal
            SELECT
                 aa.fs_kd_trs SepId, aa.fd_tgl_jam_trs SepDateTime,
                 aa.fs_no_sep SepNo, aa.fs_no_peserta PesertaJaminanid,
+                aa.fs_kd_kelas_peserta KelasPesertaId,
+                aa.fs_nm_kelas_peserta KelasPesertaName,
+                
                 aa.fs_kd_ppk_rujukan FaskesPerujukId ,
                 aa.fs_nm_ppk_rujukan FaskesPerujukName,
                 aa.fs_kd_tipe_faskes TipeFaskesPerujukId,

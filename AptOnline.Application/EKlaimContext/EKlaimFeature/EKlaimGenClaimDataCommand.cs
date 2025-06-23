@@ -19,9 +19,10 @@ using AptOnline.Domain.EKlaimContext.EKlaimFeature;
 using AptOnline.Domain.EKlaimContext.JenisRawatFeature;
 using AptOnline.Domain.EKlaimContext.KelasTarifRsFeature;
 using AptOnline.Domain.EKlaimContext.PelayananDarahFeature;
+using AptOnline.Domain.EKlaimContext.UpgradeIndikatorFeature;
 using AptOnline.Domain.EmrContext.AssesmentFeature;
 using AptOnline.Domain.SepContext.FaskesFeature;
-using AptOnline.Domain.SepContext.KelasRawatFeature;
+using AptOnline.Domain.SepContext.KelasJknFeature;
 using AptOnline.Domain.SepContext.TipeFaskesFeature;
 using MediatR;
 
@@ -126,13 +127,15 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         //      9. Length-Of-Stay
         var reg = _regService.Execute(regKey)
                   ?? throw new ApplicationException($"Register '{regKey}' tidak ditemukan");
-        var kelasRawat = KelasRawatType.Create(roomCharge);
+        var kelasRawat = KelasJknType.FindKelasTertinggi(roomCharge);
         var kelasTarifRsId = _paramSistemDal.GetData(ParamSistemType.Key("BRI_GROUPER_RSID"))
             .Map(x => x.ParamValue)
             .GetValueOrThrow($"Kelas Tarif RS tidak ditemukan");
         var kelasTarifRs = _kelasTarifRsDal.GetData(KelasTarifRsType.Key(kelasTarifRsId))
             .GetValueOrThrow($"Kelas Tarif RS '{kelasTarifRsId}' tidak ditemukan");
-        var listTrsBilling = _trsBillingGetService.Execute(regKey);
+        //
+        var upgradeKelasIndikator = UpgradeKelasIndikatorType.Create(sep.KelasHak, roomCharge, 10m);
+        
         
         
         throw new AbandonedMutexException();

@@ -2,7 +2,7 @@
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.SepContext.KelasRawatFeature;
+using AptOnline.Domain.SepContext.KelasJknFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Infrastructure.Helpers;
 using FluentAssertions;
@@ -67,7 +67,7 @@ public class RegGetServiceTest
         var expected = new RegType(
             regId, DateTime.Parse("2024-06-05"), DateTime.Parse("2024-06-05"),
             PasienType.Load("337502200259454", "HAYDAR RAFA SATYA PUTRA,SDR", new DateTime(3000, 1, 1), GenderType.Default),
-            JenisRegEnum.RawatJalan, KelasRawatType.Default, 
+            JenisRegEnum.RawatJalan, KelasJknType.Default, 
             new LayananRefference("2RJ11","POLI BEDAH ORTHOPEDI"));
         var req = RegType.Key(regId);
 

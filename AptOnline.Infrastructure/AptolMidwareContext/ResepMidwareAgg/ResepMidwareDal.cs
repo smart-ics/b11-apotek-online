@@ -34,7 +34,7 @@ public class ResepMidwareDal : IResepMidwareDal
                 BridgeState, CreateTimestamp, ConfirmTimeStamp, SyncTimestamp, UploadTimestamp)
             VALUES(
                 @ResepMidwareId, @ResepMidwareDate, 
-                @ChartId, @ResepRsId, @ReffId, @JenisObatId, @Iterasi, 
+                @ChartId, @ResepRsId, @ReffId, @ResepBpjsNo, @JenisObatId, @Iterasi, 
                 @SepId, @SepDate, @SepNo, @NoPeserta, 
                 @RegId, @RegDate, @PasienId, @PasienName, @DokterId, @DokterName,
                 @PpkId, @PpkName, @PoliBpjsId, @PoliBpjsName,   
@@ -253,7 +253,7 @@ public class ResepMidwareDalTest
 
     private static ResepMidwareModel ResepMidwareFaker()
         => ResepMidwareModel.Load("A", new DateTime(2025,4,1), "B",
-            "C","D","E","12345",2,"F", new DateTime(2025,4,2), "G", "H",
+            "C","D","E","E1",2,"F", new DateTime(2025,4,2), "G", "H",
             "I", new DateTime(2025,4,3), "J", "K", "L", "M", "N", "O", "P", "Q", "R", 
             new DateTime(2024,4,4),
             new DateTime(2024,4,5),

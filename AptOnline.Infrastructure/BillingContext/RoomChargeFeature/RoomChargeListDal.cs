@@ -23,7 +23,9 @@ public class RoomChargeListDal : IListDataMayBe<RoomChargeBedDto, IRegKey>
     {
         const string sql = @"
             SELECT
-                aa.fd_tgl_Trs Tgl, aa.fs_kd_bed BedId, aa.fs_kd_layanan LayananId,
+                aa.fd_tgl_Trs Tgl, 
+                aa.fs_kd_bed BedId, 
+                aa.fs_kd_layanan LayananId,
                 ISNULL(bb.fs_nm_bed, '') BedName,
                 ISNULL(dd.fs_kd_kelas_dk, '') KelasDkId,
                 ISNULL(ee.fs_nm_kelas_dk, '') KelasDkName,

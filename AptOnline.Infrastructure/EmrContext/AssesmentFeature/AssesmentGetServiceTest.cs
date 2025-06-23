@@ -5,7 +5,7 @@ using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.EmrContext.AssesmentFeature;
-using AptOnline.Domain.SepContext.KelasRawatFeature;
+using AptOnline.Domain.SepContext.KelasJknFeature;
 using AptOnline.Infrastructure.Helpers;
 using Dapper;
 using FluentAssertions;
@@ -34,7 +34,7 @@ public class AssesmentGetServiceTest
         using var trans = TransHelper.NewScope();
         var regKey = RegType.Key("RG007");
         var reg = new RegType("RG007", DateTime.Now, DateTime.Now,
-            PasienType.Default, JenisRegEnum.RawatJalan, KelasRawatType.Default,
+            PasienType.Default, JenisRegEnum.RawatJalan, KelasJknType.Default,
             LayananType.Default.ToRefference());
         _regGetService.Setup(x => x.Execute(It.Is<IRegKey>(r => r.RegId == regKey.RegId))).Returns(reg);
         

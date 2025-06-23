@@ -4,6 +4,7 @@ using AptOnline.Domain.Helpers;
 using AptOnline.Domain.SepContext.AssesmentPelayananFeature;
 using AptOnline.Domain.SepContext.FaskesFeature;
 using AptOnline.Domain.SepContext.JenisPelayananFeature;
+using AptOnline.Domain.SepContext.KelasJknFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SkdpFeature;
 using Ardalis.GuardClauses;
@@ -13,7 +14,7 @@ namespace AptOnline.Domain.SepContext.SepFeature;
 public record SepType : ISepKey
 {
     public SepType(string sepId, DateTime sepDateTime, string sepNo, 
-        PesertaBpjsRefference pesertaBpjs, FaskesType faskesPerujuk,
+        PesertaBpjsRefference pesertaBpjs, KelasJknType kelasHak, FaskesType faskesPerujuk,
         JenisPelayananType jenisPelayanan, AssesmentPelayananType assesmentPelayanan,
         SkdpRefference skdp, RegType reg, DokterType dpjp, DokterType dpjpLayanan, 
         bool isPrb, string prb)
@@ -27,6 +28,7 @@ public record SepType : ISepKey
         Guard.Against.Null(faskesPerujuk, nameof(faskesPerujuk));
         Guard.Against.Null(jenisPelayanan, nameof(jenisPelayanan));
         Guard.Against.Null(assesmentPelayanan, nameof(assesmentPelayanan));
+        Guard.Against.Null(kelasHak, nameof(kelasHak));
 
         Guard.Against.Null(skdp, nameof(skdp));
         
@@ -35,6 +37,7 @@ public record SepType : ISepKey
         SepNo = sepNo;
         
         PesertaBpjs = pesertaBpjs;
+        KelasHak = kelasHak;
         FaskesPerujuk = faskesPerujuk;
         JenisPelayanan = jenisPelayanan;
         AssesmentPelayanan = assesmentPelayanan;
@@ -52,6 +55,7 @@ public record SepType : ISepKey
     public string SepNo { get; private set; }
     
     public PesertaBpjsRefference PesertaBpjs { get; private set; }
+    public KelasJknType KelasHak { get; private set; }
     public FaskesType FaskesPerujuk { get; private set; }
     public JenisPelayananType JenisPelayanan { get; private set; }
     public AssesmentPelayananType AssesmentPelayanan { get; private set; }
@@ -65,7 +69,7 @@ public record SepType : ISepKey
     
     public static SepType Default 
         => new SepType(AppConst.DASH, AppConst.DEF_DATE, AppConst.DASH, 
-        PesertaBpjsType.Default.ToRefference(), FaskesType.Default, 
+        PesertaBpjsType.Default.ToRefference(), KelasJknType.Default, FaskesType.Default, 
         JenisPelayananType.Default, AssesmentPelayananType.Default, 
         SkdpRefference.Default, RegType.Default, DokterType.Default, 
         DokterType.Default, false, AppConst.DASH);

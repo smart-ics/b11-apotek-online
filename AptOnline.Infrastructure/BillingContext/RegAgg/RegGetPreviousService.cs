@@ -4,7 +4,7 @@ using AptOnline.Application.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.SepContext.KelasRawatFeature;
+using AptOnline.Domain.SepContext.KelasJknFeature;
 using AptOnline.Infrastructure.Helpers;
 using Dapper;
 using FluentAssertions;
@@ -77,7 +77,7 @@ public class RegGetPreviousServiceTest
         //      - mock reg hutang   
         var regHut = new RegType(
             "RG001", DateTime.Parse("2024-06-05"), DateTime.Parse("2024-06-05"),
-            PasienType.Default, JenisRegEnum.RawatDarurat, KelasRawatType.Default,
+            PasienType.Default, JenisRegEnum.RawatDarurat, KelasJknType.Default,
             LayananType.Default.ToRefference());
         _regGetService.Setup(x => x.Execute(RegType.Key("RG001"))).Returns(regHut); 
 
