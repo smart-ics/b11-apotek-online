@@ -1,5 +1,6 @@
 ﻿using AptOnline.Application.BillingContext.LayananAgg;
 using AptOnline.Application.BillingContext.ParamSistemFeature;
+using AptOnline.Application.BillingContext.PegFeature;
 using AptOnline.Application.BillingContext.RegAgg;
 using AptOnline.Application.BillingContext.RoomChargeFeature;
 using AptOnline.Application.BillingContext.TipeLayananDkFeature;
@@ -9,15 +10,18 @@ using AptOnline.Application.EmrContext.AssesmentFeature;
 using AptOnline.Application.SepContext.SepFeature;
 using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.ParamSistemFeature;
+using AptOnline.Domain.BillingContext.PegFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.RoomChargeFeature;
 using AptOnline.Domain.BillingContext.TipeLayananDkFeature;
 using AptOnline.Domain.EKlaimContext;
 using AptOnline.Domain.EKlaimContext.CaraMasukFeature;
 using AptOnline.Domain.EKlaimContext.Covid19Feature;
+using AptOnline.Domain.EKlaimContext.DischargeStatusFeature;
 using AptOnline.Domain.EKlaimContext.EKlaimFeature;
 using AptOnline.Domain.EKlaimContext.JenisRawatFeature;
 using AptOnline.Domain.EKlaimContext.KelasTarifRsFeature;
+using AptOnline.Domain.EKlaimContext.PayorFeature;
 using AptOnline.Domain.EKlaimContext.PelayananDarahFeature;
 using AptOnline.Domain.EKlaimContext.UpgradeIndikatorFeature;
 using AptOnline.Domain.EmrContext.AssesmentFeature;
@@ -28,7 +32,7 @@ using MediatR;
 
 namespace AptOnline.Application.EKlaimContext.EKlaimFeature;
 
-public record EKlaimGenClaimDataCommand(string RegId) : IRequest, IRegKey;
+public record EKlaimGenClaimDataCommand(string RegId, string CoderNik) : IRequest, IRegKey;
 
 public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDataCommand, Unit>
 {
@@ -41,7 +45,7 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
     private readonly IAssesmentGetService _assesmentGetService;
     private readonly IRoomChargeGetService _roomChargeGetService;
     private readonly IKelasTarifRsDal _kelasTarifRsDal;
-    private readonly ITrsBillingGetService _trsBillingGetService;
+    private readonly IPegDal _pegDal;
     
     public EKlaimGenClaimDataCommandHandler(ISepDal sepDal, 
         IRegGetService regService, IParamSistemDal paramSistemDal, 
@@ -51,7 +55,7 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         IEKlaimRepo eklaimRepo, 
         IAssesmentGetService assesmentGetService, 
         IRoomChargeGetService roomChargeGetService, 
-        IKelasTarifRsDal kelasTarifRsDal)
+        IKelasTarifRsDal kelasTarifRsDal, IPegDal pegDal)
     {
         _sepDal = sepDal;
         _regService = regService;
@@ -62,6 +66,7 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         _assesmentGetService = assesmentGetService;
         _roomChargeGetService = roomChargeGetService;
         _kelasTarifRsDal = kelasTarifRsDal;
+        _pegDal = pegDal;
     }
 
     public Task<Unit> Handle(EKlaimGenClaimDataCommand request, CancellationToken cancellationToken)
@@ -134,7 +139,14 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         var kelasTarifRs = _kelasTarifRsDal.GetData(KelasTarifRsType.Key(kelasTarifRsId))
             .GetValueOrThrow($"Kelas Tarif RS '{kelasTarifRsId}' tidak ditemukan");
         //
-        var upgradeKelasIndikator = UpgradeKelasIndikatorType.Create(sep.KelasHak, roomCharge, 10m);
+        var prosenUpgradeVip = _paramSistemDal
+            .GetData(ParamSistemType.Key("BRI_GROUPER_PAYMNT_PCT"))
+            .Map(x => decimal.Parse(x.ParamValue));
+        var upgradeKelasIndikator = UpgradeKelasIndikatorType.Create(sep.KelasHak, roomCharge, prosenUpgradeVip.Value);
+        var dischargeStatus = DischargeStatusType.Default;
+        var payor = PayorType.Create("3", "JKN", "JKN");
+        var coder = _pegDal.GetData(request.CoderNik)
+            .GetValueOrThrow($"Pegawai '{request.CoderNik}' tidak ditemukan");
         
         
         

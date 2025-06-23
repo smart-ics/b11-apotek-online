@@ -82,7 +82,7 @@ public class PegDal : IPegDal
         return MayBe.From(dto);
     }
 
-    public MayBe<PegType> GetData(string key)
+    public MayBe<PegType> GetData(string nik)
     {
         const string sql = @"
             SELECT PegId, PegName, Nik 
@@ -90,7 +90,7 @@ public class PegDal : IPegDal
             WHERE Nik = @Nik";
         
         var dp = new DynamicParameters();
-        dp.AddParam("@Nik", key, SqlDbType.VarChar);
+        dp.AddParam("@Nik", nik, SqlDbType.VarChar);
 
         var dto = _conn.ReadSingle<PegType>(sql, dp);
         return MayBe.From(dto);
