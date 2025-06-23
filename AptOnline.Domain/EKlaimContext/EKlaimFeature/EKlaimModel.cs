@@ -48,7 +48,7 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
             //      BILL PASIEN
             KelasRawat = KelasRawatType.Default;
             KelasTarifRs = KelasTarifRsType.Default;
-            TarifRs = TarifRsType.Default;
+            TarifRs = TarifRsModel.Default;
             TarifPoliEksekutif = 0;
             UpgradeKelasIndikator = UpgradeKelasIndikatorType.Default;
             DischargeStatus = DischargeStatusType.Default;
@@ -79,7 +79,7 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
         //      BILL & ADMIN KELUAR
         public KelasRawatType KelasRawat { get; private set; }
         public KelasTarifRsType KelasTarifRs { get; private set; }
-        public TarifRsType TarifRs { get; private set; }
+        public TarifRsModel TarifRs { get; private set; }
         public decimal TarifPoliEksekutif { get; private set; }
         public UpgradeKelasIndikatorType  UpgradeKelasIndikator { get; private set; }
         public DischargeStatusType DischargeStatus { get; private set; }
@@ -148,7 +148,7 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
         }
         
         public void SetBillPasien(KelasRawatType kelasRawat, KelasTarifRsType kelasTarifRs, 
-            TarifRsType tarifRs, decimal tarifPoliEksekutif, UpgradeKelasIndikatorType upgradeKelasIndikator,
+            TarifRsModel tarifRs, decimal tarifPoliEksekutif, UpgradeKelasIndikatorType upgradeKelasIndikator,
             DischargeStatusType dischargeStatus, PayorType payor, PegType coder, int lengthOfStay)
         {
             Guard.Against.Null(kelasRawat, nameof(kelasRawat));
