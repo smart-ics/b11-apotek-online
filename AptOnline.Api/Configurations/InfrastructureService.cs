@@ -1,5 +1,7 @@
-﻿using AptOnline.Infrastructure;
+﻿using AptOnline.Domain.EKlaimContext.TarifRsFeature;
+using AptOnline.Infrastructure;
 using AptOnline.Infrastructure.BillingContext;
+using AptOnline.Infrastructure.EKlaimContext.TarifRsFeature;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Nuna.Lib.AutoNumberHelper;
@@ -23,6 +25,7 @@ public static class InfrastructureService
             .AddScoped<INunaCounterDal, ParamNoDal>()
             .AddScoped<INunaCounterDecDal, ParamNoDal>()
             .AddScoped<IRestClientFactory,  RestClientFactory>()
+            .AddSingleton<IMapSkemaJknDal, MapSkemaJknDal>()
             .AddMemoryCache();
 
         services

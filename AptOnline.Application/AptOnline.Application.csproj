@@ -26,6 +26,7 @@
   <ItemGroup>
     <Folder Include="BillingContext\LayananDkFeature\" />
     <Folder Include="BillingContext\SepAgg\" />
+    <Folder Include="EKlaimContext\TarifRsFeature\" />
   </ItemGroup>
 
 </Project>

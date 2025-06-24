@@ -35,7 +35,7 @@ public class TrsBillingGetService : ITrsBillingGetService
         foreach (var item in listTrsBillingConcept.Value)
         {
             var reffBiaya = new ReffBiayaType(item.fs_kd_ref_biaya, (JenisReffBiayaEnum)item.fn_modul);
-            result.AddReffBiaya(item.fs_kd_trs, reffBiaya, item.fn_total);
+            result.AddReffBiaya(item.fs_kd_trs, reffBiaya, item.fn_total, (JenisReffBiayaEnum)item.fn_modul);
         }
         return MayBe.From(result);
     }

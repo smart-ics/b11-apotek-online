@@ -23,6 +23,8 @@ using AptOnline.Domain.EKlaimContext.JenisRawatFeature;
 using AptOnline.Domain.EKlaimContext.KelasTarifRsFeature;
 using AptOnline.Domain.EKlaimContext.PayorFeature;
 using AptOnline.Domain.EKlaimContext.PelayananDarahFeature;
+using AptOnline.Domain.EKlaimContext.TarifRsFeature;
+using AptOnline.Domain.EKlaimContext.TbIndikatorFeature;
 using AptOnline.Domain.EKlaimContext.UpgradeIndikatorFeature;
 using AptOnline.Domain.EmrContext.AssesmentFeature;
 using AptOnline.Domain.SepContext.FaskesFeature;
@@ -46,6 +48,8 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
     private readonly IRoomChargeGetService _roomChargeGetService;
     private readonly IKelasTarifRsDal _kelasTarifRsDal;
     private readonly IPegDal _pegDal;
+    private readonly ITrsBillingGetService _trsBillingGetService;
+    private readonly IMapSkemaJknDal _mapSkemaJknDal;
     
     public EKlaimGenClaimDataCommandHandler(ISepDal sepDal, 
         IRegGetService regService, IParamSistemDal paramSistemDal, 
@@ -55,7 +59,9 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         IEKlaimRepo eklaimRepo, 
         IAssesmentGetService assesmentGetService, 
         IRoomChargeGetService roomChargeGetService, 
-        IKelasTarifRsDal kelasTarifRsDal, IPegDal pegDal)
+        IKelasTarifRsDal kelasTarifRsDal, IPegDal pegDal, 
+        ITrsBillingGetService trsBillingGetService, 
+        IMapSkemaJknDal mapSkemaJknDal)
     {
         _sepDal = sepDal;
         _regService = regService;
@@ -67,6 +73,8 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         _roomChargeGetService = roomChargeGetService;
         _kelasTarifRsDal = kelasTarifRsDal;
         _pegDal = pegDal;
+        _trsBillingGetService = trsBillingGetService;
+        _mapSkemaJknDal = mapSkemaJknDal;
     }
 
     public Task<Unit> Handle(EKlaimGenClaimDataCommand request, CancellationToken cancellationToken)
@@ -119,6 +127,7 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         var covid19 = Covid19Type.Default;
         var pelayananDarah = PelayananDarahType.Default;
         var vitalSign = VitalSignType.Create(assesment);
+        eklaim.SetMedisPasien(adlScore, icuIndikator, covid19, pelayananDarah, vitalSign, TbIndikatorType.Default);
         
         //  ----BILL-PASIEN
         //      1. Kelas Rawat [done]
@@ -143,14 +152,19 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
             .GetData(ParamSistemType.Key("BRI_GROUPER_PAYMNT_PCT"))
             .Map(x => decimal.Parse(x.ParamValue));
         var upgradeKelasIndikator = UpgradeKelasIndikatorType.Create(sep.KelasHak, roomCharge, prosenUpgradeVip.Value);
+        //  
+        var tarifRs = _trsBillingGetService.Execute(regKey)
+            .Match(onSome: x => x, onNone: () => TarifRsModel.Default);
+        tarifRs.GenerateSkemaJkn(_mapSkemaJknDal);
+        
         var dischargeStatus = DischargeStatusType.Default;
         var payor = PayorType.Create("3", "JKN", "JKN");
         var coder = _pegDal.GetData(request.CoderNik)
             .GetValueOrThrow($"Pegawai '{request.CoderNik}' tidak ditemukan");
-        
-        
-        
-        throw new AbandonedMutexException();
+        eklaim.SetBillPasien(kelasRawat, kelasTarifRs, tarifRs, 0, upgradeKelasIndikator, dischargeStatus, payor, coder, 1);
+
+        //_eklaimRepo.SaveChanges();
+        throw new NotImplementedException();
     }
 }
 
