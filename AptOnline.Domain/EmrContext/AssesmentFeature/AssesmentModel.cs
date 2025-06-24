@@ -21,7 +21,6 @@ public class AssesmentModel
         Guard.Against.NullOrWhiteSpace(assesmentId, nameof(assesmentId));
         Guard.Against.Null(assesmentDate, nameof(assesmentDate));
         Guard.Against.Null(concept, nameof(concept));
-        Guard.Against.NullOrWhiteSpace(assValue, nameof(assValue));
         
         var newItem = new AssesmentConceptType(assesmentId, assesmentDate, concept, assValue);
         _listAssesmentConcept.Add(newItem);

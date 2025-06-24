@@ -123,3 +123,15 @@ public class SepDal : ISepDal
         throw new NotImplementedException();
     }
 }
+
+// public static class MayBe
+// {
+//     public static MayBe<T> From<T>(T value) where T : class
+//     {
+//         return value == null
+//             ? MayBe<T>.None
+//             : MayBe<T>.Some(value);
+//     }
+//     public static MayBe<T> ToMayBe<T>(this T value) where T : class 
+//         => From(value);
+// }

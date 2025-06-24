@@ -164,6 +164,5 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         
         return eklaim;
     }
-    
 }
 

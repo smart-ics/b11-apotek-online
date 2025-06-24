@@ -30,14 +30,14 @@ public class EKlaimCreateHandler : IRequestHandler<EKlaimCreateCommand, EKlaimCr
     public Task<EKlaimCreateResponse> Handle(EKlaimCreateCommand request, CancellationToken cancellationToken)
     {
         //  GUARD
-        var sep = _sepDal.GetData(RegType.Key(request.RegId))
-            .GetValueOrThrow($"SEP utk register '{request.RegId}' tidak ditemukan");
-        var existingEKlaim = _eKlaimRepo.GetData(SepType.Key(sep.SepNo));
+        var sep = _sepDal.GetData(RegType.Key(request.RegId));
+            // .GetValueOrThrow($"SEP utk register '{request.RegId}' tidak ditemukan");
+        var existingEKlaim = _eKlaimRepo.GetData(SepType.Key(sep.Value.SepNo));
         if (existingEKlaim.HasValue)
             throw new ArgumentException($"Register '{request.RegId}' sudah memiliki eKlaim dengan Nomor '{existingEKlaim.Value.EKlaimId}'");
 
         //  BUILD
-        var eKlaim = EKlaimModel.CreateFromSep(sep, DateTime.Now);
+        var eKlaim = EKlaimModel.CreateFromSep(sep.Value, DateTime.Now);
         
         //  WRITE
         using var trans = TransHelper.NewScope();

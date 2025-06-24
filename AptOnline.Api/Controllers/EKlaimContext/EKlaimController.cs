@@ -24,4 +24,12 @@ public class EKlaimController : Controller
         var result = await _mediator.Send(command);
         return Ok(new JSendOk(result));
     }
+    
+    [HttpPut]
+    public async Task<IActionResult> GenClaimData(EKlaimGenClaimDataCommand command)
+    {
+        var result = await _mediator.Send(command);
+        return Ok(new JSendOk(result));
+    }
+
 }

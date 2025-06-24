@@ -1,5 +1,4 @@
 ﻿using AptOnline.Application.EklaimContext;
-using AptOnline.Domain.EKlaimContext;
 using AptOnline.Domain.EKlaimContext.EKlaimFeature;
 using AptOnline.Infrastructure.EKlaimContext.Shared;
 using AptOnline.Infrastructure.Helpers;
@@ -7,7 +6,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RestSharp;
 
-namespace AptOnline.Infrastructure.EKlaimContext
+namespace AptOnline.Infrastructure.EKlaimContext.EKlaimFeature.NewClaimService
 {
     public class EKlaimNewClaimService : IEKlaimNewClaimService
     {

@@ -39,7 +39,7 @@ public class RegGetPreviousService : IRegGetPreviousService
         var dp = new DynamicParameters();
         dp.AddParam("@fs_kd_reg", req.RegId, SqlDbType.VarChar);
 
-        var regHut = _conn.QuerySingle<string>(sql, dp);
+        var regHut = _conn.ReadSingle<string>(sql, dp);
         if (regHut == null) 
             return MayBe<RegType>.None;
         

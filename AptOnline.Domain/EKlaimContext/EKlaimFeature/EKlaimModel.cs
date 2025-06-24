@@ -1,10 +1,12 @@
-﻿using AptOnline.Domain.BillingContext.DokterAgg;
+﻿using System.Text.Json;
+using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.PegFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.EKlaimContext.CaraMasukFeature;
 using AptOnline.Domain.EKlaimContext.Covid19Feature;
 using AptOnline.Domain.EKlaimContext.DischargeStatusFeature;
+using AptOnline.Domain.EKlaimContext.EKlaimFeature;
 using AptOnline.Domain.EKlaimContext.JenisRawatFeature;
 using AptOnline.Domain.EKlaimContext.KelasTarifRsFeature;
 using AptOnline.Domain.EKlaimContext.PayorFeature;
@@ -16,6 +18,7 @@ using AptOnline.Domain.SepContext.KelasJknFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using Ardalis.GuardClauses;
+using Xunit;
 
 namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
 {
@@ -172,5 +175,16 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
         }
         #endregion
 
+    }
+}
+
+public class EKlaimModelTest
+{
+    [Fact]
+    public void Test1()
+    {
+        var eklaim = EKlaimModel.Default;
+        var json = JsonSerializer.Serialize(eklaim);
+        Assert.True(true);
     }
 }

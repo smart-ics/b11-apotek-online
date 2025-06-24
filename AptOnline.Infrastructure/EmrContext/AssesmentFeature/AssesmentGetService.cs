@@ -59,6 +59,8 @@ public class AssesmentGetService : IAssesmentGetService
         var dp = new DynamicParameters();
         dp.Add("@regId", req.RegId, DbType.String, ParameterDirection.Input);
         var result = _conn.Read<AssesmentConceptDto>(sql, dp);
+        result = result?.Where(x => !string.IsNullOrWhiteSpace(x.AssValue)).ToList();
+
         return MayBe.From(result);
     }
 

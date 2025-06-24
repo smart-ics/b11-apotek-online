@@ -29,7 +29,7 @@ public class TrsBillingBiayaListDal : IListDataMayBe<TrsBillingBiayaDto, IRegKey
                 aa.fs_kd_reg = @regId";
         
         var dp = new DynamicParameters();
-        dp.Add("@regId", key.RegId, DbType.String, ParameterDirection.Input);
+        dp.AddParam("@regId", key.RegId, SqlDbType.VarChar);
         var result = _conn.Read<TrsBillingBiayaDto>(sql, dp)?.ToList();
         if (result is null) 
             return MayBe<IEnumerable<TrsBillingBiayaDto>>.None;
