@@ -1,6 +1,8 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
+using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.EKlaimContext.EKlaimFeature;
+using AptOnline.Domain.SepContext.SepFeature;
 using AptOnline.Infrastructure.Helpers;
 using Dapper;
 using Microsoft.Extensions.Options;
@@ -15,6 +17,7 @@ public interface IEKlaimDal :
     IUpdate<EKlaimDto>,
     IDelete<IEKlaimKey>,
     IGetDataMayBe<EKlaimDto, IEKlaimKey>,
+    IGetDataMayBe<EKlaimDto, IRegKey>,
     IListDataMayBe<EKlaimDto, Periode>
 {
 }
@@ -33,16 +36,16 @@ public class EKlaimDal : IEKlaimDal
         const string sql = @"
             INSERT INTO JKNMW_EKlaim(
                 EKlaimId, EKlaimDate, SepNo, KartuBpjsNo, RegId, RegDate, 
-                PasienId, PasienName, BirthDate, Gender,
-                DpjpId, DpjpName, CaraMasukId, CaraMasukName,
+                PasienId, PasienName, BirthDate, Gender, DpjpId, DpjpName, 
+                CaraMasukId, CaraMasukName, JenisRawatId, JenisRawatName,
                 KelasJknId, KelasJknName, KelasJknValue, KelasTarifRsId,
                 TarifPoliEksekutif, UpgradeIndikator, AddPaymentProcentage,
                 DischargeStatusId, DischargeStatusName, PayorId, PayorName,
                 CoderPegId, CoderPegName, CoderNik, Los)
             VALUES(
                 @EKlaimId, @EKlaimDate, @SepNo, @KartuBpjsNo, @RegId, @RegDate, 
-                @PasienId, @PasienName, @BirthDate, @Gender,
-                @DpjpId, @DpjpName, @CaraMasukId, @CaraMasukName,
+                @PasienId, @PasienName, @BirthDate, @Gender, @DpjpId, @DpjpName, 
+                @CaraMasukId, @CaraMasukName, @JenisRawatId, @JenisRawatName,
                 @KelasJknId, @KelasJknName, @KelasJknValue, @KelasTarifRsId,
                 @TarifPoliEksekutif, @UpgradeIndikator, @AddPaymentProcentage,
                 @DischargeStatusId, @DischargeStatusName, @PayorId, @PayorName,
@@ -63,6 +66,10 @@ public class EKlaimDal : IEKlaimDal
         dp.AddParam("@DpjpName", model.DpjpName, SqlDbType.VarChar);
         dp.AddParam("@CaraMasukId", model.CaraMasukId, SqlDbType.VarChar);
         dp.AddParam("@CaraMasukName", model.CaraMasukName, SqlDbType.VarChar);
+        dp.AddParam("@JenisRawatId", model.JenisRawatId, SqlDbType.VarChar);
+        dp.AddParam("@JenisRawatName", model.JenisRawatName, SqlDbType.VarChar);
+        
+        
         dp.AddParam("@KelasJknId", model.KelasJknId, SqlDbType.VarChar);
         dp.AddParam("@KelasJknName", model.KelasJknName, SqlDbType.VarChar);
         dp.AddParam("@KelasJknValue", model.KelasJknValue, SqlDbType.VarChar);
@@ -102,6 +109,8 @@ public class EKlaimDal : IEKlaimDal
                 DpjpName = @DpjpName,  
                 CaraMasukId = @CaraMasukId,  
                 CaraMasukName = @CaraMasukName, 
+                JenisRawatId = @JenisRawatId,  
+                JenisRawatName = @JenisRawatName,
                 KelasJknId = @KelasJknId,  
                 KelasJknName = @KelasJknName,  
                 KelasJknValue = @KelasJknValue,  
@@ -135,6 +144,8 @@ public class EKlaimDal : IEKlaimDal
         dp.AddParam("@DpjpName", model.DpjpName, SqlDbType.VarChar);
         dp.AddParam("@CaraMasukId", model.CaraMasukId, SqlDbType.VarChar);
         dp.AddParam("@CaraMasukName", model.CaraMasukName, SqlDbType.VarChar);
+        dp.AddParam("@JenisRawatId", model.JenisRawatId, SqlDbType.VarChar);
+        dp.AddParam("@JenisRawatName", model.JenisRawatName, SqlDbType.VarChar);
         dp.AddParam("@KelasJknId", model.KelasJknId, SqlDbType.VarChar);
         dp.AddParam("@KelasJknName", model.KelasJknName, SqlDbType.VarChar);
         dp.AddParam("@KelasJknValue", model.KelasJknValue, SqlDbType.VarChar);
@@ -170,48 +181,54 @@ public class EKlaimDal : IEKlaimDal
 
     public MayBe<EKlaimDto> GetData(IEKlaimKey key)
     {
-        const string sql = @"
-            SELECT
-                EKlaimId, EKlaimDate, SepNo, KartuBpjsNo, RegId, RegDate, 
-                PasienId, PasienName, BirthDate, Gender,
-                DpjpId, DpjpName, CaraMasukId, CaraMasukName,
-                KelasJknId, KelasJknName, KelasJknValue, KelasTarifRsId,
-                TarifPoliEksekutif, UpgradeIndikator, AddPaymentProcentage,
-                DischargeStatusId, DischargeStatusName, PayorId, PayorName,
-                CoderPegId, CoderPegName, CoderNik, Los
-            FROM
-                JKNMW_EKlaim aa
-            WHERE
-                EKlaimId = @EKlaimId ";
-        
+        var sql = SelectFromClause() + @"
+            WHERE aa.EKlaimId = @EKlaimId ";
         var dp = new DynamicParameters();
         dp.AddParam("@EKlaimId", key.EKlaimId, SqlDbType.VarChar);
+        var result = _conn.ReadSingle<EKlaimDto>(sql, dp);
+        return MayBe.From(result);
+    }
 
+    public MayBe<EKlaimDto> GetData(IRegKey key)
+    {
+        var sql = SelectFromClause() + @"
+            WHERE aa.RegId = @RegId ";
+        var dp = new DynamicParameters();
+        dp.AddParam("@RegId", key.RegId, SqlDbType.VarChar);
         var result = _conn.ReadSingle<EKlaimDto>(sql, dp);
         return MayBe.From(result);
     }
 
     public MayBe<IEnumerable<EKlaimDto>> ListData(Periode filter)
     {
-        const string sql = @"
-            SELECT
-                EKlaimId, EKlaimDate, SepNo, KartuBpjsNo, RegId, RegDate, 
-                PasienId, PasienName, BirthDate, Gender,
-                DpjpId, DpjpName, CaraMasukId, CaraMasukName,
-                KelasJknId, KelasJknName, KelasJknValue, KelasTarifRsId,
-                TarifPoliEksekutif, UpgradeIndikator, AddPaymentProcentage,
-                DischargeStatusId, DischargeStatusName, PayorId, PayorName,
-                CoderPegId, CoderPegName, CoderNik, Los
-            FROM
-                JKNMW_EKlaim aa
+        var sql = SelectFromClause() + @"
             WHERE
-                EKlaimDate BETWEEN @Tgl1 AND @Tgl2";
-        
+                aa.EKlaimDate BETWEEN @Tgl1 AND @Tgl2 ";
         var dp = new DynamicParameters();
-        dp.AddParam("@Tgl1", filter.Tgl1, SqlDbType.DateTime); 
+        dp.AddParam("@Tgl1", filter.Tgl1, SqlDbType.DateTime);
         dp.AddParam("@Tgl2", filter.Tgl2, SqlDbType.DateTime);
 
         var result = _conn.Read<EKlaimDto>(sql, dp);
         return MayBe.From(result);
     }
+
+    private static string SelectFromClause()
+        => @"
+            SELECT
+                aa.EKlaimId, aa.EKlaimDate, aa.SepNo, aa.KartuBpjsNo, aa.RegId, aa.RegDate, 
+                aa.PasienId, aa.PasienName, aa.BirthDate, aa.Gender,
+                aa.DpjpId, aa.DpjpName, aa.CaraMasukId, aa.CaraMasukName,
+                aa.JenisRawatId, aa.JenisRawatName,
+                aa.KelasJknId, aa.KelasJknName, aa.KelasJknValue, aa.KelasTarifRsId,
+                aa.TarifPoliEksekutif, aa.UpgradeIndikator, aa.AddPaymentProcentage,
+                aa.DischargeStatusId, aa.DischargeStatusName, aa.PayorId, aa.PayorName,
+                aa.CoderPegId, aa.CoderPegName, aa.CoderNik, aa.Los,
+                ISNULL(bb.SepId, aa.SepID) AS SepId,
+                ISNULL(cc.KelasTarifRsName, aa.KelasJknName) AS KelasTarifRsName
+            FROM
+                JKNMW_EKlaim aa
+                LEFT JOIN VCLAIM_Sep bb on aa.SepNo = bb.SepNo
+                LEFT JOIN JKNMW_KelasTarifRs cc on aa.KelasTarifRsId = cc.KelasTarifRsId ";
+
+
 }

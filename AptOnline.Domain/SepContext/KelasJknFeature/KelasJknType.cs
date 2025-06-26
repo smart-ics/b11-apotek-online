@@ -5,7 +5,7 @@ namespace AptOnline.Domain.SepContext.KelasJknFeature;
 
 public record KelasJknType : IKelasJknKey
 {
-    private KelasJknType (string id, string name, int kelasValue)
+    public KelasJknType (string id, string name, int kelasValue)
     {
         Guard.Against.NullOrWhiteSpace(id, nameof(id));
         Guard.Against.NullOrWhiteSpace(name, nameof(name));

@@ -24,10 +24,9 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
 {
     public class EKlaimModel : IEKlaimKey
     {
-        private EKlaimModel(string eKlaimId, DateTime eKlaimDate, RegRefference reg, 
+        public EKlaimModel(string eKlaimId, DateTime eKlaimDate, RegRefference reg, 
             SepRefference sep, PasienType pasien, PesertaBpjsRefference pesertaBpjs)
         {
-            
             //      MANDATORY
             EKlaimId = eKlaimId;
             EKlaimDate = eKlaimDate;
@@ -121,6 +120,16 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
         #endregion
         
         #region BEHAVIOR
+
+        public void UpdateMandatory(DateTime eKlaimDate, RegRefference reg,
+            SepRefference sep, PasienType pasien, PesertaBpjsRefference pesertaBpjs)
+        {
+            EKlaimDate = eKlaimDate;
+            Reg = reg;
+            Sep = sep;
+            Pasien = pasien;
+            PesertaBpjs = pesertaBpjs;
+        }
         public void SetAdministrasiMasuk(DokterType dpjp, CaraMasukType caraMasuk, JenisRawatType jenisRawat)
         {
             Guard.Against.Null(dpjp, nameof(dpjp));
@@ -172,6 +181,11 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
             Payor = payor;
             Coder = coder;
             LengthOfStay = lengthOfStay;
+        }
+        public void AttachTarifRs(TarifRsModel tarifRs)
+        {
+            Guard.Against.Null(tarifRs, nameof(tarifRs));
+            TarifRs = tarifRs;
         }
         #endregion
 

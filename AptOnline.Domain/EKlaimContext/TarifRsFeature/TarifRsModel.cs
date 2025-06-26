@@ -6,7 +6,6 @@ namespace AptOnline.Domain.EKlaimContext.TarifRsFeature;
 public class TarifRsModel
 {
     private readonly List<TarifRsReffBiayaType> _listReffBiaya;
-    private readonly List<TarifRsSkemaJknModel> _listSkema;
 
     public TarifRsModel(RegRefference reg)
     {
@@ -14,12 +13,21 @@ public class TarifRsModel
         
         Reg = reg;
         _listReffBiaya = new List<TarifRsReffBiayaType>();
-        _listSkema = new  List<TarifRsSkemaJknModel>();
         
     }
     public RegRefference Reg { get; init; }
     public IEnumerable<TarifRsReffBiayaType> ListReffBiaya => _listReffBiaya;
-    public IEnumerable<TarifRsSkemaJknModel> ListSkema => _listSkema;
+    public IEnumerable<TarifRsSkemaJknModel> ListSkema 
+        => _listReffBiaya
+            .GroupBy(x => x.SkemaJkn)
+            .Select(g => g.Aggregate(
+                new TarifRsSkemaJknModel(g.Key),
+                (hdr, dtl) => 
+                {
+                    hdr.AddReffBiaya(dtl);
+                    return hdr;
+                }
+            ));
     
     
     public void AddReffBiaya(string trsId, ReffBiayaType reffBiaya, 
@@ -34,24 +42,23 @@ public class TarifRsModel
         _listReffBiaya.Add(new TarifRsReffBiayaType(maxNoUrut, trsId, reffBiaya, ketBiaya, nilai));
     }
     
-    public void GenerateSkemaJkn(IMapSkemaJknDal mapSkemaJknType)
+    public void GenerateSkemaJkn(IMapSkemaJknDal mapSkemaJkn)
     {
         foreach (var item in _listReffBiaya)
         {
-            var skemaMap = mapSkemaJknType.GetData(item.ReffBiaya);
+            var skemaMap = mapSkemaJkn.GetData(item.ReffBiaya);
             if (!skemaMap.HasValue)
                 continue;
-            
-            var skema = _listSkema.FirstOrDefault(x => x.SkemaJkn == skemaMap.Value.SkemaJkn);
-            if (skema is null)
-            {
-                skema = new TarifRsSkemaJknModel(skemaMap.Value.SkemaJkn);
-                _listSkema.Add(skema);
-            }
-            
-            skema.AddReffBiaya(item);
+            item.SetSkemaJkn(skemaMap.Value.SkemaJkn);
         }
     }
 
     public static TarifRsModel Default => new TarifRsModel(RegType.Default.ToRefference());
+    public static TarifRsModel Create(IEnumerable<TarifRsReffBiayaType> listReffBiaya)
+    {
+        var result = new TarifRsModel(RegType.Default.ToRefference());
+        foreach (var item in listReffBiaya)
+            result._listReffBiaya.Add(item);
+        return result;
+    } 
 }

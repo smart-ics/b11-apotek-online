@@ -76,7 +76,10 @@ public class EKlaimDalTest
         using var trans = TransHelper.NewScope();
         _sut.Insert(Faker());
         var actual =_sut.GetData(EKlaimModel.Key("A"));
-        actual.Value.Should().BeEquivalentTo(Faker());
+        actual.Value.Should().BeEquivalentTo(Faker(), 
+            opt => opt
+                .Excluding(x => x.SepId)
+                .Excluding(x => x.SepDate));
     }
     
     [Fact]

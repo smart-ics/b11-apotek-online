@@ -18,6 +18,8 @@
     
     CaraMasukId VARCHAR(10) NOT NULL CONSTRAINT JKNMW_EKlaim_CaraMasukId DEFAULT(''),
     CaraMasukName VARCHAR(50) NOT NULL CONSTRAINT JKNMW_EKlaim_CaraMasukName DEFAULT(''),
+    JenisRawatId VARCHAR(1) NOT NULL CONSTRAINT JKMNW_EKlaim_JenisRawatId DEFAULT(''),
+    JenisRawatName VARCHAR(50) NOT NULL CONSTRAINT JKNMW_EKlaim_JenisRawatName DEFAULT(''),
     
     KelasJknId VARCHAR(1) NOT NULL CONSTRAINT JKNMW_EKlaim_KelasJknId DEFAULT(''),
     KelasJknName VARCHAR(10) NOT NULL CONSTRAINT JKNMW_EKlaim_KelasJknName DEFAULT(''),

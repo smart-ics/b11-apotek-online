@@ -86,7 +86,7 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
                 onSome: x => x,
                 onNone: () => RoomChargeModel.Default);
         
-        var eklaim = _eklaimRepo.GetData(regKey)
+        var eklaim = _eklaimRepo.LoadEntity(regKey)
             .GetValueOrThrow($"eKlaim utk register '{request.RegId}' tidak ditemukan");
         eklaim = SetAdministrasiMasuk(eklaim, sep, regKey);
         eklaim = SetMedisPasien(eklaim, regKey, roomCharge);

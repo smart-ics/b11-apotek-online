@@ -51,10 +51,11 @@ public class TarifRsModelTest
         _mapSkemaJknDalMock.Setup(x => x.GetData(PakaiKamar1)).Returns(MayBe.From(MapKamar1Jkn));   
         tarifRs.GenerateSkemaJkn(_mapSkemaJknDalMock.Object);
 
-        tarifRs.ListSkema.Should().HaveCount(3);
+        tarifRs.ListSkema.Should().HaveCount(4);
         tarifRs.ListSkema.First(x => x.SkemaJkn == SkemaJknType.ProsedurBedah).Nilai.Should().Be(300);
         tarifRs.ListSkema.First(x => x.SkemaJkn == SkemaJknType.Obat).Nilai.Should().Be(650);
         tarifRs.ListSkema.First(x => x.SkemaJkn == SkemaJknType.Kamar).Nilai.Should().Be(400);
+        tarifRs.ListSkema.First(x => x.SkemaJkn == SkemaJknType.Default).Nilai.Should().Be(500);
     }
     
 }

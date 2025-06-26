@@ -12,7 +12,7 @@ namespace AptOnline.Infrastructure.EKlaimContext.EKlaimFeature.EKlaimRepository;
 public interface IEKlaimMedisDal:
     IInsert<EKlaimMedisDto>,
     IUpdate<EKlaimMedisDto>,
-    IDelete<EKlaimMedisDto>,
+    IDelete<IEKlaimKey>,
     IGetDataMayBe<EKlaimMedisDto, IEKlaimKey>
 {}
 
@@ -145,7 +145,7 @@ public class EKlaimMedisDal : IEKlaimMedisDal
         _conn.Execute(sql, dp); 
     }   
 
-    public void Delete(EKlaimMedisDto key)
+    public void Delete(IEKlaimKey key)
     {
         const string sql = @"
             DELETE FROM JKNMW_EKlaimMedis 
