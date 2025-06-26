@@ -1,4 +1,5 @@
-﻿using AptOnline.Application.BillingContext.LayananAgg;
+﻿using System.Text.Json;
+using AptOnline.Application.BillingContext.LayananAgg;
 using AptOnline.Application.BillingContext.ParamSistemFeature;
 using AptOnline.Application.BillingContext.PegFeature;
 using AptOnline.Application.BillingContext.RegAgg;
@@ -9,6 +10,7 @@ using AptOnline.Application.EKlaimContext.KelasTarifRsFeature;
 using AptOnline.Application.EmrContext.AssesmentFeature;
 using AptOnline.Application.SepContext.SepFeature;
 using AptOnline.Domain.BillingContext.ParamSistemFeature;
+using AptOnline.Domain.BillingContext.PegFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.BillingContext.RoomChargeFeature;
 using AptOnline.Domain.BillingContext.TipeLayananDkFeature;
@@ -91,6 +93,7 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         eklaim = SetBillPasien(eklaim, regKey, roomCharge, sep, request.CoderNik);
 
         //_eklaimRepo.SaveChanges();
+        var eklaimJson = JsonSerializer.Serialize(eklaim, new JsonSerializerOptions());
         throw new NotImplementedException();
     }
 
@@ -112,7 +115,7 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         //
         var jenisRawat = JenisRawatType.Create(sep.JenisPelayanan);
         eklaim.SetAdministrasiMasuk(dpjp, caraMasuk, jenisRawat);
-        
+
         return eklaim;
     }
     private EKlaimModel SetMedisPasien(EKlaimModel eklaim, IRegKey regKey, RoomChargeModel roomCharge)
@@ -155,8 +158,7 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         
         var dischargeStatus = DischargeStatusType.Default;
         var payor = PayorType.Create("3", "JKN", "JKN");
-        var coder = _pegDal.GetData(coderNik)
-            .GetValueOrThrow($"Pegawai '{coderNik}' tidak ditemukan");
+        var coder = PegType.Default with { Nik = coderNik };
         
         eklaim.SetBillPasien(kelasRawat, kelasTarifRs, tarifRs, 0, 
             upgradeKelasIndikator, dischargeStatus, payor, coder, 1);

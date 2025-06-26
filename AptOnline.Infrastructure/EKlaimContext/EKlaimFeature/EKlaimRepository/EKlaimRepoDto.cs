@@ -1,6 +1,5 @@
 ﻿using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.EKlaimContext;
 using AptOnline.Domain.EKlaimContext.EKlaimFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SepFeature;
@@ -9,7 +8,7 @@ using Nuna.Lib.ValidationHelper;
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
 
-namespace AptOnline.Infrastructure.EKlaimContext;
+namespace AptOnline.Infrastructure.EKlaimContext.EKlaimFeature.EKlaimRepository;
 
 
 public class EKlaimRepoDto

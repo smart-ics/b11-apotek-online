@@ -32,17 +32,17 @@ public class TrsBillingBiayaListDalTest
     {
         using var trans = TransHelper.NewScope();
         const string sql = @"
-                INSERT INTO ta_trs_billing (fs_kd_trs, fs_kd_reg, fs_kd_ref_biaya, fn_total, fn_modul)
-                VALUES('TU1', 'RG1', 'A', 100, 0), 
-                      ('DU2', 'RG1', 'B', 200, 1),
-                      ('BE3', 'RG1', 'C', 400, 0)";
+                INSERT INTO ta_trs_billing (fs_kd_trs, fs_kd_reg, fs_kd_ref_biaya, fs_keterangan, fn_total, fn_modul)
+                VALUES('TU1', 'RG1', 'A', 'A1', 100, 0), 
+                      ('DU2', 'RG1', 'B', 'B1', 200, 1),
+                      ('BE3', 'RG1', 'C', 'C1', 400, 0)";
         _conn.Execute(sql);
         
         var actual = _sut.ListData(RegType.Key("RG1"));
         actual.HasValue.Should().BeTrue();
         actual.Value.Should().HaveCount(3);
-        actual.Value.Should().ContainEquivalentOf(new TrsBillingBiayaDto("TU1", "A", 100, 0));
-        actual.Value.Should().ContainEquivalentOf(new TrsBillingBiayaDto("DU2", "B", 200, 1));
-        actual.Value.Should().ContainEquivalentOf(new TrsBillingBiayaDto("BE3", "C", 400, 2));
+        actual.Value.Should().ContainEquivalentOf(new TrsBillingBiayaDto("TU1", "A", "A1", 100, 0));
+        actual.Value.Should().ContainEquivalentOf(new TrsBillingBiayaDto("DU2", "B", "B1", 200, 1));
+        actual.Value.Should().ContainEquivalentOf(new TrsBillingBiayaDto("BE3", "C", "C1", 400, 2));
     }
 }

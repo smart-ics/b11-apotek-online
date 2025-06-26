@@ -18,16 +18,20 @@ public class TarifRsModel
         
     }
     public RegRefference Reg { get; init; }
-    public IEnumerable<TarifRsReffBiayaType> ListTarif => _listReffBiaya;
+    public IEnumerable<TarifRsReffBiayaType> ListReffBiaya => _listReffBiaya;
     public IEnumerable<TarifRsSkemaJknModel> ListSkema => _listSkema;
     
     
     public void AddReffBiaya(string trsId, ReffBiayaType reffBiaya, 
-        decimal nilai, JenisReffBiayaEnum jenisReffBiaya)
+        string ketBiaya, decimal nilai)
     {
         Guard.Against.NullOrWhiteSpace(trsId, nameof(trsId));
         Guard.Against.Null(reffBiaya, nameof(reffBiaya));
-        _listReffBiaya.Add(new TarifRsReffBiayaType(trsId, reffBiaya, nilai));
+        var maxNoUrut = _listReffBiaya
+            .DefaultIfEmpty(new TarifRsReffBiayaType(0, "-", ReffBiayaType.Default, "", 0))
+            .Max(x => x.NoUrut);
+        maxNoUrut++;
+        _listReffBiaya.Add(new TarifRsReffBiayaType(maxNoUrut, trsId, reffBiaya, ketBiaya, nilai));
     }
     
     public void GenerateSkemaJkn(IMapSkemaJknDal mapSkemaJknType)

@@ -24,12 +24,12 @@ public class TarifRsModelTest
     private static TarifRsModel Reg1()
     {
         var result = new TarifRsModel(RegType.Default.ToRefference());
-        result.AddReffBiaya("TU1", TdkBedah1, 100, JenisReffBiayaEnum.Jasa);
-        result.AddReffBiaya("TU2", TdkBedah2, 200, JenisReffBiayaEnum.Jasa);
-        result.AddReffBiaya("DU1", JualObat1, 300, JenisReffBiayaEnum.Obat);
-        result.AddReffBiaya("DU2", JualObat2, 350, JenisReffBiayaEnum.Obat);
-        result.AddReffBiaya("BE1", PakaiKamar1, 400, JenisReffBiayaEnum.Akomodasi);
-        result.AddReffBiaya("BE2", PakaiKamarTidakMap, 500, JenisReffBiayaEnum.Akomodasi);
+        result.AddReffBiaya("TU1", TdkBedah1, "Hecting", 100);
+        result.AddReffBiaya("TU2", TdkBedah2, "Cabut Gigi", 200);
+        result.AddReffBiaya("DU1", JualObat1, "Amoxan",300);
+        result.AddReffBiaya("DU2", JualObat2, "Dipometan", 350);
+        result.AddReffBiaya("BE1", PakaiKamar1, "ICU", 400);
+        result.AddReffBiaya("BE2", PakaiKamarTidakMap, "Anggrek 3",500);
         return result;
     }
 
@@ -42,13 +42,7 @@ public class TarifRsModelTest
     [Fact]
     public void UT1_GivenValidTrsBilling_WhenCreate_ThenReturAsExpected()
     {
-        var tarifRs = new TarifRsModel(RegType.Default.ToRefference());
-        tarifRs.AddReffBiaya("TU1", TdkBedah1, 100,  JenisReffBiayaEnum.Jasa);
-        tarifRs.AddReffBiaya("TU2", TdkBedah2, 200,  JenisReffBiayaEnum.Jasa);
-        tarifRs.AddReffBiaya("DU1", JualObat1, 300,  JenisReffBiayaEnum.Obat);
-        tarifRs.AddReffBiaya("DU2", JualObat2, 350,  JenisReffBiayaEnum.Obat);
-        tarifRs.AddReffBiaya("BE1", PakaiKamar1, 400,  JenisReffBiayaEnum.Akomodasi);
-        tarifRs.AddReffBiaya("BE2", PakaiKamarTidakMap, 500, JenisReffBiayaEnum.Akomodasi);
+        var tarifRs = Reg1();
         
         _mapSkemaJknDalMock.Setup(x => x.GetData(TdkBedah1)).Returns(MayBe.From(MapBedah1Jkn));
         _mapSkemaJknDalMock.Setup(x => x.GetData(TdkBedah2)).Returns(MayBe.From(MapBedah2Jkn));

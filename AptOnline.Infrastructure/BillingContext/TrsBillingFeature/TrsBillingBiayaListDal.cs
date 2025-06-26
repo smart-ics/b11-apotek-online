@@ -22,7 +22,7 @@ public class TrsBillingBiayaListDal : IListDataMayBe<TrsBillingBiayaDto, IRegKey
     {
         const string sql = @"
             SELECT
-                aa.fs_kd_trs, fs_kd_ref_biaya, fn_total, fn_modul
+                aa.fs_kd_trs, fs_kd_ref_biaya, fs_keterangan, fn_total, fn_modul
             FROM
                 ta_trs_billing aa
             WHERE

@@ -2,7 +2,7 @@
 
 namespace AptOnline.Domain.EKlaimContext.TarifRsFeature;
 
-public record SkemaJknType(string TarifJknId, string SkemaTarifJknName) : ITariJknfKey
+public record SkemaJknType(string SkemaTarifJknId, string SkemaTarifJknName) : ISkemaTariJknfKey
 {
     public static SkemaJknType Create(string id, string name)
     {
@@ -12,7 +12,7 @@ public record SkemaJknType(string TarifJknId, string SkemaTarifJknName) : ITariJ
     }
 
     public static SkemaJknType Default => new("-", "-");
-    public static ITariJknfKey Key(string id) => new SkemaJknType(id, "-");
+    public static ISkemaTariJknfKey Key(string id) => new SkemaJknType(id, "-");
     
     public static SkemaJknType ProsedurNonBedah => new("1", "Prosedur Non Bedah");
     public static SkemaJknType ProsedurBedah => new("2", "Prosedur Bedah");

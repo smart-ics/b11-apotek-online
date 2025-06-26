@@ -31,5 +31,4 @@ public class EKlaimController : Controller
         var result = await _mediator.Send(command);
         return Ok(new JSendOk(result));
     }
-
 }

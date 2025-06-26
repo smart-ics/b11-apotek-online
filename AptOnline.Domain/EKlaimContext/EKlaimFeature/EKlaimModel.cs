@@ -177,14 +177,3 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
 
     }
 }
-
-public class EKlaimModelTest
-{
-    [Fact]
-    public void Test1()
-    {
-        var eklaim = EKlaimModel.Default;
-        var json = JsonSerializer.Serialize(eklaim);
-        Assert.True(true);
-    }
-}

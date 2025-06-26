@@ -1,6 +1,6 @@
 ﻿namespace AptOnline.Domain.EKlaimContext.TarifRsFeature;
 
-public interface ITariJknfKey
+public interface ISkemaTariJknfKey
 {
-    string TarifJknId { get; }
+    string SkemaTarifJknId { get; }
 }
