@@ -69,7 +69,6 @@ public class EKlaimDal : IEKlaimDal
         dp.AddParam("@JenisRawatId", model.JenisRawatId, SqlDbType.VarChar);
         dp.AddParam("@JenisRawatName", model.JenisRawatName, SqlDbType.VarChar);
         
-        
         dp.AddParam("@KelasJknId", model.KelasJknId, SqlDbType.VarChar);
         dp.AddParam("@KelasJknName", model.KelasJknName, SqlDbType.VarChar);
         dp.AddParam("@KelasJknValue", model.KelasJknValue, SqlDbType.VarChar);
@@ -223,11 +222,11 @@ public class EKlaimDal : IEKlaimDal
                 aa.TarifPoliEksekutif, aa.UpgradeIndikator, aa.AddPaymentProcentage,
                 aa.DischargeStatusId, aa.DischargeStatusName, aa.PayorId, aa.PayorName,
                 aa.CoderPegId, aa.CoderPegName, aa.CoderNik, aa.Los,
-                ISNULL(bb.SepId, aa.SepID) AS SepId,
-                ISNULL(cc.KelasTarifRsName, aa.KelasJknName) AS KelasTarifRsName
+                ISNULL(bb.fs_kd_trs, '') AS SepId,
+                ISNULL(cc.KelasTarifRsName, '') AS KelasTarifRsName
             FROM
                 JKNMW_EKlaim aa
-                LEFT JOIN VCLAIM_Sep bb on aa.SepNo = bb.SepNo
+                LEFT JOIN VCLAIM_Sep bb on aa.SepNo = bb.fs_no_peserta
                 LEFT JOIN JKNMW_KelasTarifRs cc on aa.KelasTarifRsId = cc.KelasTarifRsId ";
 
 

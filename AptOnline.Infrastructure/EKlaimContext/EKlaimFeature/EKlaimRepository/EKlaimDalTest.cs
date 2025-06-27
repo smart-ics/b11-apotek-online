@@ -33,6 +33,8 @@ public class EKlaimDalTest
             DpjpName = "I",
             CaraMasukId = "J",
             CaraMasukName = "K",
+            JenisRawatId = "V",
+            JenisRawatName = "W",
             KelasJknId = "L",
             KelasJknName = "M",
             KelasJknValue = 1,
@@ -79,7 +81,8 @@ public class EKlaimDalTest
         actual.Value.Should().BeEquivalentTo(Faker(), 
             opt => opt
                 .Excluding(x => x.SepId)
-                .Excluding(x => x.SepDate));
+                .Excluding(x => x.SepDate)
+                .Excluding(x => x.KelasTarifRsName));
     }
     
     [Fact]
@@ -88,6 +91,9 @@ public class EKlaimDalTest
         using var trans = TransHelper.NewScope();
         _sut.Insert(Faker());
         var actual =_sut.ListData(new Periode(new DateTime(2022, 1, 1)));
-        actual.Value.Should().ContainEquivalentOf(Faker());
+        actual.Value.Should().ContainEquivalentOf(Faker(), opt =>
+            opt.Excluding(x => x.SepId)
+                .Excluding(x => x.SepDate)
+                .Excluding(x => x.KelasTarifRsName));
     }
 }

@@ -117,7 +117,10 @@ public class EKlaimDto
         var upgradeIndikator = new UpgradeKelasIndikatorType(UpgradeIndikator, AddPaymentProcentage);
         var dischargeStatus = new DischargeStatusType(DischargeStatusId, DischargeStatusName);
         var payor = new PayorType(PayorId, PayorName, PayorName);
-        var coder = new PegType("-", "-", CoderNik);
+        var coder = new PegType(
+            CoderPegId == "" ? "-" : CoderPegId, 
+            CoderPegName == "" ? "-" : CoderPegName, 
+            CoderNik);
         result.SetBillPasien(kelasJkn, kelasTarifRs, tarifRs, TarifPoliEksekutif,
             upgradeIndikator, dischargeStatus, payor, coder, Los);
         
