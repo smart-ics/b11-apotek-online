@@ -31,4 +31,13 @@ public class EKlaimController : Controller
         var result = await _mediator.Send(command);
         return Ok(new JSendOk(result));
     }
+
+    [HttpGet]
+    [Route("{regId}")]
+    public async Task<IActionResult> GetEKlaimByReg(string regId)
+    {
+        var query = new EKlaimGetQuery(regId);
+        var result = await _mediator.Send(query);
+        return Ok(new JSendOk(result));
+    }
 }

@@ -98,4 +98,12 @@ public class EKlaimDtoTest
                 .Excluding(x => x.VitalSign)
                 .Excluding(x => x.PasienTb));
     }
+
+    [Fact]
+    public void UT2_ModelToDto_Test()
+    {
+        var model = ModelFaker();
+        var result = new EKlaimDto(model);
+        result.Should().BeEquivalentTo(DtoFaker());
+    }
 }

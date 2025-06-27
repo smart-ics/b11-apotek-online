@@ -47,7 +47,6 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
     private readonly IAssesmentGetService _assesmentGetService;
     private readonly IRoomChargeGetService _roomChargeGetService;
     private readonly IKelasTarifRsDal _kelasTarifRsDal;
-    private readonly IPegDal _pegDal;
     private readonly ITrsBillingGetService _trsBillingGetService;
     private readonly IMapSkemaJknDal _mapSkemaJknDal;
     
@@ -71,7 +70,6 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         _assesmentGetService = assesmentGetService;
         _roomChargeGetService = roomChargeGetService;
         _kelasTarifRsDal = kelasTarifRsDal;
-        _pegDal = pegDal;
         _trsBillingGetService = trsBillingGetService;
         _mapSkemaJknDal = mapSkemaJknDal;
     }
@@ -92,9 +90,10 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         eklaim = SetMedisPasien(eklaim, regKey, roomCharge);
         eklaim = SetBillPasien(eklaim, regKey, roomCharge, sep, request.CoderNik);
 
-        //_eklaimRepo.SaveChanges();
-        var eklaimJson = JsonSerializer.Serialize(eklaim, new JsonSerializerOptions());
-        throw new NotImplementedException();
+        _eklaimRepo.SaveChanges(eklaim);
+        // var eklaimJson = JsonSerializer.Serialize(eklaim, new JsonSerializerOptions());
+        
+        return Task.FromResult(Unit.Value);
     }
 
     private EKlaimModel SetAdministrasiMasuk(EKlaimModel eklaim, SepType sep, IRegKey regKey)
@@ -163,6 +162,7 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         eklaim.SetBillPasien(kelasRawat, kelasTarifRs, tarifRs, 0, 
             upgradeKelasIndikator, dischargeStatus, payor, coder, 1);
         
+        _eklaimRepo.SaveChanges(eklaim);        
         
         return eklaim;
     }

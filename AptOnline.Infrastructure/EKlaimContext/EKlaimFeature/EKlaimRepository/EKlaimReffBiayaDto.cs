@@ -44,5 +44,9 @@ public class EKlaimReffBiayaDto
             }).ToList();
         return result;
     }
+}
+
+public class EKlainReffBiayaDtoTest
+{
     
 }

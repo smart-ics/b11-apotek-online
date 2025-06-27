@@ -27,7 +27,9 @@ public class EKlaimDto
     {
         EKlaimId = model.EKlaimId;
         EKlaimDate = model.EKlaimDate;
+        SepId = model.Sep.SepId;
         SepNo = model.Sep.SepNo;
+        SepDate = model.Sep.SepDate;
         KartuBpjsNo = model.PesertaBpjs.PesertaBpjsNo;
         
         RegId = model.Reg.RegId;
@@ -47,7 +49,8 @@ public class EKlaimDto
         KelasJknId = model.KelasJkn.KelasJknId;
         KelasJknName = model.KelasJkn.KelasJknName;
         KelasJknValue = model.KelasJkn.KelasValue;
-        KelasTarifRsId = model.EKlaimId;
+        KelasTarifRsId = model.KelasTarifRs.KelasTarifRsId;
+        KelasTarifRsName = model.KelasTarifRs.KelasTarifRsName;
         TarifPoliEksekutif = model.TarifPoliEksekutif;
         UpgradeIndikator = model.UpgradeKelasIndikator.UpgradeIndikator;
         AddPaymentProcentage = model.UpgradeKelasIndikator.AddPaymentProsentage;

@@ -41,7 +41,7 @@ public class EKlaimCreateHandler : IRequestHandler<EKlaimCreateCommand, EKlaimCr
         //  WRITE
         using var trans = TransHelper.NewScope();
         _eKlaimRepo.SaveChanges(eKlaim);
-        _eKlaimNewClaimService.Execute(eKlaim);
+        //_eKlaimNewClaimService.Execute(eKlaim);
         trans.Complete();
         
         //  RESPONSE

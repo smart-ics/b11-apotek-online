@@ -14,9 +14,9 @@ public static class ConnStringHelper
 
     private static string Generate(string server, string db)
     {
-        const string uid = "hospitalx";
+        const string uid = "HospitalX";
         const string pass = "intersoftindo";
-        var result = $"Server={server};Database={db};User Id={uid};Password={pass};";
+        var result = $"Server={server};Database={db};User Id={uid};Password={pass};TrustServerCertificate=True";
         return result;
     }
 }

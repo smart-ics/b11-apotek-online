@@ -28,11 +28,15 @@ public class EKlaimReffBIayaDal : IEKlaimReffBiayaDal
 
     public void Insert(IEnumerable<EKlaimReffBiayaDto> listModel)
     {
-        using var bcp = new SqlBulkCopy(_conn.ConnectionString);
+        using var bcp = new SqlBulkCopy((SqlConnection)_conn);
+        if (_conn.State != ConnectionState.Open)
+            _conn.Open();
+        
         bcp.AddMap("EKlaimId", "EKlaimId");
         bcp.AddMap("NoUrut", "NoUrut");
         bcp.AddMap("TrsId", "TrsId");
         bcp.AddMap("ReffBiayaId", "ReffBiayaId");
+        bcp.AddMap("ReffClass", "ReffClass");
         bcp.AddMap("KetBiaya", "KetBiaya");
         bcp.AddMap("Nilai", "Nilai");
         bcp.AddMap("SkemaTarifJknId", "SkemaTarifJknId");

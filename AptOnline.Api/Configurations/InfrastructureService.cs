@@ -1,4 +1,5 @@
-﻿using AptOnline.Domain.EKlaimContext.TarifRsFeature;
+﻿using AptOnline.Application.Helpers;
+using AptOnline.Domain.EKlaimContext.TarifRsFeature;
 using AptOnline.Infrastructure;
 using AptOnline.Infrastructure.BillingContext;
 using AptOnline.Infrastructure.EKlaimContext.TarifRsFeature;
@@ -103,6 +104,22 @@ public static class InfrastructureService
                     .UsingRegistrationStrategy(RegistrationStrategy.Skip)
                     .AsSelfWithInterfaces()
                     .WithScopedLifetime()
+                .FromAssemblyOf<InfrastructureAssemblyAnchor>()
+                    .AddClasses(c => c.AssignableTo(typeof(ISaveChange<>)))
+                    .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+                    .AsSelfWithInterfaces()
+                    .WithScopedLifetime()
+                .FromAssemblyOf<InfrastructureAssemblyAnchor>()
+                    .AddClasses(c => c.AssignableTo(typeof(IDeleteEntity<>)))
+                    .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+                    .AsSelfWithInterfaces()
+                    .WithScopedLifetime()
+                .FromAssemblyOf<InfrastructureAssemblyAnchor>()
+                    .AddClasses(c => c.AssignableTo(typeof(ILoadEntity<,>)))
+                    .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+                    .AsSelfWithInterfaces()
+                    .WithScopedLifetime()
+                
             ////
             
             );

@@ -25,13 +25,20 @@ public class EKlaimRepo : IEKlaimRepo
     public void SaveChanges(EKlaimModel model)
     {
         using var trans = TransHelper.NewScope();
-        var eklaimDb = _eklaimDal.GetData(model);
-        if (eklaimDb.HasValue)
-            _eklaimDal.Update(eklaimDb.Value);
-        
-        var eklaimMedisDb = _eklaimMedisDal.GetData(model);
-        if (eklaimMedisDb.HasValue)
-            _eklaimMedisDal.Update(eklaimMedisDb.Value);
+
+        var eklaimDto = new EKlaimDto(model);
+        _eklaimDal.GetData(model)
+            .Match(
+                onSome: _ => _eklaimDal.Update(eklaimDto),
+                onNone: () => _eklaimDal.Insert(eklaimDto)
+            );
+
+        var eklaimMedisDto = new EKlaimMedisDto(model);
+        _eklaimMedisDal.GetData(model)
+            .Match(
+                onSome: _ => _eklaimMedisDal.Update(eklaimMedisDto),
+                onNone: () => _eklaimMedisDal.Insert(eklaimMedisDto)
+            );
         
         _eklaimReffBiayaDal.Delete(model);
         var listReffBiaya = EKlaimReffBiayaDto.Create(model);
@@ -72,9 +79,11 @@ public class EKlaimRepo : IEKlaimRepo
 
     public MayBe<EKlaimModel> LoadEntity(IRegKey key)
     {
-        var eklaimDb = _eklaimDal.GetData(key)
-            .GetValueOrThrow("EKlaim tidak ditemukan");
-        var result = eklaimDb.ToModel();
+        var eklaimDb = _eklaimDal.GetData(key);
+        if (!eklaimDb.HasValue)
+            return MayBe<EKlaimModel>.None;
+            
+        var result = eklaimDb.Value.ToModel();
 
         var eklaimMedisDb = _eklaimMedisDal.GetData(result);
         if (eklaimMedisDb.HasValue)
