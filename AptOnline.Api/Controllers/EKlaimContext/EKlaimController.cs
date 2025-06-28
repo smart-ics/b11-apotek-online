@@ -26,7 +26,7 @@ public class EKlaimController : Controller
     }
     
     [HttpPut]
-    public async Task<IActionResult> GenClaimData(EKlaimGenClaimDataCommand command)
+    public async Task<IActionResult> GenClaimData(EKlaimSetClaimDataCommand command)
     {
         var result = await _mediator.Send(command);
         return Ok(new JSendOk(result));

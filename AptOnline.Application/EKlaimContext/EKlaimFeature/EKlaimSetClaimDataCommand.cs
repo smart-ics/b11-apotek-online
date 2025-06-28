@@ -35,9 +35,9 @@ using MediatR;
 
 namespace AptOnline.Application.EKlaimContext.EKlaimFeature;
 
-public record EKlaimGenClaimDataCommand(string RegId, string CoderNik) : IRequest, IRegKey;
+public record EKlaimSetClaimDataCommand(string RegId, string CoderNik) : IRequest, IRegKey;
 
-public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDataCommand, Unit>
+public class EKlaimSetClaimDataCommandHandler : IRequestHandler<EKlaimSetClaimDataCommand, Unit>
 {
     private readonly ISepDal _sepDal;
     private readonly IParamSistemDal _paramSistemDal;
@@ -49,8 +49,9 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
     private readonly IKelasTarifRsDal _kelasTarifRsDal;
     private readonly ITrsBillingGetService _trsBillingGetService;
     private readonly IMapSkemaJknDal _mapSkemaJknDal;
+    private readonly IEKlaimNewClaimService _eklaimNewClaimService;
     
-    public EKlaimGenClaimDataCommandHandler(ISepDal sepDal, 
+    public EKlaimSetClaimDataCommandHandler(ISepDal sepDal, 
         IRegGetService regService, IParamSistemDal paramSistemDal, 
         IRegGetPreviousService regGetPreviousService, 
         ILayananGetService layananGetService, 
@@ -60,7 +61,7 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         IRoomChargeGetService roomChargeGetService, 
         IKelasTarifRsDal kelasTarifRsDal, IPegDal pegDal, 
         ITrsBillingGetService trsBillingGetService, 
-        IMapSkemaJknDal mapSkemaJknDal)
+        IMapSkemaJknDal mapSkemaJknDal, IEKlaimNewClaimService eklaimNewClaimService)
     {
         _sepDal = sepDal;
         _paramSistemDal = paramSistemDal;
@@ -72,10 +73,12 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         _kelasTarifRsDal = kelasTarifRsDal;
         _trsBillingGetService = trsBillingGetService;
         _mapSkemaJknDal = mapSkemaJknDal;
+        _eklaimNewClaimService = eklaimNewClaimService;
     }
 
-    public Task<Unit> Handle(EKlaimGenClaimDataCommand request, CancellationToken cancellationToken)
+    public Task<Unit> Handle(EKlaimSetClaimDataCommand request, CancellationToken cancellationToken)
     {
+        //  BUILD
         var regKey = RegType.Key(request.RegId);
         var sep = _sepDal.GetData(regKey)
             .GetValueOrThrow($"SEP utk register '{request.RegId}' tidak ditemukan");
@@ -90,9 +93,9 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         eklaim = SetMedisPasien(eklaim, regKey, roomCharge);
         eklaim = SetBillPasien(eklaim, regKey, roomCharge, sep, request.CoderNik);
 
+        //  WRITE
         _eklaimRepo.SaveChanges(eklaim);
-        // var eklaimJson = JsonSerializer.Serialize(eklaim, new JsonSerializerOptions());
-        
+        _eklaimNewClaimService.Execute(eklaim);
         return Task.FromResult(Unit.Value);
     }
 
@@ -161,8 +164,6 @@ public class EKlaimGenClaimDataCommandHandler : IRequestHandler<EKlaimGenClaimDa
         
         eklaim.SetBillPasien(kelasRawat, kelasTarifRs, tarifRs, 0, 
             upgradeKelasIndikator, dischargeStatus, payor, coder, 1);
-        
-        _eklaimRepo.SaveChanges(eklaim);        
         
         return eklaim;
     }

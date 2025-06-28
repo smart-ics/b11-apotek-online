@@ -30,12 +30,11 @@ public class EKlaimNewClaimService : IEKlaimNewClaimService
         //  REQUEST
         var request = new RestRequest(Method.POST);
         request.AddJsonBody(BuildRequest(req));
-
+        
+        //  EXECUTE
         var endpoint = _opt.BaseApiUrl;
         if (_isDebugMode) endpoint += "?mode=debug";
         var client = _restClient.Create(endpoint);
-        
-        //  EXECUTE
         var response = client.Execute(request);
             
         //  RESPONSE
