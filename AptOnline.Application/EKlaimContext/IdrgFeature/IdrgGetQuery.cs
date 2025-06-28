@@ -21,11 +21,9 @@ public class IdrgGetQueryHandler : IRequestHandler<IdrgGetQuery, IdrgGetResponse
     {
         var im = request.Im != 0;
         var idrg = _idrgDal.GetData(IdrgAbstract.Key(request.IdrgId, im))
-            .Map(x => x is IdrgDiagnosaType diag
-                ? new IdrgGetResponseDiag(diag.IdrgId, diag.Im, diag.IdrgName, 
-                    "Diagnosa", diag.IsAllowPrimary, diag.IsAsterisk) 
-                : new IdrgGetResponseBase(x.IdrgId, x.Im, x.IdrgName, 
-                    x is IdrgProsedurType ? "Prosedur" : "Morfologi"))
+            .Map(x => x is IdrgDiagnosaType dx
+                ? new IdrgGetResponseDiag(dx.IdrgId, dx.Im, dx.IdrgName, "Diagnosa", dx.IsAllowPrimary, dx.IsAsterisk) 
+                : new IdrgGetResponseBase(x.IdrgId, x.Im, x.IdrgName, x is IdrgProsedurType ? "Prosedur" : "Morfologi"))
             .GetValueOrThrow($"Idrg '{request.IdrgId}' (im: {im}) tidak ditemukan");
         
         return Task.FromResult(idrg);
