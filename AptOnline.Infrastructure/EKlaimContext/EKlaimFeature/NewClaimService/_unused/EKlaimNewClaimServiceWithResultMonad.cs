@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using Nuna.Lib.PatternHelper;
 using RestSharp;
 
-namespace AptOnline.Infrastructure.EKlaimContext.EKlaimFeature.NewClaimService;
+namespace AptOnline.Infrastructure.EKlaimContext.EKlaimFeature.NewClaimService._unused;
 
 public class EKlaimNewClaimServiceX //: IEKlaimNewClaimService
 {

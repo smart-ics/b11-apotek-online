@@ -1,6 +1,6 @@
 ﻿using AptOnline.Infrastructure.EKlaimContext.Shared;
 
-namespace AptOnline.Infrastructure.EKlaimContext.EKlaimFeature.NewClaimService;
+namespace AptOnline.Infrastructure.EKlaimContext.EKlaimFeature.NewClaimService._unused;
 
 public class EKlaimNewClaimResponseDto
 {

@@ -1,102 +1,71 @@
 ﻿using AptOnline.Application.EKlaimContext.EKlaimFeature;
 using AptOnline.Domain.EKlaimContext.EKlaimFeature;
-using AptOnline.Infrastructure.EKlaimContext.Shared;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+using System.Text.Json;
 using RestSharp;
 
-namespace AptOnline.Infrastructure.EKlaimContext.EKlaimFeature.NewClaimService
+namespace AptOnline.Infrastructure.EKlaimContext.EKlaimFeature.NewClaimService;
+
+public class EKlaimNewClaimService : IEKlaimNewClaimService
 {
-    public class EKlaimNewClaimService : IEKlaimNewClaimService
-    {
-        const string MARK_START = "----BEGIN ENCRYPTED DATA----";
-        const string MARK_END = "----END ENCRYPTED DATA----";
-        private readonly EKlaimOptions _opt;
+    private const string MARK_START = "----BEGIN ENCRYPTED DATA----";
+    private const string MARK_END = "----END ENCRYPTED DATA----";
+    private readonly EKlaimOptions _opt;
+    private readonly bool _isDebugMode;
+    private readonly IRestClientFactory _restClient;
 
-        public EKlaimNewClaimService(IOptions<EKlaimOptions> options)
+    public EKlaimNewClaimService(IOptions<EKlaimOptions> options,
+        IRestClientFactory restClient)
+    {
+        _opt = options.Value;
+        _isDebugMode = _opt.Debug.Equals("1");
+        _restClient = restClient;
+    }
+
+    public EKlaimNewClaimDto Execute(EKlaimModel req)
+    {
+        //  BUILD-REQUEST
+        var reqObj = new EKlaimNewClaimRequest(
+            new EKlaimNewClaimRequestMeta("new_claim"), 
+            new EKlaimNewClaimRequestData(req));
+        var reqBody = JsonSerializer.Serialize(reqObj);
+        if (!_isDebugMode)
+            reqBody = EKlaimHelper.Encrypt(reqBody, _opt.ApiKey);
+        var request = new RestRequest(Method.POST);
+        request.AddJsonBody(reqBody);
+        
+        //  EXECUTE
+        var endpoint = _isDebugMode 
+            ? _opt.BaseApiUrl + "?mode=debug" 
+            : _opt.BaseApiUrl;
+        var client = _restClient.Create(endpoint);
+        var response = client.Execute(request);
+            
+        //  RESPONSE
+        if (response.StatusCode != System.Net.HttpStatusCode.OK)
+            throw new HttpRequestException(response.ErrorMessage);
+        
+        var tmpResult = response.Content;
+        if (!_isDebugMode)
         {
-            _opt = options.Value;
+            tmpResult = tmpResult.Replace(MARK_START, "").Replace(MARK_END, "");
+            tmpResult = EKlaimHelper.Decrypt(tmpResult, _opt.ApiKey);
         }
-
-        public EKlaimNewClaimDto Execute(EKlaimModel req)
+        
+        EKlaimNewClaimResponse? result;
+        try
         {
-            var reqObj = new EKlaimNewClaimRequest
-            {
-                metadata = new EKlaimNewClaimRequestMeta { method = "new_claim" },
-                data = new EKlaimNewClaimRequestData
-                {
-                    nomor_kartu = req.PesertaBpjs.PesertaBpjsNo,
-                    nomor_sep = req.Sep.SepNo,
-                    nomor_rm = req.Pasien.PasienId,
-                    nama_pasien = req.Pasien.PasienName,
-                    tgl_lahir = req.Pasien.BirthDate.ToString("yyyy-MM-dd HH:mm:ss"),
-                    gender = req.Pasien.Gender.Value
-                }
-            };
-            var isDebugMode = _opt.Debug.Equals("1");
-            var endpoint = isDebugMode ? _opt.BaseApiUrl + "?mode=debug" : _opt.BaseApiUrl;
-            var reqBody = JsonConvert.SerializeObject(reqObj);
-            var client = new RestClient(endpoint);
-            var request = new RestRequest(Method.POST);
-            if (!isDebugMode)
-                reqBody = EKlaimHelper.Encrypt(reqBody, _opt.ApiKey);
-            request.AddJsonBody(reqBody);
-            var response = client.Execute(request);
-            if (response.StatusCode != System.Net.HttpStatusCode.OK)
-                throw new Exception(response.ErrorMessage);
-            string tmpResult = response.Content;
-            if (!isDebugMode)
-            {
-                tmpResult = tmpResult.Replace(MARK_START, "").Replace(MARK_END, "");
-                tmpResult = EKlaimHelper.Decrypt(tmpResult, _opt.ApiKey);
-            }
-            try
-            {
-                var result = JsonConvert.DeserializeObject<EKlaimNewClaimResponse>(tmpResult);
-                if (!result.metadata.code.Equals("200"))
-                    return new EKlaimNewClaimDto(false, result.metadata.message);
-                return new EKlaimNewClaimDto(true, result.response.admission_id);
-            }
-            catch
-            {
-                throw new Exception(tmpResult);
-            }
+            result = JsonSerializer.Deserialize<EKlaimNewClaimResponse>(tmpResult);
         }
+        catch (JsonException ex)
+        {
+            throw new JsonException($"Failed to parse response: {tmpResult}", ex);
+        }
+        
+        result ??= EKlaimNewClaimResponse.Default;
+        return result.metadata.code.Equals("200") 
+            ? new EKlaimNewClaimDto(true, result.response.admission_id) 
+            : new EKlaimNewClaimDto(false, result.metadata.message);
     }
-    #region Dto
-
-    public class EKlaimNewClaimRequest
-    {
-        public EKlaimNewClaimRequestMeta metadata { get; set; }
-        public EKlaimNewClaimRequestData data { get; set; }
-    }
-
-    public class EKlaimNewClaimRequestMeta
-    {
-        public string method { get; set; }
-    }
-
-    public class EKlaimNewClaimRequestData
-    {
-        public string nomor_kartu { get; set; }
-        public string nomor_sep { get; set; }
-        public string nomor_rm { get; set; }
-        public string nama_pasien { get; set; }
-        public string tgl_lahir { get; set; }
-        public string gender { get; set; }
-    }
-
-    public class EKlaimNewClaimResponse
-    {
-        public EKlaimResponseMeta metadata { get; set; }
-        public EKlaimNewClaimRespDto response { get; set; }
-    }
-    public class EKlaimNewClaimRespDto
-    {
-        public string patient_id { get; set; }
-        public string admission_id { get; set; }
-        public string hospital_admission_id { get; set; }
-    }
-    #endregion
 }
