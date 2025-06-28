@@ -30,45 +30,6 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
                 return ExecuteNonRacik(req);
         }
 
-        //public ObatBpjsInsertResponseDto ExecuteNonRacik(ObatBpjsInsertParam reqParam)
-        //{
-        //    var reqObj = BuildRequestNonRacik(reqParam);
-        //    var reqBody = JObject.FromObject(reqObj);
-        //    var dto = new ObatBpjsInsertResponseDto(reqParam.Obat.Brg.BrgId, reqParam.Obat.Brg.BrgName);
-        //    var endpoint = $"{_opt.BaseApiUrl}/obatnonracikan/v3/insert";
-        //    var client = new RestClient(endpoint)
-        //    {
-        //        ClientCertificates = new X509CertificateCollection()
-        //    };
-        //    var request = new RestRequest(Method.POST);
-        //    request.AddHeader("X-cons-id", _opt.ConsId);
-        //    request.AddHeader("X-timestamp", _timestamp);
-        //    request.AddHeader("X-signature", _signature);
-        //    request.AddHeader("user_key", _opt.UserKey);
-        //    request.AddHeader("Content-Type", "Application/x-www-form-urlencoded");
-
-        //    request.AddParameter("application/x-www-form-urlencoded", reqBody, ParameterType.RequestBody);
-
-        //    var response = client.Execute(request);
-
-        //    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-        //    {
-        //        try
-        //        {
-        //            //{"response":null,"metaData":{"code":"200","message":"Obat Berhasil Simpan.."}}
-        //            //{ "response":null,"metaData":{ "code":"201","message":"300 - Obat Beirisan dengan pemakaian obat Tgl Resep 28-01-2025"} }
-        //            var resp = JsonConvert.DeserializeObject<ObatBpjsInsertResponse>(response.Content);
-        //            dto.SetResp(resp.metaData.code, resp.metaData.message);
-        //        }
-        //        catch
-        //        {
-        //            throw new Exception(response.Content);
-        //        }
-        //    }
-        //    else
-        //        throw new Exception(response.ErrorMessage);
-        //    return dto;
-        //}
         public ObatBpjsInsertResponseDto ExecuteNonRacik(ObatBpjsInsertParam reqParam)
         {
             var reqObj = BuildRequestNonRacik(reqParam);
@@ -140,45 +101,7 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
 
             return dto;
         }
-        //public ObatBpjsInsertResponseDto ExecuteRacik(ObatBpjsInsertParam reqParam)
-        //{
-        //    var reqObj = BuildRequestRacik(reqParam);
-        //    //var jReq = JObject.FromObject(reqParam.Obat);
-        //    var reqBody = JsonConvert.SerializeObject(reqObj);
-        //    var dto = new ObatBpjsInsertResponseDto(reqParam.Obat.Brg.BrgId, reqParam.Obat.Brg.BrgName);
-        //    var endpoint = $"{_opt.BaseApiUrl}/obatnonracikan/v3/insert";
-        //    var client = new RestClient(endpoint)
-        //    {
-        //        ClientCertificates = new X509CertificateCollection()
-        //    };
-        //    var request = new RestRequest(Method.POST);
-        //    request.AddHeader("X-cons-id", _opt.ConsId);
-        //    request.AddHeader("X-timestamp", _timestamp);
-        //    request.AddHeader("X-signature", _signature);
-        //    request.AddHeader("user_key", _opt.UserKey);
-        //    request.AddHeader("Content-Type", "Application/x-www-form-urlencoded");
-
-        //    request.AddParameter("application/x-www-form-urlencoded", reqBody, ParameterType.RequestBody);
-        //    var response = client.Execute(request);
-        //    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-
-        //    {
-        //        try
-        //        {
-        //            //{"response":null,"metaData":{"code":"200","message":"Obat Berhasil Simpan.."}}
-        //            //{ "response":null,"metaData":{ "code":"201","message":"300 - Obat Beirisan dengan pemakaian obat Tgl Resep 28-01-2025"} }
-        //            var resp = JsonConvert.DeserializeObject<ObatBpjsInsertResponse>(response.Content);
-        //            dto.SetResp(resp.metaData.code, resp.metaData.message);
-        //        }
-        //        catch
-        //        {
-        //            throw new Exception(response.Content);
-        //        }
-        //    }
-        //    else
-        //        throw new Exception(response.ErrorMessage);
-        //    return dto;
-        //}
+    
         #region Request Builder
         private static ObatBpjsInsertRacikRequest BuildRequestRacik(ObatBpjsInsertParam param)
         {

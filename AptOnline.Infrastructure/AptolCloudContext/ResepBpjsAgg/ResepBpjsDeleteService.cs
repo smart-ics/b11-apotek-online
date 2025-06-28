@@ -27,7 +27,7 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
         {
             var reqObj = new ResepBpjsDeleteRequest(param.NoApotik, param.NoSep, param.NoResep);
             var reqBody = JsonConvert.SerializeObject(reqObj);
-            var endpoint = $"{_opt.BaseApiUrl}/sjpresep/v3/hapusresep";
+            var endpoint = $"{_opt.BaseApiUrl}/hapusresep";
             var client = new RestClient(endpoint);
             var request = new RestRequest(Method.DELETE)
                 .AddHeaders(new Dictionary<string, string>
@@ -43,6 +43,8 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
             var response = client.Execute<ResepBpjsDeleteResponse>(request);
             if (response.StatusCode == 0 || response.StatusCode == System.Net.HttpStatusCode.GatewayTimeout)
                 throw new Exception("Hapus Resep BPJS\n Gagal terhubung ke Server BPJS");
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                throw new KeyNotFoundException($"Hapus Resep BPJS\n {response.ErrorMessage}");
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
                 throw new Exception($"Hapus Resep BPJS\n {response.ErrorMessage}");
             //{

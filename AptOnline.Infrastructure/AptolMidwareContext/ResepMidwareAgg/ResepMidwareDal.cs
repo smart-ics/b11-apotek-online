@@ -34,7 +34,7 @@ public class ResepMidwareDal : IResepMidwareDal
                 BridgeState, CreateTimestamp, ConfirmTimeStamp, SyncTimestamp, UploadTimestamp)
             VALUES(
                 @ResepMidwareId, @ResepMidwareDate, 
-                @ChartId, @ResepRsId, @ReffId, @JenisObatId, @Iterasi, 
+                @ChartId, @ResepRsId, @ReffId, @ResepBpjsNo, @JenisObatId, @Iterasi, 
                 @SepId, @SepDate, @SepNo, @NoPeserta, 
                 @RegId, @RegDate, @PasienId, @PasienName, @DokterId, @DokterName,
                 @PpkId, @PpkName, @PoliBpjsId, @PoliBpjsName,   

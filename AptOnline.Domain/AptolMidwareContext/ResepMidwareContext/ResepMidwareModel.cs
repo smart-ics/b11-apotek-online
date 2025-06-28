@@ -103,7 +103,7 @@ public class ResepMidwareModel : IResepMidwareKey
     
 #region APTOL-RELATED
     public string ReffId { get; private set; }
-    public string ResepBpjsNo { get; set; }
+    public string ResepBpjsNo { get; private set; }
     public string JenisObatId { get; private set;}
     public int Iterasi { get; private set;}
     #endregion
@@ -138,6 +138,7 @@ public class ResepMidwareModel : IResepMidwareKey
     {
         ChartId = chartId;
         ResepRsId = resepRsId;
+        ResepBpjsNo = resepRsId.Substring(4, 5);
     }
     public void Sent(string reffId, DateTime sentTimeStamp)
     {

@@ -26,7 +26,7 @@ namespace AptOnline.Infrastructure.AptolCloudContext.ResepBpjsAgg
             var reqObj = new ObatBpjsDeleteRequest(reqParam.NoApotik, reqParam.NoResep, reqParam.Obat.Dpho.DphoId, tipeObat);
             var reqBody = JsonConvert.SerializeObject(reqObj);
             var dto = new ObatBpjsDeleteResponseDto(reqParam.Obat.Brg.BrgId, reqParam.Obat.Brg.BrgName);
-            var endpoint = $"{_opt.BaseApiUrl}/pelayanan/obat/hapus/";
+            var endpoint = $"{_opt.BaseApiUrl}/pelayanan/obat/hapus";
 
             var client = new RestClient(endpoint);
             var request = new RestRequest(Method.DELETE)
