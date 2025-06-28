@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using AptOnline.Domain.EKlaimContext.EKlaimFeature;
-using AptOnline.Infrastructure.EKlaimContext.EKlaimFeature.NewClaimService._unused;
 using AptOnline.Infrastructure.EKlaimContext.Shared;
 using AptOnline.Infrastructure.Helpers;
 using FluentAssertions;
@@ -16,6 +15,7 @@ public class EKlaimNewClaimServiceTests
 {
     private static EKlaimModel EklaimModelFaker()
         => EKlaimModel.Default;
+    
     private static IOptions<EKlaimOptions> EklaimOptionsFaker()
     => Options.Create(new EKlaimOptions
     {
@@ -25,15 +25,19 @@ public class EKlaimNewClaimServiceTests
     });
     
     [Fact]
-    public void UT1_GivenValidResponse_WhenExecute_ShouldReturnSuccess()
+    public void UT1_GivenResponseOk_WhenExecute_ShouldParseDataAsExpected()
     {
         // Arrange
-        var expectedJson = JsonConvert.SerializeObject(new EKlaimNewClaimResponseEnvelope
+        var expectedJson = JsonConvert.SerializeObject(new EKlaimNewClaimResponse
         {
             metadata = new EKlaimResponseMeta { code = "200", message = "OK" },
-            response = new EKlaimNewClaimResponseDto { admission_id = "ADM123" }
+            response = new EKlaimNewClaimResponseData
+            {
+                admission_id = "A",
+                hospital_admission_id = "B",
+                patient_id = "C"
+            }
         });
-
         var mockClient = new Mock<RestClient>("http://fakeapi.com") { CallBase = true };
         var mockResponse = new RestResponse
         {
@@ -59,10 +63,10 @@ public class EKlaimNewClaimServiceTests
     public void UT2_GivenHttp400Response_WhenExecute_ShouldReturnSuccess()
     {
         // Arrange
-        var expectedJson = JsonConvert.SerializeObject(new EKlaimNewClaimResponseEnvelope
+        var expectedJson = JsonConvert.SerializeObject(new EKlaimNewClaimResponse
         {
             metadata = new EKlaimResponseMeta { code = "400", message = "Bad Request" },
-            response = new EKlaimNewClaimResponseDto { admission_id = "ADM123" }
+            response = new EKlaimNewClaimResponseData { admission_id = "ADM123" }
         });
 
         var mockClient = new Mock<RestClient>("http://fakeapi.com") { CallBase = true };
@@ -79,10 +83,9 @@ public class EKlaimNewClaimServiceTests
         var req = EklaimModelFaker();
         
         // Act
-        var result = sut.Execute(req);
+        var result = () =>sut.Execute(req);
 
         // Assert
-        result.IsSuccess.Should().BeFalse();
-        result.Message.Should().Be("Unknown HTTP error");
+        result.Should().Throw<HttpRequestException>();
     }
 }
