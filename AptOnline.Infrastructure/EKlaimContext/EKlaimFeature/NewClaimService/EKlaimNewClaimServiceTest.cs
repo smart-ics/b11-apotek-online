@@ -56,17 +56,50 @@ public class EKlaimNewClaimServiceTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Message.Should().Be("ADM123");
+        result.Message.Should().Be("A");
     }
+
     
     [Fact]
-    public void UT2_GivenHttp400Response_WhenExecute_ShouldReturnSuccess()
+    public void UT2_GivenHttpOkResponse_ButContentMeta400_WhenExecute_ShouldResultMessage()
     {
         // Arrange
         var expectedJson = JsonConvert.SerializeObject(new EKlaimNewClaimResponse
         {
-            metadata = new EKlaimResponseMeta { code = "400", message = "Bad Request" },
-            response = new EKlaimNewClaimResponseData { admission_id = "ADM123" }
+            metadata = new EKlaimResponseMeta { code = "201", message = "Ini message error" },
+            response = new EKlaimNewClaimResponseData { admission_id = "A" }
+        });
+
+        var mockClient = new Mock<RestClient>("http://fakeapi.com") { CallBase = true };
+        var mockResponse = new RestResponse
+        {
+            StatusCode = HttpStatusCode.OK,
+            Content = expectedJson
+        };
+        mockClient.Setup(c => c.Execute(It.IsAny<IRestRequest>())).Returns(mockResponse);
+        var mockFactory = new Mock<IRestClientFactory>();
+        mockFactory.Setup(f => f.Create(It.IsAny<string>())).Returns(mockClient.Object);
+
+        var sut = new EKlaimNewClaimService(EklaimOptionsFaker(), mockFactory.Object);
+        var req = EklaimModelFaker();
+        
+        // Act
+        var result = sut.Execute(req);
+
+        // Assert
+        result.IsSuccess.Should().BeFalse();
+        result.Message.Should().Be("Ini message error");
+    }    
+    
+    
+    [Fact]
+    public void UT3_GivenHttpBadRequestResponse_WhenExecute_ShouldThrowHttpRequestException()
+    {
+        // Arrange
+        var expectedJson = JsonConvert.SerializeObject(new EKlaimNewClaimResponse
+        {
+            metadata = new EKlaimResponseMeta { code = "200", message = "ok" },
+            response = new EKlaimNewClaimResponseData { admission_id = "A" }
         });
 
         var mockClient = new Mock<RestClient>("http://fakeapi.com") { CallBase = true };
