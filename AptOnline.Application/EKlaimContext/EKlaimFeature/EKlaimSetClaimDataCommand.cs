@@ -49,7 +49,7 @@ public class EKlaimSetClaimDataCommandHandler : IRequestHandler<EKlaimSetClaimDa
     private readonly IKelasTarifRsDal _kelasTarifRsDal;
     private readonly ITrsBillingGetService _trsBillingGetService;
     private readonly IMapSkemaJknDal _mapSkemaJknDal;
-    private readonly IEKlaimNewClaimService _eklaimNewClaimService;
+    private readonly IEKlaimSetClaimDataService _eklaimSetClaimDataService;
     
     public EKlaimSetClaimDataCommandHandler(ISepDal sepDal, 
         IRegGetService regService, IParamSistemDal paramSistemDal, 
@@ -61,7 +61,8 @@ public class EKlaimSetClaimDataCommandHandler : IRequestHandler<EKlaimSetClaimDa
         IRoomChargeGetService roomChargeGetService, 
         IKelasTarifRsDal kelasTarifRsDal, IPegDal pegDal, 
         ITrsBillingGetService trsBillingGetService, 
-        IMapSkemaJknDal mapSkemaJknDal, IEKlaimNewClaimService eklaimNewClaimService)
+        IMapSkemaJknDal mapSkemaJknDal, 
+        IEKlaimSetClaimDataService eklaimSetClaimDataService)
     {
         _sepDal = sepDal;
         _paramSistemDal = paramSistemDal;
@@ -73,7 +74,7 @@ public class EKlaimSetClaimDataCommandHandler : IRequestHandler<EKlaimSetClaimDa
         _kelasTarifRsDal = kelasTarifRsDal;
         _trsBillingGetService = trsBillingGetService;
         _mapSkemaJknDal = mapSkemaJknDal;
-        _eklaimNewClaimService = eklaimNewClaimService;
+        _eklaimSetClaimDataService = eklaimSetClaimDataService;
     }
 
     public Task<Unit> Handle(EKlaimSetClaimDataCommand request, CancellationToken cancellationToken)
@@ -95,7 +96,7 @@ public class EKlaimSetClaimDataCommandHandler : IRequestHandler<EKlaimSetClaimDa
 
         //  WRITE
         _eklaimRepo.SaveChanges(eklaim);
-        _eklaimNewClaimService.Execute(eklaim);
+        _eklaimSetClaimDataService.Execute(eklaim);
         return Task.FromResult(Unit.Value);
     }
 
