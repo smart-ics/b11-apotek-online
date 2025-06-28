@@ -19,11 +19,11 @@ public class IdrgGetQueryHandler : IRequestHandler<IdrgGetQuery, IdrgGetResponse
     {
         var im = request.Im != 0;
         var idrg = _idrgDal.GetData(IdrgType.Key(request.IdrgId, im))
-            .Map(x => new IdrgGetResponse(x.IdrgId, im, x.IdrgName, x.StdSystem switch
+            .Map(x => new IdrgGetResponse(x.IdrgId, im, x.IdrgName, x.Kategori switch
             {
-                IdrgStdSystemEnum.Diagnosa => "Diagnosa",
-                IdrgStdSystemEnum.Prosedur => "Prosedur",
-                IdrgStdSystemEnum.Morfologi => "Morfologi",
+                IdrgKetegoriEnum.Diagnosa => "Diagnosa",
+                IdrgKetegoriEnum.Prosedur => "Prosedur",
+                IdrgKetegoriEnum.Morfologi => "Morfologi",
                 _ => "Undefined"
             }, x.IsAllowPrimary))
             .GetValueOrThrow($"Idrg '{request.IdrgId}' (im: {im}) tidak ditemukan");

@@ -18,11 +18,11 @@ public class IdrgSearchDiagHandler : IRequestHandler<IdrgSearchDiagQuery, IEnume
     public Task<IEnumerable<IdrgSearchDiagResponse>> Handle(IdrgSearchDiagQuery request, CancellationToken cancellationToken)
     {
         var idrg = _idrgDal.SearchDiagnosa(request.Keyword)
-            .Map(x => x.Select(y => new IdrgSearchDiagResponse(y.IdrgId, y.Im, y.IdrgName, y.StdSystem switch
+            .Map(x => x.Select(y => new IdrgSearchDiagResponse(y.IdrgId, y.Im, y.IdrgName, y.Kategori switch
             {
-                IdrgStdSystemEnum.Diagnosa => "Diagnosa",
-                IdrgStdSystemEnum.Prosedur => "Prosedur",
-                IdrgStdSystemEnum.Morfologi => "Morfologi",
+                IdrgKetegoriEnum.Diagnosa => "Diagnosa",
+                IdrgKetegoriEnum.Prosedur => "Prosedur",
+                IdrgKetegoriEnum.Morfologi => "Morfologi",
                 _ => "Undefined"
             }, y.IsAllowPrimary)))
             .GetValueOrThrow($"Diagnosa {request.Keyword}' tidak ditemukan");

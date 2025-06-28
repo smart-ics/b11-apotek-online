@@ -7,6 +7,7 @@ public record IdrgDto(
     string Code2,
     string IdrgName,
     string StdSystem,
+    int Kategori,
     bool ValidCode,
     string Accpdx,
     bool Asterisk,
@@ -14,15 +15,8 @@ public record IdrgDto(
 {
     public IdrgType ToModel()
     {
-        var stdSystem = StdSystem switch
-        {
-            "ICD_10_2010_IM" => IdrgStdSystemEnum.Diagnosa,
-            "ICD_9CM_2010_IM" => IdrgStdSystemEnum.Prosedur,
-            "ICD_O_MORFOLOGI" => IdrgStdSystemEnum.Morfologi,
-            _ => IdrgStdSystemEnum.Undefined
-        };
         var isAllowPrimary = Accpdx == "Y" ? true : false;
-        var result = new IdrgType(IdrgId, Code2, IdrgName, stdSystem, ValidCode, isAllowPrimary, Asterisk, Im);
+        var result = new IdrgType(IdrgId, Code2, IdrgName, StdSystem, (IdrgKetegoriEnum)Kategori, ValidCode, isAllowPrimary, Asterisk, Im);
         return result;
     }
 }

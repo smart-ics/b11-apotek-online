@@ -1,6 +1,6 @@
 ﻿namespace AptOnline.Domain.EKlaimContext.IdrgFeature;
 
-public enum IdrgStdSystemEnum
+public enum IdrgKetegoriEnum
 {
     Diagnosa = 0,
     Prosedur = 1,

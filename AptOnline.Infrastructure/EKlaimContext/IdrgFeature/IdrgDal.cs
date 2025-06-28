@@ -20,7 +20,7 @@ public class IdrgDal : IIdrgDal
     {
         const string sql = @"
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
@@ -41,33 +41,33 @@ public class IdrgDal : IIdrgDal
     {
         const string sql = @"
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
             WHERE
                 IdrgName LIKE '%' + @Keyword + '%'
-                AND StdSystem = 'ICD_10_2010_IM'
+                AND Kategori = 0
 
             UNION
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
             WHERE
                 Code2 = @Keyword
-                AND StdSystem = 'ICD_10_2010_IM'
+                AND Kategori = 0
 
             UNION
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
             WHERE
                 IdrgId =  @Keyword
-                AND StdSystem = 'ICD_10_2010_IM'";
+                AND Kategori = 0";
         
         var dp = new DynamicParameters();
         dp.AddParam("@keyword", keyword, SqlDbType.VarChar);
@@ -81,33 +81,33 @@ public class IdrgDal : IIdrgDal
     {
         const string sql = @"
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
             WHERE
                 IdrgName LIKE '%' + @Keyword + '%'
-                AND StdSystem = 'ICD_9CM_2010_IM'
+                AND Kategori = 1
             
             UNION
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
             WHERE
                 Code2 = @Keyword
-                AND StdSystem = 'ICD_9CM_2010_IM'
+                AND Kategori = 1
                 
             UNION
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
             WHERE
                 IdrgId = @Keyword
-                AND StdSystem = 'ICD_9CM_2010_IM' ";
+                AND Kategori = 1 ";
         
         var dp = new DynamicParameters();
         dp.AddParam("@keyword", keyword, SqlDbType.VarChar);

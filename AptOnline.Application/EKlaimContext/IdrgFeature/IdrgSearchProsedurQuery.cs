@@ -18,11 +18,11 @@ public class IdrgSearchProsedurHandler : IRequestHandler<IdrgSearchProsedurQuery
     public Task<IEnumerable<IdrgSearchProsedurResponse>> Handle(IdrgSearchProsedurQuery request, CancellationToken cancellationToken)
     {
         var idrg = _idrgDal.SearchProsedur(request.Keyword)
-            .Map(x => x.Select(y => new IdrgSearchProsedurResponse(y.IdrgId, y.Im, y.IdrgName, y.StdSystem switch
+            .Map(x => x.Select(y => new IdrgSearchProsedurResponse(y.IdrgId, y.Im, y.IdrgName, y.Kategori switch
             {
-                IdrgStdSystemEnum.Diagnosa => "Diagnosa",
-                IdrgStdSystemEnum.Prosedur => "Prosedur",
-                IdrgStdSystemEnum.Morfologi => "Morfologi",
+                IdrgKetegoriEnum.Diagnosa => "Diagnosa",
+                IdrgKetegoriEnum.Prosedur => "Prosedur",
+                IdrgKetegoriEnum.Morfologi => "Morfologi",
                 _ => "Undefined"
             }, y.IsAllowPrimary)))
             .GetValueOrThrow($"Prosedur '{request.Keyword}' tidak ditemukan");
