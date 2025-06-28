@@ -16,7 +16,7 @@ public class IdrgDal : IIdrgDal
     public IdrgDal(IOptions<DatabaseOptions> opt) 
         => _conn = new SqlConnection(ConnStringHelper.Get(opt.Value));
     
-    public MayBe<IdrgType> GetData(IIdrgKey key)
+    public MayBe<IdrgAbstract> GetData(IIdrgKey key)
     {
         const string sql = @"
             SELECT
@@ -37,7 +37,7 @@ public class IdrgDal : IIdrgDal
             .Map(dto => dto.ToModel());
     }
 
-    public MayBe<IEnumerable<IdrgType>> SearchDiagnosa(string keyword)
+    public MayBe<IEnumerable<IdrgDiagnosaType>> SearchDiagnosa(string keyword)
     {
         const string sql = @"
             SELECT
@@ -74,10 +74,13 @@ public class IdrgDal : IIdrgDal
         
         return MayBe
             .From(_conn.Read<IdrgDto>(sql, dp))
-            .Map(dto => dto.Select(x => x.ToModel()));  
+            .Map(dto => dto
+                .Select(x => x.ToModel() is IdrgDiagnosaType diag 
+                    ? diag 
+                    : throw new InvalidCastException("Invalid cast to IdrgDiagnosaType")));  
     }
 
-    public MayBe<IEnumerable<IdrgType>> SearchProsedur(string keyword)
+    public MayBe<IEnumerable<IdrgProsedurType>> SearchProsedur(string keyword)
     {
         const string sql = @"
             SELECT
@@ -114,6 +117,9 @@ public class IdrgDal : IIdrgDal
         
         return MayBe
             .From(_conn.Read<IdrgDto>(sql, dp))
-            .Map(dto => dto.Select(x => x.ToModel()));  
+            .Map(dto => dto
+                .Select(x => x.ToModel() is IdrgProsedurType proc 
+                    ? proc 
+                    : throw new InvalidCastException("Invalid cast to IdrgProsedurType")));  
     }
 }

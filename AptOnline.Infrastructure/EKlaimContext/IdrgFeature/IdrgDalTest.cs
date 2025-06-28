@@ -19,11 +19,11 @@ public class IdrgDalTest
         _sut = new IdrgDal(opt);
         _conn = new SqlConnection(ConnStringHelper.Get(opt.Value));
     }
-    private static IdrgType DiagnosaFake()
-        => new IdrgType("A", "B", "Curut", "D", IdrgKetegoriEnum.Diagnosa, true, true, false, false);
+    private static IdrgDiagnosaType DiagnosaFake()
+        => new IdrgDiagnosaType("A", "Curut", false, true, false);
 
-    private static IdrgType ProsedurFake()
-        => new IdrgType("A", "B", "Cicak", "D", IdrgKetegoriEnum.Prosedur, true, true, false, false);
+    private static IdrgProsedurType ProsedurFake()
+        => new IdrgProsedurType("A", "Cicak", false);
     
     [Fact]
     public void UT1_GetDataTest()
@@ -34,7 +34,7 @@ public class IdrgDalTest
                     Kategori,ValidCode, Accpdx, Asterisk, Im)
             VALUES ('A', 'B', 'Curut', 'D', 0, 1, 'Y', 0, 0)";
         _conn.Execute(sql);
-        var actual = _sut.GetData(IdrgType.Key("A", false)).Value;
+        var actual = _sut.GetData(IdrgAbstract.Key("A", false)).Value;
         actual.Should().BeEquivalentTo(DiagnosaFake()); 
     }
     

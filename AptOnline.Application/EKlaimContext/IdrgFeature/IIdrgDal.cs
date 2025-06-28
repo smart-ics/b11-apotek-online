@@ -5,8 +5,8 @@ using Nuna.Lib.PatternHelper;
 namespace AptOnline.Application.EKlaimContext.IdrgFeature;
 
 public interface IIdrgDal :
-    IGetDataMayBe<IdrgType, IIdrgKey>
+    IGetDataMayBe<IdrgAbstract, IIdrgKey>
 {
-    MayBe<IEnumerable<IdrgType>> SearchDiagnosa(string keyword);
-    MayBe<IEnumerable<IdrgType>>  SearchProsedur(string keyword);
+    MayBe<IEnumerable<IdrgDiagnosaType>> SearchDiagnosa(string keyword);
+    MayBe<IEnumerable<IdrgProsedurType>> SearchProsedur(string keyword);
 }
