@@ -16,8 +16,10 @@ public record GenderType
     {
         if (string.IsNullOrEmpty(value))
             return Default;
+        
+        if (!ValidValues.Contains(value))
+            throw new ArgumentException("Gender invalid");
 
-        Guard.Against.InvalidInput(value, nameof(value), x => !ValidValues.Contains(x), "Gender invalid");
 
         return new GenderType(value);
     }

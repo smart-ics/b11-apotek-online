@@ -7,6 +7,7 @@ using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.AptolMidwareContext.ResepMidwareContext;
 using AptOnline.Domain.BillingContext.LayananAgg;
+using AptOnline.Domain.BillingContext.TipeLayananDkFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using MediatR;
 using Nuna.Lib.TransactionHelper;
@@ -53,7 +54,8 @@ public class ResepRsValidateHandler :
             ?? throw new KeyNotFoundException($"Setting Faskes not found");
         var layanan = sep.JenisPelayanan.JenisPelayananId switch
         {
-            "1" => new LayananType("IGD", "IGD", true, new PoliBpjsType("IGD", "IGD")),
+            "1" => new LayananType("IGD", "IGD", true, new PoliBpjsType("IGD", "IGD"),
+                TipeLayananDkType.Default),
             "2" => _layananGetService.Execute(request),
             _ => throw new KeyNotFoundException("Jenis Pelayanan SEP invalid"),
         } ?? throw new KeyNotFoundException($"Layanan {request.LayananId} not found");

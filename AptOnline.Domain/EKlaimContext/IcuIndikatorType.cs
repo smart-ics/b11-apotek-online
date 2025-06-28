@@ -1,4 +1,6 @@
-﻿using Ardalis.GuardClauses;
+﻿using AptOnline.Domain.BillingContext.LayananDkFeature;
+using AptOnline.Domain.BillingContext.RoomChargeFeature;
+using Ardalis.GuardClauses;
 using FluentAssertions;
 using Xunit;
 
@@ -12,6 +14,14 @@ public record IcuIndikatorType(int IcuFlag, int Los)
         var flag = los == 0 ? 0 : 1;
         return new IcuIndikatorType(flag, los);
     }
+
+    public static IcuIndikatorType Create(RoomChargeModel roomCharge)
+    {
+        var listIcu = roomCharge.ListBed
+            .Where(x => x.LayananDk == LayananDkType.Icu);
+        return Create(listIcu.Count());
+    }
+
     public string Description => IcuFlag switch
     {
         0 => "Non ICU",

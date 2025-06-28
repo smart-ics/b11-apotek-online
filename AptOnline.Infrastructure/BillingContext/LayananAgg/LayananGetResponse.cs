@@ -15,5 +15,7 @@ public class LayananGetResponseDto
     public string LayananName {get;set;}
     public string LayananBpjsId {get;set;}
     public string LayananBpjsName {get;set;}
+    public string LayananTipeDkId { get; set; }
+    public string LayananTipeDkName { get; set; }
     public bool IsActive {get;set;}
 }

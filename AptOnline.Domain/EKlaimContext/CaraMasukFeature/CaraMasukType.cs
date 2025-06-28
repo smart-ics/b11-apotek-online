@@ -2,6 +2,7 @@
 using AptOnline.Domain.SepContext.AssesmentPelayananFeature;
 using AptOnline.Domain.SepContext.FaskesFeature;
 using AptOnline.Domain.SepContext.JenisPelayananFeature;
+using AptOnline.Domain.SepContext.SepFeature;
 using AptOnline.Domain.SepContext.SkdpFeature;
 using AptOnline.Domain.SepContext.TipeFaskesFeature;
 using Ardalis.GuardClauses;
@@ -16,23 +17,20 @@ public record CaraMasukType(string CaraMasukId, string CaraMasukName) : ICaraMas
         Guard.Against.NullOrWhiteSpace(name, nameof(name));
         return new CaraMasukType(id, name);
     }
+    
     public static CaraMasukType Default => new("-", "-");
     public static ICaraMasukKey Key(string id)
         => Default with {CaraMasukId = id};
 
-    public static CaraMasukType Resolve(JenisPelayananType jenisPelayanan,
-        AssesmentPelayananType assesmentPelayanan,
-        TipeFaskesType tipeFaskes,
-        SkdpRefference skdp,
-        FaskesType faskesPerujuk,
+    public static CaraMasukType Create(SepType sep,
         FaskesType faskerRs,
         TipeLayananDkType tipeLayananDk)
     {
-        var jnsPlyn = jenisPelayanan.JenisPelayananId;
-        var assPlyn = assesmentPelayanan.AssesmentPelayananId;
-        var tipeFas = tipeFaskes.TipeFaskesId;
-        var skdpId = skdp.SkdpNo;
-        var fasRujuk = faskesPerujuk.FaskesId;
+        var jnsPlyn = sep.JenisPelayanan.JenisPelayananId;
+        var assPlyn = sep.AssesmentPelayanan.AssesmentPelayananId;
+        var tipeFas = sep.FaskesPerujuk.TipeFaskes.TipeFaskesId;
+        var skdpId = sep.Skdp.SkdpNo;
+        var fasRujuk = sep.FaskesPerujuk.FaskesId;
         var fasRs = faskerRs.FaskesId;
         var tipeLynDk = tipeLayananDk.TipeLayananDkId;
         var result = (jnsPlyn, assPlyn, tipeFas, skdpId, fasRujuk, fasRs, tipeLynDk) switch

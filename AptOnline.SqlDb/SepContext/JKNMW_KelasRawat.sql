@@ -1,7 +1,0 @@
-﻿CREATE TABLE JKNMW_KelasRawat(
-    KelasRawatId VARCHAR(1) NOT NULL CONSTRAINT DF_JKNMW_KelasRawat_KelasRawatId DEFAULT(''),
-    KelasRawatName VARCHAR(10) NOT NULL CONSTRAINT DF_JKNMW_KelasRawat_KelasRawatName DEFAULT(''),
-    
-    CONSTRAINT PK_JKNMW_KelasRawat PRIMARY KEY CLUSTERED (KelasRawatId)
-)
-

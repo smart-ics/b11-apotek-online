@@ -1,6 +1,7 @@
 ﻿using AptOnline.Domain.AptolCloudContext.PoliBpjsAgg;
 using AptOnline.Domain.AptolCloudContext.PpkAgg;
 using AptOnline.Domain.BillingContext.DokterAgg;
+using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.Helpers;
@@ -8,7 +9,7 @@ using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using AptOnline.Domain.SepContext.AssesmentPelayananFeature;
 using AptOnline.Domain.SepContext.FaskesFeature;
 using AptOnline.Domain.SepContext.JenisPelayananFeature;
-using AptOnline.Domain.SepContext.KelasRawatFeature;
+using AptOnline.Domain.SepContext.KelasJknFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using AptOnline.Domain.SepContext.SkdpFeature;
@@ -70,7 +71,8 @@ public class ResepMidwareModel : IResepMidwareKey
         DateTime syncTimestamp, DateTime uploadTimestamp)
     {
         var pasien = PasienType.Load(pasienId, pasienName, new DateTime(3000, 1, 1), GenderType.Default);
-        var reg = RegType.Load(regId, regDate, new DateTime(3000,1,1), pasien, JenisRegEnum.Unknown, KelasRawatType.Default);
+        var reg = new RegType(regId, regDate, new DateTime(3000, 1, 1), pasien, JenisRegEnum.Unknown, 
+            KelasJknType.Default, LayananType.Default.ToRefference());
         var dokter = new DokterType(dokterId, dokterName);
         var pesertaBpjs = new PesertaBpjsRefference(noPeserta, pasienName);
         return new ResepMidwareModel
@@ -87,7 +89,7 @@ public class ResepMidwareModel : IResepMidwareKey
             Iterasi = iterasi,
 
             Sep = new SepType(sepId, sepDate, sepNo, pesertaBpjs, 
-                FaskesType.Default, JenisPelayananType.Default,
+                KelasJknType.Default, FaskesType.Default, JenisPelayananType.Default,
                 AssesmentPelayananType.Default, SkdpRefference.Default,  
                 reg, dokter, DokterType.Default, false, ""),
             Ppk = new PpkRefference(ppkId, ppkName),
