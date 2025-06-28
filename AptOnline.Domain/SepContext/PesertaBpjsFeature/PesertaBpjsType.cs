@@ -1,6 +1,6 @@
 ﻿using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.SepContext.FaskesFeature;
-using AptOnline.Domain.SepContext.KelasRawatFeature;
+using AptOnline.Domain.SepContext.KelasJknFeature;
 using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.SepContext.PesertaBpjsFeature;
@@ -8,7 +8,7 @@ namespace AptOnline.Domain.SepContext.PesertaBpjsFeature;
 public record PesertaBpjsType
 {
     private PesertaBpjsType(string pesertaBpjsId, string pesertaBpjsName, string nik, JenisPesertaType jenisPeserta,
-        KelasRawatType hakKelas, FaskesRefference provider)
+        KelasJknType hakKelas, FaskesRefference provider)
     {
         PesertaBpjsId = pesertaBpjsId;
         PesertaBpjsName = pesertaBpjsName;
@@ -22,11 +22,11 @@ public record PesertaBpjsType
     public string PesertaBpjsName { get; init; }
     public string Nik { get; init; }
     public JenisPesertaType JenisPeserta { get; init; }
-    public KelasRawatType HakKelas { get; init; }
+    public KelasJknType HakKelas { get; init; }
     public FaskesRefference Provider { get; init; }
 
     public static PesertaBpjsType Create(string pesertaBpjsId, string pesertaBpjsName, string nik, 
-        JenisPesertaType jenisPeserta, KelasRawatType hakKelas, FaskesRefference provider)
+        JenisPesertaType jenisPeserta, KelasJknType hakKelas, FaskesRefference provider)
     {
         Guard.Against.NullOrWhiteSpace(pesertaBpjsId, nameof(pesertaBpjsId), "Nomor peserta harus terisi");
         Guard.Against.StringTooLong(pesertaBpjsId, 13, nameof(pesertaBpjsId), "Nomor peserta harus 13 karakter");
@@ -45,7 +45,7 @@ public record PesertaBpjsType
     
     
     public static PesertaBpjsType Default 
-        => new("-", "-", "-", JenisPesertaType.Default, KelasRawatType.Default, FaskesType.Default.ToRefference());
+        => new("-", "-", "-", JenisPesertaType.Default, KelasJknType.Default, FaskesType.Default.ToRefference());
     public PesertaBpjsRefference ToRefference() 
         => new PesertaBpjsRefference(PesertaBpjsId, PesertaBpjsName);
 }

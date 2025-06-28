@@ -2,7 +2,6 @@
 using System.Net;
 using System.Text.Json;
 using Nuna.Lib.ActionResultHelper;
-using Nuna.Lib.ExceptionHelper;
 
 namespace AptOnline.Api.Middlewares;
 
@@ -33,7 +32,6 @@ public class ErrorHandlerMiddleware
             string? status;
             switch (error)
             {
-                case InvalidModelException:
                 case ArgumentException:
                 case ValidationException:
                 case InvalidOperationException:

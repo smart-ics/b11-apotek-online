@@ -11,6 +11,7 @@ using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
+using AptOnline.Domain.BillingContext.TipeLayananDkFeature;
 using AptOnline.Domain.Helpers;
 using AptOnline.Domain.PharmacyContext.BrgAgg;
 using AptOnline.Domain.PharmacyContext.DphoAgg;
@@ -18,7 +19,7 @@ using AptOnline.Domain.PharmacyContext.MapDphoAgg;
 using AptOnline.Domain.SepContext.AssesmentPelayananFeature;
 using AptOnline.Domain.SepContext.FaskesFeature;
 using AptOnline.Domain.SepContext.JenisPelayananFeature;
-using AptOnline.Domain.SepContext.KelasRawatFeature;
+using AptOnline.Domain.SepContext.KelasJknFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using AptOnline.Domain.SepContext.SkdpFeature;
@@ -79,12 +80,13 @@ public class ResepRsValidateTest
 
     private static MayBe<SepType> SepFaker()
     {
-        var pesertaBpjs = PesertaBpjsType.Create("A", "B", "", JenisPesertaType.Default, KelasRawatType.Default, FaskesType.Default.ToRefference());
+        var pesertaBpjs = PesertaBpjsType.Create("A", "B", "C", JenisPesertaType.Default, KelasJknType.Default, FaskesType.Default.ToRefference());
         var result  = MayBe
             .From(new SepType(
-                "SEP-ID-1", new DateTime(2025,4,1), "SEP-NO-1", pesertaBpjs.ToRefference(), FaskesType.Default, 
-                JenisPelayananType.Default, AssesmentPelayananType.Default, SkdpRefference.Default, 
-                RegType.Load("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), PasienType.Default, JenisRegEnum.Unknown, KelasRawatType.Default),
+                "SEP-ID-1", DateTime.Now.AddDays(-6), "SEP-NO-1", pesertaBpjs.ToRefference(), KelasJknType.Default,  
+                FaskesType.Default, JenisPelayananType.RawatJalan, AssesmentPelayananType.Default, SkdpRefference.Default, 
+                new RegType("REG-1", new DateTime(2025,4,1), new DateTime(3000,1,1), PasienType.Default, 
+                    JenisRegEnum.Unknown, KelasJknType.Default, LayananType.Default.ToRefference()),
                 new DokterType("DOKTER-ID-1", "DOKTER-NAME-1"), DokterType.Default,  false, "-"));
         return result;
     }
@@ -95,10 +97,11 @@ public class ResepRsValidateTest
             KepalaType.Default, 
             VerifikatorType.Default, 
             ApotekType.Default);
+
     private static LayananType LayananFaker()
         => new LayananType(
             "LYN-ID-1", "LYN-NAME-1", true,
-            PoliBpjsType.Default);
+            PoliBpjsType.Default, TipeLayananDkType.Default);
     private static BrgType BrgDphoFaker()
         => new BrgType("BRG-ID-1", "BRG-NAME-1");
     private static BrgType BrgNonDphoFaker()
@@ -142,7 +145,7 @@ public class ResepRsValidateTest
             .Returns(ResepMidwareFaker());
         _dateTime
             .Setup(x => x.Now)
-            .Returns(new DateTime(2025, 1, 1));
+            .Returns(DateTime.Now.AddDays(-5));
     }
     
     [Fact]

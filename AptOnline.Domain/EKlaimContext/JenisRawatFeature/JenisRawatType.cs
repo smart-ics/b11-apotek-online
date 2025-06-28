@@ -1,4 +1,5 @@
-﻿using Ardalis.GuardClauses;
+﻿using AptOnline.Domain.SepContext.JenisPelayananFeature;
+using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext.JenisRawatFeature;
 
@@ -10,6 +11,9 @@ public record JenisRawatType(string JenisRawatId, string JenisRawatName) : IJeni
         Guard.Against.NullOrWhiteSpace(name, nameof(name));
         return new JenisRawatType(id, name);
     }
+
+    public static JenisRawatType Create(JenisPelayananType jenisPelayanan)
+        => Create(jenisPelayanan.JenisPelayananId, jenisPelayanan.JenisPelayananName);
 
     public static JenisRawatType Default => new("-", "-");
     public static IJenisRawatKey Key(string id) => new JenisRawatType(id, "-");

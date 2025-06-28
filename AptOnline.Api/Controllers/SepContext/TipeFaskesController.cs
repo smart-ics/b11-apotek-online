@@ -1,5 +1,4 @@
-﻿using AptOnline.Application.SepContext.KelasRawatFeature;
-using AptOnline.Application.SepContext.TipeFaskesFeature;
+﻿using AptOnline.Application.SepContext.TipeFaskesFeature;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Nuna.Lib.ActionResultHelper;

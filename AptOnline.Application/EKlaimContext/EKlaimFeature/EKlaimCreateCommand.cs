@@ -1,5 +1,4 @@
-﻿using AptOnline.Application.EklaimContext;
-using AptOnline.Application.SepContext.SepFeature;
+﻿using AptOnline.Application.SepContext.SepFeature;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.EKlaimContext.EKlaimFeature;
@@ -32,7 +31,7 @@ public class EKlaimCreateHandler : IRequestHandler<EKlaimCreateCommand, EKlaimCr
         //  GUARD
         var sep = _sepDal.GetData(RegType.Key(request.RegId))
             .GetValueOrThrow($"SEP utk register '{request.RegId}' tidak ditemukan");
-        var existingEKlaim = _eKlaimRepo.GetData(SepType.Key(sep.SepNo));
+        var existingEKlaim = _eKlaimRepo.LoadEntity(RegType.Key(request.RegId));
         if (existingEKlaim.HasValue)
             throw new ArgumentException($"Register '{request.RegId}' sudah memiliki eKlaim dengan Nomor '{existingEKlaim.Value.EKlaimId}'");
 
@@ -41,8 +40,8 @@ public class EKlaimCreateHandler : IRequestHandler<EKlaimCreateCommand, EKlaimCr
         
         //  WRITE
         using var trans = TransHelper.NewScope();
-        _eKlaimRepo.Insert(eKlaim);
-        _eKlaimNewClaimService.Execute(eKlaim);
+        _eKlaimRepo.SaveChanges(eKlaim);
+        //_eKlaimNewClaimService.Execute(eKlaim);
         trans.Complete();
         
         //  RESPONSE

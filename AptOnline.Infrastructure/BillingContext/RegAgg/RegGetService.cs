@@ -1,7 +1,8 @@
 ﻿using AptOnline.Application.BillingContext.RegAgg;
+using AptOnline.Domain.BillingContext.LayananAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
-using AptOnline.Domain.SepContext.KelasRawatFeature;
+using AptOnline.Domain.SepContext.KelasJknFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Infrastructure.Helpers;
 using FluentAssertions;
@@ -62,11 +63,12 @@ public class RegGetServiceTest
     [Fact]
     public void UT1_GivenValidRegID_WhenExecute_ThenReturnAsExpected()
     {
-        var expected = RegType.Load(
-            "RG01376274", DateTime.Parse("2024-06-05"), DateTime.Parse("2024-06-05"),
+        const string regId = "RG01376274";
+        var expected = new RegType(
+            regId, DateTime.Parse("2024-06-05"), DateTime.Parse("2024-06-05"),
             PasienType.Load("337502200259454", "HAYDAR RAFA SATYA PUTRA,SDR", new DateTime(3000, 1, 1), GenderType.Default),
-            JenisRegEnum.RawatJalan, KelasRawatType.Default);
-        var regId = "RG01376274";
+            JenisRegEnum.RawatJalan, KelasJknType.Default, 
+            new LayananRefference("2RJ11","POLI BEDAH ORTHOPEDI"));
         var req = RegType.Key(regId);
 
         var actual = _sut.Execute(req);

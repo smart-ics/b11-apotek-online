@@ -1,5 +1,8 @@
-﻿using AptOnline.Infrastructure;
+﻿using AptOnline.Application.Helpers;
+using AptOnline.Domain.EKlaimContext.TarifRsFeature;
+using AptOnline.Infrastructure;
 using AptOnline.Infrastructure.BillingContext;
+using AptOnline.Infrastructure.EKlaimContext.TarifRsFeature;
 using AptOnline.Infrastructure.Helpers;
 using Microsoft.Extensions.Caching.Memory;
 using Nuna.Lib.AutoNumberHelper;
@@ -23,6 +26,7 @@ public static class InfrastructureService
             .AddScoped<INunaCounterDal, ParamNoDal>()
             .AddScoped<INunaCounterDecDal, ParamNoDal>()
             .AddScoped<IRestClientFactory,  RestClientFactory>()
+            .AddSingleton<IMapSkemaJknDal, MapSkemaJknDal>()
             .AddMemoryCache();
 
         services
@@ -95,6 +99,28 @@ public static class InfrastructureService
                     .UsingRegistrationStrategy(RegistrationStrategy.Skip)
                     .AsSelfWithInterfaces()
                     .WithScopedLifetime()
+                .FromAssemblyOf<InfrastructureAssemblyAnchor>()
+                    .AddClasses(c => c.AssignableTo(typeof(IListDataMayBe<,>)))
+                    .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+                    .AsSelfWithInterfaces()
+                    .WithScopedLifetime()
+                .FromAssemblyOf<InfrastructureAssemblyAnchor>()
+                    .AddClasses(c => c.AssignableTo(typeof(ISaveChange<>)))
+                    .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+                    .AsSelfWithInterfaces()
+                    .WithScopedLifetime()
+                .FromAssemblyOf<InfrastructureAssemblyAnchor>()
+                    .AddClasses(c => c.AssignableTo(typeof(IDeleteEntity<>)))
+                    .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+                    .AsSelfWithInterfaces()
+                    .WithScopedLifetime()
+                .FromAssemblyOf<InfrastructureAssemblyAnchor>()
+                    .AddClasses(c => c.AssignableTo(typeof(ILoadEntity<,>)))
+                    .UsingRegistrationStrategy(RegistrationStrategy.Skip)
+                    .AsSelfWithInterfaces()
+                    .WithScopedLifetime()
+                
+            ////
             
             );
         return services;

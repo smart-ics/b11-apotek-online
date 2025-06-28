@@ -1,5 +1,4 @@
-﻿using AptOnline.Domain.SepContext.KelasRawatFeature;
-using Ardalis.GuardClauses;
+﻿using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.SepContext.JenisPelayananFeature;
 

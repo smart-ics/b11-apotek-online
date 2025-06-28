@@ -1,29 +1,32 @@
-﻿using AptOnline.Domain.BillingContext.DokterAgg;
+﻿using System.Text.Json;
+using AptOnline.Domain.BillingContext.DokterAgg;
 using AptOnline.Domain.BillingContext.PasienFeature;
 using AptOnline.Domain.BillingContext.PegFeature;
 using AptOnline.Domain.BillingContext.RegAgg;
 using AptOnline.Domain.EKlaimContext.CaraMasukFeature;
 using AptOnline.Domain.EKlaimContext.Covid19Feature;
 using AptOnline.Domain.EKlaimContext.DischargeStatusFeature;
+using AptOnline.Domain.EKlaimContext.EKlaimFeature;
 using AptOnline.Domain.EKlaimContext.JenisRawatFeature;
 using AptOnline.Domain.EKlaimContext.KelasTarifRsFeature;
 using AptOnline.Domain.EKlaimContext.PayorFeature;
 using AptOnline.Domain.EKlaimContext.PelayananDarahFeature;
 using AptOnline.Domain.EKlaimContext.TarifRsFeature;
 using AptOnline.Domain.EKlaimContext.TbIndikatorFeature;
-using AptOnline.Domain.SepContext.KelasRawatFeature;
+using AptOnline.Domain.EKlaimContext.UpgradeIndikatorFeature;
+using AptOnline.Domain.SepContext.KelasJknFeature;
 using AptOnline.Domain.SepContext.PesertaBpjsFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using Ardalis.GuardClauses;
+using Xunit;
 
 namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
 {
     public class EKlaimModel : IEKlaimKey
     {
-        private EKlaimModel(string eKlaimId, DateTime eKlaimDate, RegRefference reg, 
+        public EKlaimModel(string eKlaimId, DateTime eKlaimDate, RegRefference reg, 
             SepRefference sep, PasienType pasien, PesertaBpjsRefference pesertaBpjs)
         {
-            
             //      MANDATORY
             EKlaimId = eKlaimId;
             EKlaimDate = eKlaimDate;
@@ -46,9 +49,9 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
             PasienTb = TbIndikatorType.Default;
             
             //      BILL PASIEN
-            KelasRawat = KelasRawatType.Default;
+            KelasJkn = KelasJknType.Default;
             KelasTarifRs = KelasTarifRsType.Default;
-            TarifRs = TarifRsType.Default;
+            TarifRs = TarifRsModel.Default;
             TarifPoliEksekutif = 0;
             UpgradeKelasIndikator = UpgradeKelasIndikatorType.Default;
             DischargeStatus = DischargeStatusType.Default;
@@ -77,9 +80,9 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
         public VitalSignType VitalSign { get; private set; }
         public TbIndikatorType PasienTb { get; private set; }
         //      BILL & ADMIN KELUAR
-        public KelasRawatType KelasRawat { get; private set; }
+        public KelasJknType KelasJkn { get; private set; }
         public KelasTarifRsType KelasTarifRs { get; private set; }
-        public TarifRsType TarifRs { get; private set; }
+        public TarifRsModel TarifRs { get; private set; }
         public decimal TarifPoliEksekutif { get; private set; }
         public UpgradeKelasIndikatorType  UpgradeKelasIndikator { get; private set; }
         public DischargeStatusType DischargeStatus { get; private set; }
@@ -117,7 +120,73 @@ namespace AptOnline.Domain.EKlaimContext.EKlaimFeature
         #endregion
         
         #region BEHAVIOR
-        //public void 
+
+        public void UpdateMandatory(DateTime eKlaimDate, RegRefference reg,
+            SepRefference sep, PasienType pasien, PesertaBpjsRefference pesertaBpjs)
+        {
+            EKlaimDate = eKlaimDate;
+            Reg = reg;
+            Sep = sep;
+            Pasien = pasien;
+            PesertaBpjs = pesertaBpjs;
+        }
+        public void SetAdministrasiMasuk(DokterType dpjp, CaraMasukType caraMasuk, JenisRawatType jenisRawat)
+        {
+            Guard.Against.Null(dpjp, nameof(dpjp));
+            Guard.Against.Null(caraMasuk, nameof(caraMasuk));
+            Guard.Against.Null(jenisRawat, nameof(jenisRawat));
+            
+            Dpjp = dpjp;
+            CaraMasuk = caraMasuk;
+            JenisRawat = jenisRawat;
+        } 
+        public void SetMedisPasien(AdlScoreType adlScore, 
+            IcuIndikatorType icuIndikator, Covid19Type covid19, 
+            PelayananDarahType pelayananDarah, VitalSignType vitalSign, 
+            TbIndikatorType pasienTb)
+        {
+            Guard.Against.Null(adlScore, nameof(adlScore));
+            Guard.Against.Null(icuIndikator, nameof(icuIndikator));
+            Guard.Against.Null(covid19, nameof(covid19));
+            Guard.Against.Null(pelayananDarah, nameof(pelayananDarah));
+            Guard.Against.Null(vitalSign, nameof(vitalSign));
+            Guard.Against.Null(pasienTb, nameof(pasienTb));
+            
+            AdlScore = adlScore;
+            IcuIndikator = icuIndikator;
+            Covid19 = covid19;
+            PelayananDarah = pelayananDarah;
+            VitalSign = vitalSign;
+            PasienTb = pasienTb;
+        }
+        
+        public void SetBillPasien(KelasJknType kelasJkn, KelasTarifRsType kelasTarifRs, 
+            TarifRsModel tarifRs, decimal tarifPoliEksekutif, UpgradeKelasIndikatorType upgradeKelasIndikator,
+            DischargeStatusType dischargeStatus, PayorType payor, PegType coder, int lengthOfStay)
+        {
+            Guard.Against.Null(kelasJkn, nameof(kelasJkn));
+            Guard.Against.Null(kelasTarifRs, nameof(kelasTarifRs));
+            Guard.Against.Null(tarifRs, nameof(tarifRs));
+            Guard.Against.Null(upgradeKelasIndikator, nameof(upgradeKelasIndikator));
+            Guard.Against.Null(dischargeStatus, nameof(dischargeStatus));
+            Guard.Against.Null(payor, nameof(payor));
+            Guard.Against.Null(coder, nameof(coder));
+            
+            KelasJkn = kelasJkn;
+            KelasTarifRs = kelasTarifRs;
+            TarifRs = tarifRs;
+            TarifPoliEksekutif = tarifPoliEksekutif;
+            UpgradeKelasIndikator = upgradeKelasIndikator;
+            DischargeStatus = dischargeStatus;
+            Payor = payor;
+            Coder = coder;
+            LengthOfStay = lengthOfStay;
+        }
+        public void AttachTarifRs(TarifRsModel tarifRs)
+        {
+            Guard.Against.Null(tarifRs, nameof(tarifRs));
+            TarifRs = tarifRs;
+        }
         #endregion
 
     }

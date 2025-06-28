@@ -1,9 +1,7 @@
-﻿using AptOnline.Domain.EKlaimContext;
-using AptOnline.Domain.EKlaimContext.EKlaimFeature;
-using AptOnline.Domain.Helpers;
+﻿using AptOnline.Domain.EKlaimContext.EKlaimFeature;
 using Nuna.Lib.CleanArchHelper;
 
-namespace AptOnline.Application.EklaimContext;
+namespace AptOnline.Application.EKlaimContext.EKlaimFeature;
 
 public interface IEKlaimNewClaimService : INunaService<EKlaimNewClaimDto, EKlaimModel>
 {
