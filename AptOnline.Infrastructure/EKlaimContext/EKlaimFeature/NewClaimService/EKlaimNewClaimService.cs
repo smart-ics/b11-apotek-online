@@ -66,7 +66,7 @@ public class EKlaimNewClaimService : IEKlaimNewClaimService
     private string CleanUpResponse(string responseContent)
     {
         var result = responseContent;
-        if (!_isReleaseMode) return result;
+        if (_isReleaseMode) return result;
         
         result = result.Replace(MARK_START, "").Replace(MARK_END, "");
         result = EKlaimHelper.Decrypt(result, _opt.ApiKey);
