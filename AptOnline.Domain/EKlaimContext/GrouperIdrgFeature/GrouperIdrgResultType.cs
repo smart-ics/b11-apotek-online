@@ -5,15 +5,12 @@ public record GrouperIdrgResultType(string Info, string JenisRawat,
 {
     public static GrouperIdrgResultType Default => new(string.Empty, string.Empty, 
         MdcType.Default, DrgType.Default, string.Empty);
-    
-    //  TODO: Setting Phase
-    public GrouperPhaseEnum Phase { get; private set; } 
 }
 
-public enum GrouperPhaseEnum
+public enum GroupingPhaseEnum
 {
-    NotSet,
-    SetButFailed,
-    SetAndSuccess,
+    BelumGrouping,
+    GroupingTapiGagal,
+    GroupingDanBerhasil,
     Final
 }
