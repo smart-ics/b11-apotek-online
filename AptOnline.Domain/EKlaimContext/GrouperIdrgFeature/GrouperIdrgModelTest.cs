@@ -62,7 +62,7 @@ public class GrouperIdrgModelTest
         _sut.Add(FakeDiag3());
         //      ACT
         _sut.UbahNoUrutDiagnosa(FakeDiag2(), 3);
-        
+        //      ASSERT
         _sut.ListDiagnosa.Count().Should().Be(3);
         _sut.ListDiagnosa.First(x => x.NoUrut == 1).Idrg.Should().BeEquivalentTo(FakeDiag1().ToRefference());
         _sut.ListDiagnosa.First(x => x.NoUrut == 2).Idrg.Should().BeEquivalentTo(FakeDiag3().ToRefference());
@@ -90,6 +90,7 @@ public class GrouperIdrgModelTest
         _sut.Add(FakeDiag3());
         //      ACT
         _sut.Remove(FakeDiag2());
+        //      ASSERT
         _sut.ListDiagnosa.Count().Should().Be(2);
         _sut.ListDiagnosa.First(x => x.NoUrut == 1).Idrg.Should().BeEquivalentTo(FakeDiag1().ToRefference());
         _sut.ListDiagnosa.First(x => x.NoUrut == 2).Idrg.Should().BeEquivalentTo(FakeDiag3().ToRefference());
@@ -218,7 +219,7 @@ public class GrouperIdrgModelTest
     [Fact]
     public void UT15_GivenNewGrouper_ThenPhaseShouldBeBelumGrouping()
     {
-        //      ACT
+        //      ASSERT
         _sut.Phase.Should().Be(GroupingPhaseEnum.BelumGrouping);
     }
 
