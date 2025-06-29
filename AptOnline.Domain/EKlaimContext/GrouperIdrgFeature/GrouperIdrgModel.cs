@@ -58,10 +58,10 @@ public class GrouperIdrgModel
         if (_listProsedur.Any(x => x.Idrg == prosedur.ToRefference())) return;
         
         var noUrut = _listProsedur
-            .DefaultIfEmpty(new GrouperIdrgProsedurType(0, IdrgRefferenceType.Default,0,0))
+            .DefaultIfEmpty(new GrouperIdrgProsedurType(0, IdrgRefferenceType.Default,1,1))
             .Max(x => x.NoUrut) + 1;
         var idrg = prosedur.ToRefference();
-        _listProsedur.Add(new GrouperIdrgProsedurType(noUrut, idrg, 0,0));
+        _listProsedur.Add(new GrouperIdrgProsedurType(noUrut, idrg, 1,1));
     }
     public void Remove(IdrgProsedurType prosedur)
     {
@@ -79,6 +79,23 @@ public class GrouperIdrgModel
         _listProsedur.Insert(targetNoUrut - 1, currentItem);
         for (var i = 0; i < _listProsedur.Count; i++)
             _listProsedur[i].SetNoUrut(i + 1);
+    }
+    public void ChangeMulitiplicity(IdrgProsedurType idrg, int multiplicity)
+    {
+        var currentItem = _listProsedur
+            .FirstOrDefault(x => x.Idrg == idrg.ToRefference());
+        if (currentItem is null) 
+            throw new KeyNotFoundException($"Prosedur {idrg} tidak ditemukan");
+        currentItem.ChangeMultiplicity(multiplicity);
+    }
+
+    public void ChangeSetting(IdrgProsedurType idrg, int setting)
+    {
+        var currentItem = _listProsedur
+            .FirstOrDefault(x => x.Idrg == idrg.ToRefference());
+        if (currentItem is null) 
+            throw new KeyNotFoundException($"Prosedur {idrg} tidak ditemukan");
+        currentItem.ChangeSetting(setting);
     }
     #endregion
     
@@ -244,4 +261,47 @@ public class GrouperIdrgModelTest
         _sut.ListProsedur.First(x => x.NoUrut == 1).Idrg.Should().BeEquivalentTo(FakePros1().ToRefference());
         _sut.ListProsedur.First(x => x.NoUrut == 2).Idrg.Should().BeEquivalentTo(FakePros3().ToRefference());
     }
+
+    [Fact]
+    public void UT11_GivenExisting_WhenMultiplicity_ThenMultiplicityChanged()
+    {
+        _sut.Add(FakePros1());
+        _sut.Add(FakePros2());
+        _sut.ChangeMulitiplicity(FakePros2(), 3);
+
+        var actual = _sut.ListProsedur.First(x => x.NoUrut == 2);
+        actual.Multiplicity.Should().Be(3);
+    }
+
+    [Fact]
+    public void UT12_GivenNotExistProsedur_WhenMultiplicity_ThenThrowEx()
+    {
+        _sut.Add(FakePros1());
+        _sut.Add(FakePros2());
+        var actual = () =>_sut.ChangeMulitiplicity(FakePros3(), 3);
+
+        actual.Should().Throw<KeyNotFoundException>();
+    }
+    
+    [Fact]
+    public void UT13_GivenExisting_WhenSetting_ThenSettingChanged()
+    {
+        _sut.Add(FakePros1());
+        _sut.Add(FakePros2());
+        _sut.ChangeSetting(FakePros1(), 2);
+
+        var actual = _sut.ListProsedur.First(x => x.NoUrut == 1);
+        actual.Setting.Should().Be(2);
+    }
+
+    [Fact]
+    public void UT14_GivenNotExistProsedur_WhenSetting_ThenThrowEx()
+    {
+        _sut.Add(FakePros1());
+        _sut.Add(FakePros3());
+        var actual = () =>_sut.ChangeSetting(FakePros2(), 3);
+
+        actual.Should().Throw<KeyNotFoundException>();
+    }    
+
 }
