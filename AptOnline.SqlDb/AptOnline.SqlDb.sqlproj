@@ -71,6 +71,9 @@
     <Build Include="EKlaimContext\JKNMW_EKlaim.sql" />
     <Build Include="EKlaimContext\JKNMW_EKlaimMedis.sql" />
     <Build Include="EKlaimContext\JKNMW_EKlaimReffBiaya.sql" />
+    <Build Include="EKlaimContext\JKNMW_GrouperIdrg.sql" />
+    <Build Include="EKlaimContext\JKNMW_GrouperIdrgDiag.sql" />
+    <Build Include="EKlaimContext\JKNMW_GrouperIdrgPros.sql" />
     <Build Include="EKlaimContext\JKNMW_KelasTarifRs.DataSeed.sql" />
     <Build Include="EKlaimContext\JKNMW_Payor.DataSeed.sql" />
     <Build Include="EKlaimContext\JKNMW_Payor.sql" />

@@ -1,0 +1,14 @@
+﻿CREATE TABLE JKNMW_GrouperIdrgDiag(
+    EKlaimId VARCHAR(26) NOT NULL CONSTRAINT DF_JKNMW_GrouperIdrgDiag_EKlaimId DEFAULT(''),
+    NoUrut INT NOT NULL CONSTRAINT DF_JKNMW_GrouperIdrgDiag_NoUrut DEFAULT(0),
+    IdrgId VARCHAR(10) NOT NULL CONSTRAINT DF_JKNMW_GrouperIdrgDiag_IdrgId DEFAULT(''),
+    Im BIT NOT NULL CONSTRAINT DF_JKNMW_GrouperIdrgDiag_Im DEFAULT(0),
+    IdrgName VARCHAR(255) NOT NULL CONSTRAINT DF_JKNMW_GrouperIdrgDiag_IdrgName DEFAULT(''),
+
+    CONSTRAINT PK_JKNMW_GrouperIdrgDiag PRIMARY KEY(EKlaimId, NoUrut)
+)
+GO
+
+CREATE UNIQUE INDEX UIX_JKNMW_GrouperIdrgDiag_EKlaimId 
+    ON JKNMW_GrouperIdrgDiag(EKlaimId, IdrgId, Im)
+GO

@@ -1,16 +1,18 @@
-﻿using AptOnline.Domain.EKlaimContext.IdrgFeature;
+﻿using AptOnline.Domain.EKlaimContext.EKlaimFeature;
+using AptOnline.Domain.EKlaimContext.IdrgFeature;
 using AptOnline.Domain.SepContext.SepFeature;
 using Ardalis.GuardClauses;
 
 namespace AptOnline.Domain.EKlaimContext.GrouperIdrgFeature;
 
-public class GrouperIdrgModel
+public class GrouperIdrgModel : IEKlaimKey
 {
     private readonly List<GrouperIdrgDiagnosaType> _listDiagnosa;
     private readonly List<GrouperIdrgProsedurType> _listProsedur;
 
-    public GrouperIdrgModel(string eKlaimId, SepRefference sep, 
-        GrouperIdrgResultType result, GroupingPhaseEnum phase,
+    public GrouperIdrgModel(string eKlaimId, DateTime grouperIdrgDate, 
+        SepRefference sep, GrouperIdrgResultType result, 
+        GroupingPhaseEnum phase, DateTime finalTimestamp,
         IEnumerable<GrouperIdrgDiagnosaType> listDiagnosa, 
         IEnumerable<GrouperIdrgProsedurType> listProsedur)
     {
@@ -22,24 +24,28 @@ public class GrouperIdrgModel
         var listPr = listProsedur?.ToList() ?? throw new ArgumentNullException(nameof(listProsedur));
 
         EKlaimId = eKlaimId;
+        GrouperIdrgDate = grouperIdrgDate;
         Sep = sep;
         HasilGrouping = result;
         Phase = phase;
+        FinalTimestamp = finalTimestamp;
         _listDiagnosa = listDx;
         _listProsedur = listPr;
     }
 
-    public static GrouperIdrgModel Create(string eKlaimId, SepRefference sep)
+    public static GrouperIdrgModel Create(string eKlaimId, DateTime grouperIdrgDate, 
+        SepRefference sep)
     {
         var result = new GrouperIdrgModel(
-            eKlaimId, sep, GrouperIdrgResultType.Default, 
-            GroupingPhaseEnum.BelumGrouping, 
+            eKlaimId, grouperIdrgDate, sep, GrouperIdrgResultType.Default, 
+            GroupingPhaseEnum.BelumGrouping, new DateTime(3000,1,1), 
             new List<GrouperIdrgDiagnosaType>(), 
             new List<GrouperIdrgProsedurType>());
         return result;
     }
     
     public string EKlaimId { get; init; }
+    public DateTime GrouperIdrgDate { get; init; }
     public SepRefference Sep { get; init; }
     
     public GroupingPhaseEnum Phase { get; private set; }
@@ -51,9 +57,10 @@ public class GrouperIdrgModel
     
     public static GrouperIdrgModel Default 
     => new GrouperIdrgModel(
-        "-", SepType.Default.ToRefference(), 
+        "-", new DateTime(3000,1,1), SepType.Default.ToRefference(), 
         GrouperIdrgResultType.Default, 
-        GroupingPhaseEnum.BelumGrouping, 
+        GroupingPhaseEnum.BelumGrouping,
+        new DateTime(3000,1,1),
         new List<GrouperIdrgDiagnosaType>(), 
         new List<GrouperIdrgProsedurType>());
 

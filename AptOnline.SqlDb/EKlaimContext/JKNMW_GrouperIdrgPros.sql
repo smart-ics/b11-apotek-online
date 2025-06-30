@@ -1,0 +1,16 @@
+﻿CREATE TABLE JKNMW_GrouperIdrgPros(
+    EKlaimId VARCHAR(26) NOT NULL CONSTRAINT DF_JKNMW_GrouperIdrgPros_EKlaimId DEFAULT(''),
+    NoUrut INT NOT NULL CONSTRAINT DF_JKNMW_GrouperIdrgPros_NoUrut DEFAULT(0),
+    IdrgId VARCHAR(10) NOT NULL CONSTRAINT DF_JKNMW_GrouperIdrgPros_IdrgId DEFAULT(''),
+    Im BIT NOT NULL CONSTRAINT DF_JKNMW_GrouperIdrgPros_Im DEFAULT(0),
+    IdrgName VARCHAR(255) NOT NULL CONSTRAINT DF_JKNMW_GrouperIdrgPros_IdrgName DEFAULT(''),
+    Multiplicity INT NOT NULL CONSTRAINT DF_JKNMW_GrouperIdrgPros_Multiplicity DEFAULT(0),
+    Setting INT NOT NULL CONSTRAINT DF_JKNMW_GrouperIdrgPros_Setting DEFAULT(0),
+    
+    CONSTRAINT PK_JKNMW_GrouperIdrgPros PRIMARY KEY CLUSTERED (EKlaimId, NoUrut)
+)
+GO
+
+CREATE UNIQUE INDEX UIX_JKNMW_GrouperIdrgPros_IdrgId 
+    ON JKNMW_GrouperIdrgPros(EKlaimId, IdrgId, Im)
+GO
