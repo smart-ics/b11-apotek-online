@@ -16,11 +16,11 @@ public class IdrgDal : IIdrgDal
     public IdrgDal(IOptions<DatabaseOptions> opt) 
         => _conn = new SqlConnection(ConnStringHelper.Get(opt.Value));
     
-    public MayBe<IdrgType> GetData(IIdrgKey key)
+    public MayBe<IdrgAbstract> GetData(IIdrgKey key)
     {
         const string sql = @"
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
@@ -37,83 +37,89 @@ public class IdrgDal : IIdrgDal
             .Map(dto => dto.ToModel());
     }
 
-    public MayBe<IEnumerable<IdrgType>> SearchDiagnosa(string keyword)
+    public MayBe<IEnumerable<IdrgDiagnosaType>> SearchDiagnosa(string keyword)
     {
         const string sql = @"
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
             WHERE
                 IdrgName LIKE '%' + @Keyword + '%'
-                AND StdSystem = 'ICD_10_2010_IM'
+                AND Kategori = 0
 
             UNION
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
             WHERE
                 Code2 = @Keyword
-                AND StdSystem = 'ICD_10_2010_IM'
+                AND Kategori = 0
 
             UNION
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
             WHERE
                 IdrgId =  @Keyword
-                AND StdSystem = 'ICD_10_2010_IM'";
+                AND Kategori = 0";
         
         var dp = new DynamicParameters();
         dp.AddParam("@keyword", keyword, SqlDbType.VarChar);
         
         return MayBe
             .From(_conn.Read<IdrgDto>(sql, dp))
-            .Map(dto => dto.Select(x => x.ToModel()));  
+            .Map(dto => dto
+                .Select(x => x.ToModel() is IdrgDiagnosaType diag 
+                    ? diag 
+                    : throw new InvalidCastException("Invalid cast to IdrgDiagnosaType")));  
     }
 
-    public MayBe<IEnumerable<IdrgType>> SearchProsedur(string keyword)
+    public MayBe<IEnumerable<IdrgProsedurType>> SearchProsedur(string keyword)
     {
         const string sql = @"
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
             WHERE
                 IdrgName LIKE '%' + @Keyword + '%'
-                AND StdSystem = 'ICD_9CM_2010_IM'
+                AND Kategori = 1
             
             UNION
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
             WHERE
                 Code2 = @Keyword
-                AND StdSystem = 'ICD_9CM_2010_IM'
+                AND Kategori = 1
                 
             UNION
             SELECT
-                IdrgId, Code2, IdrgName, StdSystem,
+                IdrgId, Code2, IdrgName, StdSystem, Kategori,
                 ValidCode, Accpdx, Asterisk, Im
             FROM
                 STD_Idrg
             WHERE
                 IdrgId = @Keyword
-                AND StdSystem = 'ICD_9CM_2010_IM' ";
+                AND Kategori = 1 ";
         
         var dp = new DynamicParameters();
         dp.AddParam("@keyword", keyword, SqlDbType.VarChar);
         
         return MayBe
             .From(_conn.Read<IdrgDto>(sql, dp))
-            .Map(dto => dto.Select(x => x.ToModel()));  
+            .Map(dto => dto
+                .Select(x => x.ToModel() is IdrgProsedurType proc 
+                    ? proc 
+                    : throw new InvalidCastException("Invalid cast to IdrgProsedurType")));  
     }
 }

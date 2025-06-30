@@ -3,10 +3,12 @@ using MediatR;
 
 namespace AptOnline.Application.EKlaimContext.IdrgFeature;
 
-public record IdrgGetQuery(string IdrgId, int Im) : IRequest<IdrgGetResponse>;
-public record IdrgGetResponse(string IdrgId,bool Im, string IdrgName, string Jenis, bool AllowPrimary);
+public record IdrgGetQuery(string IdrgId, int Im) : IRequest<IdrgGetResponseBase>;
+public record IdrgGetResponseBase(string IdrgId,bool Im, string IdrgName, string Jenis);
+public record IdrgGetResponseDiag(string IdrgId,bool Im, string IdrgName, string Jenis,
+    bool AllowPrimary, bool IsAstersk) : IdrgGetResponseBase(IdrgId, Im, IdrgName, Jenis);
 
-public class IdrgGetQueryHandler : IRequestHandler<IdrgGetQuery, IdrgGetResponse>
+public class IdrgGetQueryHandler : IRequestHandler<IdrgGetQuery, IdrgGetResponseBase>
 {
     private readonly IIdrgDal _idrgDal;
 
@@ -15,17 +17,13 @@ public class IdrgGetQueryHandler : IRequestHandler<IdrgGetQuery, IdrgGetResponse
         _idrgDal = idrgDal;
     }
 
-    public Task<IdrgGetResponse> Handle(IdrgGetQuery request, CancellationToken cancellationToken)
+    public Task<IdrgGetResponseBase> Handle(IdrgGetQuery request, CancellationToken cancellationToken)
     {
         var im = request.Im != 0;
-        var idrg = _idrgDal.GetData(IdrgType.Key(request.IdrgId, im))
-            .Map(x => new IdrgGetResponse(x.IdrgId, im, x.IdrgName, x.StdSystem switch
-            {
-                IdrgStdSystemEnum.Diagnosa => "Diagnosa",
-                IdrgStdSystemEnum.Prosedur => "Prosedur",
-                IdrgStdSystemEnum.Morfologi => "Morfologi",
-                _ => "Undefined"
-            }, x.IsAllowPrimary))
+        var idrg = _idrgDal.GetData(IdrgAbstract.Key(request.IdrgId, im))
+            .Map(x => x is IdrgDiagnosaType dx
+                ? new IdrgGetResponseDiag(dx.IdrgId, dx.Im, dx.IdrgName, "Diagnosa", dx.IsAllowPrimary, dx.IsAsterisk) 
+                : new IdrgGetResponseBase(x.IdrgId, x.Im, x.IdrgName, x is IdrgProsedurType ? "Prosedur" : "Morfologi"))
             .GetValueOrThrow($"Idrg '{request.IdrgId}' (im: {im}) tidak ditemukan");
         
         return Task.FromResult(idrg);
